@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poems | Diya Subedi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <div class="ambient-layer"></div>
+    <div class="page-shell">
+      <header class="site-header" id="top">
+        <a class="brand" href="index.html">Diya Subedi</a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="poems.html" class="active">Poems</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
+      </header>
+
+      <main>
+        <section class="page-hero reveal">
+          <p class="eyebrow">Poetry collection</p>
+          <h1>Every poem is arranged as a living piece of art.</h1>
+          <p class="page-intro">Browse the collection, search by mood, and open any poem to read its full form.</p>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="library-toolbar">
+            <label class="search-box" for="poemSearch">
+              <input id="poemSearch" type="search" placeholder="Search by title, mood, category, or tag" />
+            </label>
+            <div class="chip-row" aria-label="Poem filters">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="love">Love</button>
+              <button class="filter-chip" data-filter="hope">Hope</button>
+              <button class="filter-chip" data-filter="memory">Memory</button>
+              <button class="filter-chip" data-filter="loss">Loss</button>
+              <button class="filter-chip" data-filter="existential">Existential</button>
+            </div>
+          </div>
+          <div class="poem-grid" id="poemLibrary"></div>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="section-title">
+            <h2>Featured poems</h2>
+            <a href="poems.html">View library</a>
+          </div>
+          <div class="poem-grid" id="featuredPoems"></div>
+        </section>
+      </main>
+
+      <footer>
+        <p>Some journeys end at a destination. Others become poems.</p>
+      </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/poems.js"></script>
+    <script src="js/animations.js"></script>
+  </body>
+</html>
