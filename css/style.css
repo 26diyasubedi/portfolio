@@ -641,6 +641,11 @@ body.theme-dark .glass-panel {
   opacity: 0;
 }
 
+.custom-video-player .video-loading,
+.custom-video-player .video-center-play {
+  display: none !important;
+}
+
 .video-loading,
 .video-error {
   position: absolute;

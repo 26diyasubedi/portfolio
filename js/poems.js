@@ -234,7 +234,7 @@ async function initPoemDetail() {
             <p class="video-top-subtitle">${poem.caption}</p>
           </div>
         </div>
-        <div class="video-loading" aria-hidden="true">
+        <div class="video-loading" aria-hidden="true" hidden>
           <div class="video-spinner"></div>
         </div>
         <div class="video-center-play" aria-hidden="true">▶</div>

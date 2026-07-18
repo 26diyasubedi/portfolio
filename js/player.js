@@ -59,6 +59,7 @@
     const previewTooltip = root.querySelector('.video-preview');
     const centerPlay = root.querySelector('.video-center-play');
     const loadingSpinner = root.querySelector('.video-loading');
+    if (loadingSpinner) loadingSpinner.hidden = true;
     const errorState = root.querySelector('.video-error');
     const menuButton = root.querySelector('[data-menu-toggle]');
     const menu = root.querySelector('.video-menu');
