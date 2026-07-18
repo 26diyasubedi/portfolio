@@ -55,3 +55,9 @@ The profile @uwyiz_ was not publicly reachable from this environment, so reels, 
 ## Local preview
 
 Open index.html in a browser, or serve the folder with a simple static server to test local fetching for poems.json.
+
+
+you can add poems in following ways. 
+
+
+first downlaod poem andd add that in assets/videos 

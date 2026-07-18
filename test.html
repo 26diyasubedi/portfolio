@@ -1,4 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="About Diya Subedi, a poet and builder from Kathmandu creating warm, literary web experiences." />
+    <meta name="theme-color" content="#F7EFE7" />
+    <title>About | Diya Subedi</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✧</text></svg>" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
+    <style>
         /* ═══════════════════════════════════════════════════════
            CSS VARIABLES & RESET
            ═══════════════════════════════════════════════════════ */
@@ -1283,3 +1296,499 @@
                 animation: none !important;
             }
         }
+    </style>
+</head>
+<body>
+
+    <!-- ── skip link ── -->
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <!-- ── grain overlay ── -->
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <!-- ── ambient background ── -->
+    <div class="ambient-bg" aria-hidden="true"></div>
+
+    <!-- ── particles canvas ── -->
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+    <!-- ── reading progress ── -->
+    <div class="reading-progress" id="readingProgress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- ═══════════════════════════════════════════════════════
+    PAGE SHELL
+    ═══════════════════════════════════════════════════════ -->
+    <div class="page-shell">
+
+        <!-- ── header ── -->
+        <header class="site-header" id="top">
+            <a class="brand" href="index.html">Diya Subedi</a>
+            <nav class="main-nav" aria-label="Primary navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html" class="active">About</a>
+                <a href="projects.html">Projects</a>
+                <a href="poems.html">Poems</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <button class="nav-pill" id="themeToggle" type="button" aria-label="Toggle dark mode">☾ Dark</button>
+        </header>
+
+        <!-- ── main ── -->
+        <main id="content">
+
+            <!-- ═══ HERO ═══ -->
+            <section class="page-hero" aria-labelledby="hero-title">
+                <div class="hero-opening">
+                    <div class="hero-ornament" aria-hidden="true">❧</div>
+
+                    <div class="hero-title-wrap">
+                        <h1 class="hero-title" id="hero-title">
+                            <span class="title-accent">About</span>
+                        </h1>
+                    </div>
+
+                    <p class="hero-subtitle">
+                        Opening the first chapter of a quiet literary life where poetry and code share the same pulse.
+                    </p>
+
+                    <div class="hero-divider" aria-hidden="true"></div>
+
+                    <div class="hero-quote">
+                        <blockquote>
+                            A bird in a cage mistakes a burning home for a burning world.
+                            <span class="quote-attribution">— from an unwritten notebook</span>
+                        </blockquote>
+                    </div>
+
+                    <div class="hero-meta">
+                        <span class="hero-pill">Poet &amp; maker</span>
+                        <span class="hero-pill">Kathmandu, Nepal</span>
+                        <span class="hero-pill">Grade 12</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ WHO I AM — opening chapter ═══ -->
+            <section class="about-section chapter-opening" aria-labelledby="who-title">
+                <span class="section-label reveal">Chapter One</span>
+                <h2 class="section-title reveal" id="who-title">
+                    <span class="title-ornament">✦</span> Who I am
+                </h2>
+                <div class="section-body reveal drop-cap">
+                    <p>
+                        Hi, I'm <strong>Diya Subedi</strong>. I started writing poetry when I was in <strong>Class 10</strong>.
+                        At first, I never imagined those scattered thoughts would one day become something I would share with the world.
+                        They were simply pages I wrote whenever my mind felt too loud or my heart had too much to carry.
+                    </p>
+                    <p>
+                        For me, poetry isn't a hobby. It's the way I understand life. Almost every poem I write begins with something real —
+                        a conversation, a goodbye, a memory, a place, or a feeling that refuses to leave.
+                    </p>
+                    <p>
+                        I don't chase perfect words. I simply try to write honestly enough that someone else might quietly think,
+                        <em>"I've felt this too."</em>
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══ WHY I WRITE / WHY I BUILD ═══ -->
+            <section class="about-section" aria-labelledby="why-title">
+                <span class="section-label reveal">Two sides of the same page</span>
+                <h2 class="section-title reveal" id="why-title">
+                    <span class="title-ornament">❧</span> Why I write, why I build
+                </h2>
+                <div class="dual-column">
+                    <article class="column">
+                        <div class="reveal">
+                            <h3><span class="col-ornament">✧</span> Why I write</h3>
+                            <p>
+                                I'm inspired by poets who taught me that a few simple lines can stay with a person for years.
+                                They made me fall in love with words, and that love slowly became my own voice.
+                                I began sharing my poems online partly to become more confident, partly to let more people
+                                discover the quiet beauty hidden in language.
+                            </p>
+                        </div>
+                    </article>
+                    <article class="column">
+                        <div class="reveal">
+                            <h3><span class="col-ornament">✧</span> Why I build</h3>
+                            <p>
+                                When I'm not writing, you'll usually find me reading, walking through quiet places,
+                                taking photographs, or travelling — collecting small moments that often find their way back
+                                into my poems. Technology became the way I could shape those moments into something tangible
+                                and shareable.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ═══ TIMELINE ═══ -->
+            <section class="about-section" aria-labelledby="timeline-title">
+                <span class="section-label reveal">A quiet chronicle</span>
+                <h2 class="section-title reveal" id="timeline-title">
+                    <span class="title-ornament">◈</span> Timeline
+                </h2>
+                <div class="timeline-container reveal" id="timelineContainer">
+                    <div class="timeline-line" aria-hidden="true"></div>
+                    <div class="timeline-items">
+                        <article class="timeline-item">
+                            <h4>First verse <span class="year-badge">Class 10</span></h4>
+                            <p>Discovered that ordinary moments have a quiet gravity when written down.</p>
+                        </article>
+                        <article class="timeline-item">
+                            <h4>Early web practice <span class="year-badge">2023</span></h4>
+                            <p>Started using HTML and CSS to give the same attention I give to words to the spaces people move through.</p>
+                        </article>
+                        <article class="timeline-item">
+                            <h4>First published poems <span class="year-badge">2024</span></h4>
+                            <p>Learned how it feels to send a line into the world and trust it to find someone else.</p>
+                        </article>
+                        <article class="timeline-item">
+                            <h4>Current journey <span class="year-badge">Now</span></h4>
+                            <p>Building a quieter digital language that sits between literature, design, and code.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ HOW I MAKE — journal ═══ -->
+            <section class="about-section" aria-labelledby="how-title">
+                <span class="section-label reveal">Craft &amp; process</span>
+                <h2 class="section-title reveal" id="how-title">
+                    <span class="title-ornament">✎</span> How I make
+                </h2>
+                <div class="journal-card reveal">
+                    <span class="journal-marker">— from the notebook</span>
+                    <p>
+                        I begin with a single question: what do I want this page to feel like? I gather moments from the day,
+                        let the ideas settle, and then shape them into a subtle structure that is gentle, honest, and easy to
+                        move through. Poetry, design, and code all arrive from the same quiet place.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══ SKILLS — handwritten notes ═══ -->
+            <section class="about-section" aria-labelledby="skills-title">
+                <span class="section-label reveal">What I carry</span>
+                <h2 class="section-title reveal" id="skills-title">
+                    <span class="title-ornament">✧</span> Skills
+                </h2>
+                <div class="skill-grid">
+                    <article class="skill-note reveal">
+                        <h3><span class="skill-icon">✧</span>Poetry</h3>
+                        <p>Writing with honesty, atmosphere, and emotional restraint.</p>
+                        <span class="skill-underline"></span>
+                    </article>
+                    <article class="skill-note reveal">
+                        <h3><span class="skill-icon">✧</span>Editorial design</h3>
+                        <p>Creating calm layouts with generous typography and whitespace.</p>
+                        <span class="skill-underline"></span>
+                    </article>
+                    <article class="skill-note reveal">
+                        <h3><span class="skill-icon">✧</span>Web craftsmanship</h3>
+                        <p>Building clean interfaces with thoughtful motion.</p>
+                        <span class="skill-underline"></span>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ═══ CURRENT FOCUS ═══ -->
+            <section class="about-section" aria-labelledby="focus-title">
+                <span class="section-label reveal">Now</span>
+                <h2 class="section-title reveal" id="focus-title">
+                    <span class="title-ornament">✦</span> Current focus
+                </h2>
+                <div class="focus-card reveal">
+                    <h3>Learning, building, and reading</h3>
+                    <p>
+                        Right now I am exploring how to make poetry feel natural on the web, how to let quiet storytelling
+                        breathe through interface design, and how to keep building with tools that stay gentle and expressive.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ═══ CLOSING CHAPTER ═══ -->
+            <section class="about-section closing-chapter reveal" aria-labelledby="close-title">
+                <h2 id="close-title">
+                    <span class="closing-ornament">❧</span> Thank you for reading
+                </h2>
+                <p>
+                    More than anything, I want my work to remind people that ordinary moments are never truly ordinary.
+                    Sometimes the smallest memory becomes the line that stays with us forever.
+                </p>
+                <div class="signature">— Diya</div>
+                <span class="closing-year">Kathmandu · 2026</span>
+            </section>
+
+        </main>
+
+        <!-- ── footer ── -->
+        <footer class="page-footer">
+            <span class="footer-ornament" aria-hidden="true">❧</span>
+            <p>Heartfelt work, made quietly and carefully.</p>
+        </footer>
+
+    </div>
+
+    <!-- ── back to top ── -->
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">↑ Back to top</button>
+
+    <!-- ═══════════════════════════════════════════════════════
+    JAVASCRIPT
+    ═══════════════════════════════════════════════════════ -->
+    <script>
+        (function() {
+            'use strict';
+
+            /* ───────────────────────────────────────────────
+               THEME TOGGLE
+               ─────────────────────────────────────────────── */
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            let darkMode = false;
+
+            function setTheme(dark) {
+                darkMode = dark;
+                body.classList.toggle('dark-mode', dark);
+                themeToggle.textContent = dark ? '☀ Light' : '☾ Dark';
+                localStorage.setItem('diya-theme', dark ? 'dark' : 'light');
+            }
+
+            const stored = localStorage.getItem('diya-theme');
+            if (stored === 'dark') setTheme(true);
+            else if (stored === 'light') setTheme(false);
+            else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme(true);
+
+            themeToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                setTheme(!darkMode);
+            });
+
+            /* ───────────────────────────────────────────────
+               READING PROGRESS
+               ─────────────────────────────────────────────── */
+            const progressBar = document.getElementById('readingProgress');
+
+            function updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                progressBar.style.width = Math.min(progress, 100) + '%';
+                progressBar.setAttribute('aria-valuenow', Math.round(progress));
+            }
+
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress, { passive: true });
+            updateProgress();
+
+            /* ───────────────────────────────────────────────
+               BACK TO TOP
+               ─────────────────────────────────────────────── */
+            const backBtn = document.getElementById('backToTop');
+
+            function updateBackToTop() {
+                if (window.scrollY > 600) {
+                    backBtn.classList.add('is-visible');
+                } else {
+                    backBtn.classList.remove('is-visible');
+                }
+            }
+
+            window.addEventListener('scroll', updateBackToTop, { passive: true });
+            updateBackToTop();
+
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            /* ───────────────────────────────────────────────
+               INTERSECTION OBSERVER — reveal sections
+               ─────────────────────────────────────────────── */
+            const revealElements = document.querySelectorAll('.reveal');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineContainer = document.getElementById('timelineContainer');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // If it's the timeline container, also reveal items with delay
+                        if (entry.target === timelineContainer) {
+                            timelineItems.forEach((item, index) => {
+                                setTimeout(() => {
+                                    item.classList.add('is-visible');
+                                }, 100 + index * 120);
+                            });
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => observer.observe(el));
+
+            // Also observe timeline items directly for the initial reveal
+            timelineItems.forEach(item => {
+                observer.observe(item);
+            });
+
+            // Force timeline container to trigger line animation when visible
+            const tlObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            if (timelineContainer) {
+                tlObserver.observe(timelineContainer);
+            }
+
+            /* ───────────────────────────────────────────────
+               PARTICLES — floating dust
+               ─────────────────────────────────────────────── */
+            const canvas = document.getElementById('particles-canvas');
+            let ctx, w, h, particles = [];
+            let particleCount = 40;
+            let animationFrame;
+
+            function initParticles() {
+                if (!canvas) return;
+                ctx = canvas.getContext('2d');
+                resizeCanvas();
+                createParticles();
+                animateParticles();
+
+                window.addEventListener('resize', () => {
+                    resizeCanvas();
+                    createParticles();
+                });
+            }
+
+            function resizeCanvas() {
+                if (!canvas) return;
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticles() {
+                particles = [];
+                const count = Math.min(particleCount, Math.floor((w * h) / 20000) + 20);
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 2 + 0.8,
+                        dx: (Math.random() - 0.5) * 0.25,
+                        dy: (Math.random() - 0.5) * 0.25 - 0.06,
+                        life: Math.random() * 0.5 + 0.3,
+                        speed: 0.2 + Math.random() * 0.3
+                    });
+                }
+            }
+
+            function animateParticles() {
+                if (!ctx) return;
+                ctx.clearRect(0, 0, w, h);
+
+                const isDark = document.body.classList.contains('dark-mode');
+                const color = isDark ? 'rgba(196, 168, 138, ' : 'rgba(180, 160, 140, ';
+
+                particles.forEach(p => {
+                    p.x += p.dx * p.speed;
+                    p.y += p.dy * p.speed;
+                    p.life += (Math.random() - 0.5) * 0.008;
+                    p.life = Math.max(0.2, Math.min(0.8, p.life));
+
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+                    if (p.y < 0) p.y = h;
+                    if (p.y > h) p.y = 0;
+
+                    const alpha = p.life * 0.3;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = color + alpha + ')';
+                    ctx.fill();
+
+                    // soft glow
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+                    gradient.addColorStop(0, color + (alpha * 0.2) + ')');
+                    gradient.addColorStop(1, color + '0)');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                animationFrame = requestAnimationFrame(animateParticles);
+            }
+
+            // Start particles with a slight delay
+            if (canvas) {
+                if (document.readyState === 'complete') {
+                    initParticles();
+                } else {
+                    window.addEventListener('load', initParticles);
+                }
+            }
+
+            // Reinit particles on theme change
+            document.addEventListener('themeChange', function() {
+                if (canvas && ctx) {
+                    // just let the animation loop handle the color change
+                }
+            });
+
+            // Expose theme change for particles
+            const origSetTheme = setTheme;
+            setTheme = function(dark) {
+                origSetTheme(dark);
+                // particles will pick up the new color on next frame
+            };
+
+            /* ───────────────────────────────────────────────
+               REDUCED MOTION — stop particles if needed
+               ─────────────────────────────────────────────── */
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (prefersReducedMotion.matches) {
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                }
+            }
+
+            prefersReducedMotion.addEventListener('change', function(e) {
+                if (e.matches) {
+                    if (canvas) canvas.style.display = 'none';
+                    if (animationFrame) cancelAnimationFrame(animationFrame);
+                } else {
+                    if (canvas) {
+                        canvas.style.display = 'block';
+                        if (!ctx) initParticles();
+                    }
+                }
+            });
+
+            /* ───────────────────────────────────────────────
+               KEYBOARD SUPPORT — escape closes nothing, but keep
+               ─────────────────────────────────────────────── */
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    // close any open menus if needed
+                }
+            });
+
+            console.log('✧ Diya Subedi — About page loaded.');
+
+        })();
+    </script>
+
+</body>
+</html>

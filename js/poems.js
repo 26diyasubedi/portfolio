@@ -142,20 +142,13 @@ function setMetricValue(selector, value) {
 function renderMetrics(poems, categories) {
   setMetricValue('[data-metric="poem-count"]', poems.length);
   setMetricValue('[data-metric="featured-count"]', poems.filter((poem) => poem.featured).length);
-  setMetricValue('[data-metric="category-count"]', categories.length);
-  setMetricValue('[data-metric="latest-count"]', poems.slice(0, 3).length);
 }
 
 async function initPoemLibrary() {
   const container = document.getElementById('poemLibrary');
-  const searchInput = document.getElementById('poemSearch');
-  const chips = Array.from(document.querySelectorAll('.filter-chip'));
   const featuredContainer = document.getElementById('featuredPoems');
-  const latestContainer = document.getElementById('latestPoems');
-  const categoriesContainer = document.getElementById('categoryPills');
-  const resultCount = document.getElementById('poemResultCount');
 
-  if (!container && !featuredContainer && !latestContainer) return;
+  if (!container && !featuredContainer) return;
 
   try {
     const rawPoems = await loadPoems();
@@ -168,44 +161,17 @@ async function initPoemLibrary() {
       .filter((poem) => homeSelectionIds.includes(poem.id))
       .sort((a, b) => homeSelectionIds.indexOf(a.id) - homeSelectionIds.indexOf(b.id));
     const featured = poems.filter((poem) => poem.featured).slice(0, 4);
-    const categories = [...new Set(poems.map((poem) => poem.category))];
-    const isHomePage = !!featuredContainer && !container && !latestContainer;
+    const isHomePage = !!featuredContainer && !container;
 
     if (featuredContainer) {
       const renderList = isHomePage ? homeSelection : featured;
       renderPoems(renderList, featuredContainer);
     }
-    if (latestContainer) renderPoems(poems.slice(0, 3), latestContainer);
-    if (categoriesContainer) {
-      categoriesContainer.innerHTML = categories.map((category) => `<span class="pill">${category}</span>`).join('');
+    renderMetrics(poems);
+
+    if (container) {
+      renderPoems(filterPoems(poems, '', 'all'), container);
     }
-    renderMetrics(poems, categories);
-
-    let activeFilter = 'all';
-    let currentQuery = '';
-
-    const refresh = () => {
-      if (!container) return;
-      const visible = filterPoems(poems, currentQuery, activeFilter);
-      renderPoems(visible, container);
-      if (resultCount) resultCount.textContent = `${visible.length} poems`;
-    };
-
-    searchInput?.addEventListener('input', (event) => {
-      currentQuery = event.target.value;
-      refresh();
-    });
-
-    chips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        chips.forEach((item) => item.classList.remove('active'));
-        chip.classList.add('active');
-        activeFilter = chip.dataset.filter || 'all';
-        refresh();
-      });
-    });
-
-    refresh();
 
     // Wire play-in-card buttons: ensure any dynamically added play buttons are accessible
     container.querySelectorAll && container.querySelectorAll('.play-in-card').forEach((btn) => {
@@ -257,8 +223,62 @@ async function initPoemDetail() {
   if (themeMeta && poem.colorTheme) themeMeta.setAttribute('content', poem.colorTheme);
 
   const related = poems.filter((entry) => poem.relatedPoems.includes(entry.id));
+  const playerOptions = window.DIYA_VIDEO_OPTIONS || { SPEED_OPTIONS: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], BOOST_OPTIONS: [{ label: 'Normal', value: 1 }, { label: '125%', value: 1.25 }, { label: '150%', value: 1.5 }, { label: '200%', value: 2 }, { label: '300%', value: 3 }] };
   const heroMedia = poem.video && !poem.audioOnly
-    ? `<div class="reel-player"><video class="detail-video" src="${poem.video}" poster="${poem.poster || poem.heroImage}" controls playsinline preload="metadata"></video><div class="reel-overlay"><p class="eyebrow">Reel preview</p><p class="lead-quote">${poem.quote}</p></div></div>`
+    ? `
+      <div class="custom-video-player" data-player>
+        <video class="detail-video" src="${poem.video}" poster="${poem.poster || poem.heroImage}" playsinline preload="metadata"></video>
+        <div class="video-top-bar" aria-label="Video title">
+          <div>
+            <p class="video-top-title">${poem.title}</p>
+            <p class="video-top-subtitle">${poem.caption}</p>
+          </div>
+        </div>
+        <div class="video-loading" aria-hidden="true">
+          <div class="video-spinner"></div>
+        </div>
+        <div class="video-center-play" aria-hidden="true">▶</div>
+        <div class="video-seek-indicator is-hidden" aria-hidden="true"></div>
+        <div class="video-error" hidden></div>
+        <div class="video-controls is-visible" role="group" aria-label="Video player controls">
+          <div class="video-controls-left">
+            <button class="video-control-btn" data-play-pause type="button" aria-label="Play or pause">▶</button>
+            <button class="video-control-btn" data-restart type="button" aria-label="Restart">↺</button>
+            <button class="video-control-btn" data-mute type="button" aria-label="Mute">🔊</button>
+            <input class="video-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume" />
+            <span class="video-time video-time-current">00:00</span>
+            <span class="video-time-separator">/</span>
+            <span class="video-time video-time-duration">00:00</span>
+          </div>
+          <div class="video-controls-right">
+            <button class="video-control-btn" data-menu-toggle type="button" aria-haspopup="true" aria-expanded="false" aria-label="Open menu">⋯</button>
+            <button class="video-control-btn" data-pip type="button" aria-label="Picture in picture">⧉</button>
+            <button class="video-control-btn" data-fullscreen type="button" aria-label="Fullscreen">⛶</button>
+          </div>
+        </div>
+        <div class="video-progress" aria-label="Seek bar">
+          <div class="video-progress-buffered"></div>
+          <div class="video-progress-played"></div>
+          <div class="video-progress-thumb"></div>
+          <div class="video-preview" hidden></div>
+        </div>
+        <div class="video-menu is-hidden" role="menu" aria-label="Video menu">
+          <a class="video-menu-item" href="${poem.video}" download aria-label="Download video" data-download>⬇ Download</a>
+          <div class="video-menu-group">
+            <span class="video-menu-label">Playback speed</span>
+            <div class="video-menu-list">
+              ${playerOptions.SPEED_OPTIONS.map((speed) => `<button class="video-menu-item video-menu-item--small" type="button" data-speed-option="${speed}">${speed.toFixed(2).replace(/\.00$/, '')}x</button>`).join('')}
+            </div>
+          </div>
+          <div class="video-menu-group">
+            <span class="video-menu-label">Audio boost</span>
+            <div class="video-menu-list">
+              ${playerOptions.BOOST_OPTIONS.map((option) => `<button class="video-menu-item video-menu-item--small" type="button" data-boost="${option.value}">${option.label}</button>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    `
     : `<img src="${poem.heroImage}" alt="${poem.altText}" loading="eager" />`;
 
   detailRoot.innerHTML = `
@@ -289,14 +309,6 @@ async function initPoemDetail() {
               <span>Inspiration: ${poem.inspiration}</span>
             </div>
           </div>
-          <div class="info-panel">
-            <h2>Reach</h2>
-            <div class="info-list">
-              <span>${poem.views} views</span>
-              <span>${poem.likes} likes</span>
-              <span>${poem.bookmarks} bookmarks</span>
-            </div>
-          </div>
           ${renderShareButtons(poem)}
         </div>
       </div>
@@ -324,6 +336,9 @@ async function initPoemDetail() {
   `;
 
   detailRoot.querySelectorAll('.reveal').forEach((node) => node.classList.add('visible'));
+  if (window.initCustomVideoPlayer) {
+    window.initCustomVideoPlayer(detailRoot);
+  }
 
   const progressBar = detailRoot.querySelector('.reading-progress__bar');
   const updateReadingProgress = () => {
@@ -360,6 +375,7 @@ async function initPoemDetail() {
       console.warn(error);
     }
   });
+
 }
 
 const startPoemViews = () => {

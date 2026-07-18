@@ -65,8 +65,16 @@ document.addEventListener('click', (event) => {
     controls.appendChild(muteBtn);
     controls.appendChild(vol);
 
+    const replayBtn = document.createElement('button');
+    replayBtn.className = 'video-replay-btn';
+    replayBtn.type = 'button';
+    replayBtn.setAttribute('aria-label', 'Replay video');
+    replayBtn.textContent = 'Replay';
+    replayBtn.hidden = true;
+
     wrapper.appendChild(video);
     wrapper.appendChild(controls);
+    wrapper.appendChild(replayBtn);
 
     // Replace thumbnail content with the video wrapper so playback happens in-place
     const thumbWrap = container.querySelector('.thumb-wrap');
@@ -92,11 +100,32 @@ document.addEventListener('click', (event) => {
       if (v > 0 && video.muted) { video.muted = false; muteBtn.textContent = '🔊'; }
       if (v === 0) { video.muted = true; muteBtn.textContent = '🔇'; }
     });
+
+    replayBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      try { video.currentTime = 0; } catch (e) {}
+      video.play().catch(() => {});
+      replayBtn.hidden = true;
+      btn.textContent = '⏸';
+      window.VideoManager.play(video);
+    });
+
+    video.addEventListener('ended', () => {
+      replayBtn.hidden = false;
+      btn.textContent = '▶';
+    });
+
+    video.addEventListener('play', () => {
+      replayBtn.hidden = true;
+    });
   }
 
   if (video.paused) {
     // ensure audio is enabled when the user initiates playback
     try { video.muted = false; video.volume = typeof video.volume === 'number' ? video.volume : 1; } catch (e) {}
+    if (video.ended) {
+      try { video.currentTime = 0; } catch (e) {}
+    }
     window.VideoManager.play(video);
     btn.textContent = '⏸';
   } else {
