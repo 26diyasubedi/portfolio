@@ -258,6 +258,117 @@ body.theme-dark .about-hero::before {
               radial-gradient(circle at 80% 30%, rgba(217, 179, 120, 0.08), transparent 16%),
               radial-gradient(circle at 50% 90%, rgba(235, 198, 133, 0.08), transparent 24%);
 }
+
+@media (max-width: 900px) {
+  .about-hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 40px 24px;
+    min-height: auto;
+  }
+
+  .about-hero-copy h1 {
+    max-width: none;
+  }
+
+  .about-hero-card-inner {
+    min-height: auto;
+  }
+
+  .about-dual,
+  .creative-grid,
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-hero-meta {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+}
+
+@media (max-width: 700px) {
+  .about-hero {
+    padding: 28px 18px;
+    border-radius: 24px;
+  }
+
+  .about-hero-copy .eyebrow {
+    font-size: 0.74rem !important;
+    text-align: left !important;
+  }
+
+  .about-hero-copy h1 {
+    font-size: clamp(2.2rem, 6.8vw, 2.9rem);
+  }
+
+  .about-hero-copy .page-intro {
+    font-size: 0.98rem;
+  }
+
+  .about-hero-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .about-hero-pill {
+    justify-content: center;
+  }
+
+  .about-section {
+    padding: 44px 0 8px;
+  }
+
+  .about-copy {
+    font-size: 0.98rem;
+  }
+
+  .about-hero-card-inner,
+  .about-dual .section-card,
+  .creative-card,
+  .skill-card,
+  .current-focus-card,
+  .about-close {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 22px 14px;
+  }
+
+  .about-hero-copy h1 {
+    font-size: clamp(1.85rem, 7.2vw, 2.35rem);
+    line-height: 1.08;
+  }
+
+  .about-hero-copy .page-intro {
+    font-size: 0.95rem;
+  }
+
+  .about-hero-card-inner,
+  .about-dual .section-card,
+  .creative-card,
+  .skill-card,
+  .current-focus-card,
+  .about-close {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .about-section {
+    padding: 36px 0 6px;
+  }
+
+  .timeline-item {
+    padding-left: 28px;
+  }
+
+  .timeline-item::before {
+    left: -8px;
+    width: 14px;
+    height: 14px;
+  }
+}
 body.theme-dark .about-hero-card-inner,
 body.theme-dark .about-dual .section-card,
 body.theme-dark .inspiration-card,

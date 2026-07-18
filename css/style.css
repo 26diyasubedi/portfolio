@@ -435,7 +435,27 @@ body.theme-dark .glass-panel {
 .thumb-wrap { position: relative; overflow: hidden; border-radius: 12px; aspect-ratio: 4/3; }
 .thumb-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 260ms ease; }
 /* ensure video inserted into thumb-wrap fills the area */
-.thumb-wrap video.card-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb-wrap { background: #000; }
+.thumb-wrap .card-video-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.thumb-wrap video.card-video {
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: inherit;
+}
 .play-in-card {
   position: absolute;
   left: 50%;
@@ -459,7 +479,13 @@ body.theme-dark .glass-panel {
 .card-video { border-radius: 12px; margin-top: 12px; width: 100%; height: auto; max-height: 60vh; object-fit: cover; display: block; z-index: 0; }
 
 /* in-card video wrapper + controls */
-.card-video-wrapper { position: relative; margin-top: 12px; overflow: hidden; z-index: 0; }
+.card-video-wrapper {
+  position: relative;
+  margin-top: 12px;
+  overflow: hidden;
+  z-index: 0;
+  border-radius: 12px;
+}
 .card-video-controls {
   position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; align-items: center; z-index: 2;
   background: rgba(0,0,0,0.35); padding: 6px 8px; border-radius: 999px;
@@ -518,6 +544,37 @@ body.theme-dark .glass-panel {
   transform: translateY(-5px);
   box-shadow: var(--shadow-strong);
   border-color: rgba(140, 107, 74, 0.22);
+}
+
+@media (max-width: 700px) {
+  .reel-player video,
+  .card-video,
+  .detail-video {
+    max-height: none;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .card-video-wrapper,
+  .thumb-wrap {
+    border-radius: 14px;
+  }
+
+  .card-video-controls {
+    right: 8px;
+    bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-video-controls {
+    padding: 5px 7px;
+    gap: 6px;
+  }
+
+  .card-video-controls .volume-range {
+    width: 72px;
+  }
 }
 
 .poem-card::before {
