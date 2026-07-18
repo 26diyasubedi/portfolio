@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Selected projects by Diya Subedi, including poetic web experiences and thoughtful digital studies." />
+    <meta name="theme-color" content="#F7EFE7" />
+    <title>Projects | Diya Subedi</title>
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="ambient-layer"></div>
+    <div class="page-shell">
+      <header class="site-header" id="top">
+        <a class="brand" href="index.html">Diya Subedi</a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="projects.html" class="active">Projects</a>
+          <a href="poems.html">Poems</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
+      </header>
+
+      <main id="content">
+        <section class="page-hero reveal">
+          <p class="eyebrow">Projects</p>
+          <h1>Projects built with the same calm attention as the writing.</h1>
+          <p class="page-intro">The work here is intentionally small in scope, polished in execution, and centered on clear reading experiences.</p>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="screen-grid">
+            <article class="screen-card">
+              <p class="eyebrow">Poetry archive</p>
+              <h2>Searchable poem library</h2>
+              <p>A content-driven archive with categories, featured work, reading flow, and a dedicated poem view that feels closer to a publication than a gallery.</p>
+            </article>
+            <article class="screen-card">
+              <p class="eyebrow">Portfolio home</p>
+              <h2>Quiet editorial landing page</h2>
+              <p>A restrained, atmospheric homepage that keeps the original identity intact while adding motion, clarity, and better hierarchy.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <p>Some journeys end at a destination. Others become poems.</p>
+      </footer>
+    </div>
+
+    <button class="nav-pill back-to-top" data-back-to-top type="button">Back to top</button>
+    <div class="page-loading" aria-hidden="true"><div class="loader-mark"></div></div>
+    <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__bar"></div></div>
+    <div class="page-transition" aria-hidden="true"></div>
+    <!-- Pointer cursor elements removed for simpler interaction -->
+
+    <script src="js/main.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/particles.js"></script>
+  </body>
+</html>

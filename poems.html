@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A searchable poetry archive by Diya Subedi, with featured work, categories, and dedicated reading pages." />
+    <meta name="theme-color" content="#F7EFE7" />
     <title>Poems | Diya Subedi</title>
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
@@ -12,6 +15,7 @@
     <link rel="stylesheet" href="css/animations.css" />
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     <div class="ambient-layer"></div>
     <div class="page-shell">
       <header class="site-header" id="top">
@@ -19,20 +23,27 @@
         <nav class="main-nav" aria-label="Primary navigation">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
+          <a href="projects.html">Projects</a>
           <a href="poems.html" class="active">Poems</a>
           <a href="contact.html">Contact</a>
         </nav>
         <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
       </header>
 
-      <main>
+      <main id="content">
         <section class="page-hero reveal">
           <p class="eyebrow">Poetry collection</p>
           <h1>Every poem is arranged as a living piece of art.</h1>
           <p class="page-intro">Browse the collection, search by mood, and open any poem to read its full form.</p>
         </section>
 
-        <section class="section-card reveal">
+        <section class="section-card reveal collection-tools">
+          <div class="collection-metrics">
+            <div class="metric-card"><strong data-metric="poem-count">0</strong><span class="muted-copy">Published poems</span></div>
+            <div class="metric-card"><strong data-metric="featured-count">0</strong><span class="muted-copy">Featured poems</span></div>
+            <div class="metric-card"><strong data-metric="category-count">0</strong><span class="muted-copy">Categories</span></div>
+            <div class="metric-card"><strong data-metric="latest-count">0</strong><span class="muted-copy">Latest poems</span></div>
+          </div>
           <div class="library-toolbar">
             <label class="search-box" for="poemSearch">
               <input id="poemSearch" type="search" placeholder="Search by title, mood, category, or tag" />
@@ -46,26 +57,43 @@
               <button class="filter-chip" data-filter="existential">Existential</button>
             </div>
           </div>
-          <div class="poem-grid" id="poemLibrary"></div>
+          <div class="tag-row" id="categoryPills" aria-label="Poem categories"></div>
+          <div class="navigation-hint">Use search or category filters. Keyboard shortcut: Ctrl/Cmd + K.</div>
         </section>
 
         <section class="section-card reveal">
           <div class="section-title">
-            <h2>Featured poems</h2>
-            <a href="poems.html">View library</a>
+            <h2>Latest poems</h2>
+            <span id="poemResultCount">0 poems</span>
           </div>
-          <div class="poem-grid" id="featuredPoems"></div>
+          <div class="latest-strip" id="latestPoems"></div>
+        </section>
+
+        <section class="section-card reveal">
+          <div class="section-title">
+            <h2>Poem library</h2>
+          </div>
+          <div class="poem-grid" id="poemLibrary"></div>
         </section>
       </main>
 
-      <footer>
+      <footer class="page-footer">
         <p>Some journeys end at a destination. Others become poems.</p>
       </footer>
     </div>
 
+    <button class="nav-pill back-to-top" data-back-to-top type="button">Back to top</button>
+    <div class="page-loading" aria-hidden="true"><div class="loader-mark"></div></div>
+    <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__bar"></div></div>
+    <div class="page-transition" aria-hidden="true"></div>
+    <!-- Pointer cursor elements removed for simpler interaction -->
+
     <script src="js/main.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/poems-data.js"></script>
     <script src="js/poems.js"></script>
+    <script src="js/video-manager.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/particles.js"></script>
   </body>
 </html>

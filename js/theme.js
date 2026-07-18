@@ -1,14 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('themeToggle');
   const savedTheme = localStorage.getItem('portfolio-theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('theme-dark');
-  }
+  const body = document.body;
+
+  const applyTheme = (isDark) => {
+    body.classList.toggle('theme-dark', isDark);
+    if (toggle) {
+      toggle.textContent = isDark ? '☀ Light' : '☾ Dark';
+      toggle.setAttribute('aria-pressed', String(isDark));
+    }
+    localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
+  };
+
+  applyTheme(savedTheme === 'dark');
 
   toggle?.addEventListener('click', () => {
-    document.body.classList.toggle('theme-dark');
-    const isDark = document.body.classList.contains('theme-dark');
-    localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
-    toggle.textContent = isDark ? '☀ Light' : '☾ Dark';
+    applyTheme(!body.classList.contains('theme-dark'));
   });
 });

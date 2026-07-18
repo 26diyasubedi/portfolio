@@ -1,6 +1,7 @@
 @media (max-width: 900px) {
-  .hero, .detail-hero, .poem-grid, .related-grid { grid-template-columns: 1fr; }
+  .hero, .detail-hero, .poem-grid, .related-grid, .feature-grid, .stats-grid, .timeline-grid, .testimonial-grid, .screen-grid, .latest-strip, .collection-metrics, .achievement-grid { grid-template-columns: 1fr; }
   .poem-grid { gap: 14px; }
+  .hero-stats { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px) {
@@ -11,4 +12,9 @@
   .section-title { flex-direction: column; align-items: start; }
   .library-toolbar { align-items: stretch; }
   .search-box { min-width: 100%; }
+  .collection-tools { gap: 14px; }
+  .collection-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .detail-actions, .sharing-row, .utility-row { width: 100%; }
+  .nav-pill, .ghost-btn, .primary-btn { justify-content: center; }
+  .back-to-top { right: 14px; bottom: 14px; }
 }
