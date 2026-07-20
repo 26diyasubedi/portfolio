@@ -42,6 +42,26 @@
             <div class="metric-card"><strong data-metric="poem-count">0</strong><span class="muted-copy">Published poems</span></div>
             <div class="metric-card"><strong data-metric="featured-count">0</strong><span class="muted-copy">Featured poems</span></div>
           </div>
+          <div class="library-toolbar">
+            <div class="search-box">
+              <input class="form-field" id="poemSearch" type="search" placeholder="Search poems, moods, categories, keywords" aria-label="Search poems" />
+            </div>
+            <select class="form-field" id="poemSort" aria-label="Sort poems">
+              <option value="date-newest">Date: newest first</option>
+              <option value="date-oldest">Date: oldest first</option>
+              <option value="length-shortest">Length: shortest first</option>
+              <option value="length-longest">Length: longest first</option>
+              <option value="category">Category</option>
+              <option value="mood">Mood</option>
+              <option value="title">Title</option>
+            </select>
+            <select class="form-field" id="poemCategory" aria-label="Filter by category">
+              <option value="all">All categories</option>
+            </select>
+            <select class="form-field" id="poemMood" aria-label="Filter by mood">
+              <option value="all">All moods</option>
+            </select>
+          </div>
         </section>
 
         <section class="section-card reveal">

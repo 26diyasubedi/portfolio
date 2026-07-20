@@ -245,7 +245,7 @@
 
     video.addEventListener('play', () => {
       updatePlayButton();
-      showControls(true);
+      showControls(false);
       centerPlay.classList.remove('is-visible');
       loadingSpinner.hidden = true;
     });

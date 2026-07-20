@@ -123,14 +123,61 @@ function renderPoems(poems, container) {
   } catch (e) {}
 }
 
-function filterPoems(poems, query, activeFilter) {
+function parseDurationSeconds(value) {
+  if (!value) return 0;
+  const normalized = String(value).toLowerCase();
+  let seconds = 0;
+  const minuteMatch = normalized.match(/(\d+)\s*min/);
+  const secondMatch = normalized.match(/(\d+)\s*sec/);
+  if (minuteMatch) seconds += Number(minuteMatch[1]) * 60;
+  if (secondMatch) seconds += Number(secondMatch[1]);
+  if (!minuteMatch && !secondMatch) {
+    const plain = Number(normalized.replace(/\D/g, ''));
+    if (Number.isFinite(plain)) seconds = plain;
+  }
+  return seconds;
+}
+
+function sortPoems(poems, sortKey) {
+  return [...poems].sort((a, b) => {
+    switch (sortKey) {
+      case 'date-oldest':
+        return new Date(a.publishDate) - new Date(b.publishDate);
+      case 'date-newest':
+        return new Date(b.publishDate) - new Date(a.publishDate);
+      case 'length-shortest':
+        return parseDurationSeconds(a.duration) - parseDurationSeconds(b.duration);
+      case 'length-longest':
+        return parseDurationSeconds(b.duration) - parseDurationSeconds(a.duration);
+      case 'category':
+        return a.category.localeCompare(b.category);
+      case 'mood':
+        return a.mood.localeCompare(b.mood);
+      case 'title':
+        return a.title.localeCompare(b.title);
+      default:
+        return new Date(b.publishDate) - new Date(a.publishDate);
+    }
+  });
+}
+
+function getUniqueValues(poems, key) {
+  return [...new Set(poems.map((poem) => normalize(poem[key])))].sort().map((value) => {
+    const label = poems.find((poem) => normalize(poem[key]) === value)?.[key] || value;
+    return { value, label };
+  });
+}
+
+function filterPoems(poems, query, categoryFilter, moodFilter) {
   const normalizedQuery = normalize(query);
-  const normalizedFilter = normalize(activeFilter);
+  const normalizedCategory = normalize(categoryFilter);
+  const normalizedMood = normalize(moodFilter);
 
   return poems.filter((poem) => {
     const matchesQuery = !normalizedQuery || poemSearchIndex(poem).includes(normalizedQuery);
-    const matchesFilter = normalizedFilter === 'all' || normalize(poem.category) === normalizedFilter || normalize(poem.mood) === normalizedFilter;
-    return matchesQuery && matchesFilter;
+    const matchesCategory = normalizedCategory === 'all' || normalize(poem.category) === normalizedCategory;
+    const matchesMood = normalizedMood === 'all' || normalize(poem.mood) === normalizedMood;
+    return matchesQuery && matchesCategory && matchesMood;
   });
 }
 
@@ -169,8 +216,75 @@ async function initPoemLibrary() {
     }
     renderMetrics(poems);
 
+    const searchField = document.getElementById('poemSearch');
+    const sortSelect = document.getElementById('poemSort');
+    const categorySelect = document.getElementById('poemCategory');
+    const moodSelect = document.getElementById('poemMood');
+
+    const categories = getUniqueValues(poems, 'category');
+    const moods = getUniqueValues(poems, 'mood');
+
+    if (categorySelect) {
+      categories.forEach((item) => {
+        const option = document.createElement('option');
+        option.value = item.value;
+        option.textContent = item.label;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    if (moodSelect) {
+      moods.forEach((item) => {
+        const option = document.createElement('option');
+        option.value = item.value;
+        option.textContent = item.label;
+        moodSelect.appendChild(option);
+      });
+    }
+
+    const currentFilters = {
+      query: '',
+      sort: sortSelect?.value || 'date-newest',
+      category: categorySelect?.value || 'all',
+      mood: moodSelect?.value || 'all'
+    };
+
+    const applyFiltersAndRender = () => {
+      const filtered = filterPoems(poems, currentFilters.query, currentFilters.category, currentFilters.mood);
+      const sorted = sortPoems(filtered, currentFilters.sort);
+      renderPoems(sorted, container);
+    };
+
+    if (searchField) {
+      searchField.addEventListener('input', (event) => {
+        currentFilters.query = event.target.value || '';
+        applyFiltersAndRender();
+      });
+    }
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (event) => {
+        currentFilters.sort = event.target.value || 'date-newest';
+        applyFiltersAndRender();
+      });
+    }
+
+    if (categorySelect) {
+      categorySelect.addEventListener('change', (event) => {
+        currentFilters.category = event.target.value || 'all';
+        applyFiltersAndRender();
+      });
+    }
+
+    if (moodSelect) {
+      moodSelect.addEventListener('change', (event) => {
+        currentFilters.mood = event.target.value || 'all';
+        applyFiltersAndRender();
+      });
+    }
+
     if (container) {
-      renderPoems(filterPoems(poems, '', 'all'), container);
+      applyFiltersAndRender();
     }
 
     // Wire play-in-card buttons: ensure any dynamically added play buttons are accessible
