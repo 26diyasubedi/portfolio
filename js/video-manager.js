@@ -49,7 +49,8 @@ document.addEventListener('click', (event) => {
     video.className = 'card-video';
     video.src = src;
     video.setAttribute('playsinline', '');
-    video.setAttribute('preload', 'metadata');
+    video.setAttribute('preload', 'none');
+    video.setAttribute('poster', btn.dataset.poster || '');
     video.muted = false;
 
     // controls overlay

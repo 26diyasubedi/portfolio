@@ -1,28 +1,33 @@
 const POEMS_URL = 'data/poems.json';
 
 async function loadPoems() {
-  // Prefer fetching the canonical JSON when available (served over HTTP).
-  // Use the inline `window.POEMS_DATA` only as a fallback (file:// previews).
   try {
-    const response = await fetch(POEMS_URL, { cache: 'no-cache' });
+    const response = await fetch(POEMS_URL, { cache: 'force-cache' });
     if (response.ok) {
       const data = await response.json();
-      try { window.__poems_load_result = { source: 'fetch', count: Array.isArray(data) ? data.length : 0, slugs: Array.isArray(data) ? data.slice(0,10).map(p=>p.slug) : [] }; } catch(e){}
-      console.info('Loaded poems from data/poems.json', window.__poems_load_result);
-      return data;
+      if (Array.isArray(data) && data.length) {
+        window.POEMS_DATA = data;
+        window.__poems_load_result = {
+          source: 'fetch',
+          count: data.length,
+          slugs: data.slice(0, 10).map((poem) => poem.slug)
+        };
+        return data;
+      }
     }
-    // if fetch fails, fall through to fallback below
   } catch (e) {
-    // network or CORS error — we'll try the fallback
+    // Fall through to the inline fallback below.
   }
 
   if (window.POEMS_DATA && Array.isArray(window.POEMS_DATA)) {
-    // mark debug state for fallback
-    window.__poems_load_result = { source: 'fallback', count: window.POEMS_DATA.length, slugs: window.POEMS_DATA.slice(0,10).map(p=>p.slug) };
+    window.__poems_load_result = {
+      source: 'fallback',
+      count: window.POEMS_DATA.length,
+      slugs: window.POEMS_DATA.slice(0, 10).map((poem) => poem.slug)
+    };
     return window.POEMS_DATA;
   }
 
-  // If neither worked, throw to let caller handle the error.
   const err = new Error('Unable to load poems.json');
   window.__poems_load_result = { source: 'error', error: err.message };
   throw err;
@@ -80,6 +85,59 @@ function poemSearchIndex(poem) {
   ].join(' ').toLowerCase();
 }
 
+function getInlinePoemData() {
+  if (window.POEMS_DATA && Array.isArray(window.POEMS_DATA)) {
+    return window.POEMS_DATA;
+  }
+  if (Array.isArray(window.__POEMS_DATA)) {
+    window.POEMS_DATA = window.__POEMS_DATA;
+    return window.POEMS_DATA;
+  }
+  return null;
+}
+
+function showLoadingState(container, count = 6) {
+  if (!container) return;
+  container.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (let index = 0; index < count; index += 1) {
+    const skeleton = document.createElement('div');
+    skeleton.className = 'poem-card poem-card--skeleton reveal';
+    skeleton.innerHTML = `
+      <div class="skeleton-media"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row skeleton-row--short"></div>
+      <div class="skeleton-button"></div>
+    `;
+    fragment.appendChild(skeleton);
+  }
+  container.appendChild(fragment);
+}
+
+function initializeLazyMedia(root) {
+  if (!root || !('IntersectionObserver' in window)) return;
+  const lazyElements = root.querySelectorAll('img[data-lazy-src], video[data-lazy-poster]');
+  if (!lazyElements.length) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const element = entry.target;
+      if (element.tagName === 'IMG' && element.dataset.lazySrc) {
+        element.src = element.dataset.lazySrc;
+        element.removeAttribute('data-lazy-src');
+      }
+      if (element.tagName === 'VIDEO' && element.dataset.lazyPoster) {
+        element.poster = element.dataset.lazyPoster;
+        element.removeAttribute('data-lazy-poster');
+      }
+      obs.unobserve(element);
+    });
+  }, { rootMargin: '180px 0px', threshold: 0.01 });
+
+  lazyElements.forEach((element) => observer.observe(element));
+}
+
 function createPoemCard(poem) {
   const article = document.createElement('article');
   article.className = 'poem-card reveal';
@@ -89,35 +147,92 @@ function createPoemCard(poem) {
   article.innerHTML = `
     <div class="card-link">
       <div class="thumb-wrap">
-        <img class="thumb" src="${poem.thumbnail}" alt="${poem.altText}" loading="lazy" />
-        ${poem.video ? `<button class="play-in-card" data-video-src="${poem.video}" aria-label="Play ${poem.title}">▶</button>` : ''}
+        <img class="thumb" data-lazy-src="${poem.thumbnail}" alt="${poem.altText}" loading="lazy" decoding="async" />
+        ${poem.video ? `<button class="play-in-card" data-video-src="${poem.video}" data-poster="${poem.poster || poem.thumbnail}" aria-label="Play ${poem.title}">▶</button>` : ''}
       </div>
       <div class="meta-row">
         <span class="pill">${formatDate(poem.publishDate)}</span>
         <span class="pill">${poem.readingTime || poem.duration}</span>
         <span class="pill">${poem.category}</span>
       </div>
-      <h3>${poem.title}</h3>
-      <p class="caption">${poem.caption}</p>
+      <div class="poem-card-body">
+        <h3>${poem.title}</h3>
+        <p class="caption">${poem.caption}</p>
+      </div>
       <div class="actions">
-        <a class="ghost-btn" href="poem.html?slug=${poem.slug}">Read</a>
+        <a class="poem-read-btn" href="poem.html?slug=${poem.slug}">
+          <span>Read the Poem</span>
+        </a>
       </div>
     </div>
   `;
   return article;
 }
 
-function renderPoems(poems, container) {
+function renderPoems(poems, container, options = {}) {
+  if (!container) return;
+
+  const existingTimer = Number(container.dataset.poemRenderTimer || 0);
+  if (existingTimer) {
+    window.clearTimeout(existingTimer);
+  }
+
+  const loadMoreButton = options.loadMoreButton || document.getElementById('poemLoadMore');
+  const isPaged = Boolean(options.showLoadMore);
+  const pageSize = Number(options.pageSize || 6);
+
   container.innerHTML = '';
   if (!poems.length) {
     container.innerHTML = '<p class="section-card">No poems match this search yet.</p>';
+    if (loadMoreButton) {
+      loadMoreButton.hidden = true;
+    }
     return;
   }
 
-  const fragment = document.createDocumentFragment();
-  poems.forEach((poem) => fragment.appendChild(createPoemCard(poem)));
-  container.appendChild(fragment);
-  // Ensure reveal animations are visible even if the IntersectionObserver was not yet attached
+  const appendCards = (items) => {
+    if (!items.length) return;
+    const fragment = document.createDocumentFragment();
+    items.forEach((poem) => {
+      const card = createPoemCard(poem);
+      card.classList.add('visible');
+      fragment.appendChild(card);
+    });
+    container.appendChild(fragment);
+  };
+
+  let renderedCount = 0;
+  const renderNextBatch = () => {
+    const nextBatch = poems.slice(renderedCount, renderedCount + pageSize);
+    if (!nextBatch.length) {
+      if (loadMoreButton) {
+        loadMoreButton.hidden = true;
+      }
+      return;
+    }
+
+    appendCards(nextBatch);
+    renderedCount += nextBatch.length;
+    initializeLazyMedia(container);
+
+    if (loadMoreButton) {
+      loadMoreButton.hidden = renderedCount >= poems.length;
+    }
+  };
+
+  if (isPaged) {
+    renderNextBatch();
+    if (loadMoreButton) {
+      loadMoreButton.hidden = renderedCount >= poems.length;
+      loadMoreButton.onclick = () => {
+        renderNextBatch();
+      };
+    }
+    return;
+  }
+
+  appendCards(poems);
+  initializeLazyMedia(container);
   try {
     container.querySelectorAll('.reveal').forEach((node) => node.classList.add('visible'));
   } catch (e) {}
@@ -197,23 +312,23 @@ async function initPoemLibrary() {
 
   if (!container && !featuredContainer) return;
 
-  try {
-    const rawPoems = await loadPoems();
-    
+  const renderLibrary = (rawPoems) => {
     const poems = rawPoems
       .filter((poem) => !poem.draft && poem.visibility === 'published')
       .sort((a, b) => a.id - b.id);
-    const homeSelectionIds = [1, 2, 3, 4];
+
+    const homeSelectionIds = [1, 2, 3, 4, 5, 6];
     const homeSelection = poems
       .filter((poem) => homeSelectionIds.includes(poem.id))
       .sort((a, b) => homeSelectionIds.indexOf(a.id) - homeSelectionIds.indexOf(b.id));
-    const featured = poems.filter((poem) => poem.featured).slice(0, 4);
+    const featured = poems.filter((poem) => poem.featured).slice(0, 6);
     const isHomePage = !!featuredContainer && !container;
 
     if (featuredContainer) {
       const renderList = isHomePage ? homeSelection : featured;
-      renderPoems(renderList, featuredContainer);
+      renderPoems(renderList, featuredContainer, { showLoadMore: false });
     }
+
     renderMetrics(poems);
 
     const searchField = document.getElementById('poemSearch');
@@ -225,6 +340,7 @@ async function initPoemLibrary() {
     const moods = getUniqueValues(poems, 'mood');
 
     if (categorySelect) {
+      categorySelect.innerHTML = '<option value="all">All categories</option>';
       categories.forEach((item) => {
         const option = document.createElement('option');
         option.value = item.value;
@@ -234,6 +350,7 @@ async function initPoemLibrary() {
     }
 
     if (moodSelect) {
+      moodSelect.innerHTML = '<option value="all">All moods</option>';
       moods.forEach((item) => {
         const option = document.createElement('option');
         option.value = item.value;
@@ -249,49 +366,77 @@ async function initPoemLibrary() {
       mood: moodSelect?.value || 'all'
     };
 
+    const bindOnce = (element, type, handler) => {
+      if (!element || element.dataset.bound === 'true') return;
+      element.addEventListener(type, handler);
+      element.dataset.bound = 'true';
+    };
+
     const applyFiltersAndRender = () => {
       const filtered = filterPoems(poems, currentFilters.query, currentFilters.category, currentFilters.mood);
       const sorted = sortPoems(filtered, currentFilters.sort);
-      renderPoems(sorted, container);
+      if (container) {
+        renderPoems(sorted, container, { showLoadMore: true, pageSize: 6, loadMoreButton: document.getElementById('poemLoadMore') });
+      }
     };
 
+    if (container) {
+      applyFiltersAndRender();
+    }
+
     if (searchField) {
-      searchField.addEventListener('input', (event) => {
+      bindOnce(searchField, 'input', (event) => {
         currentFilters.query = event.target.value || '';
         applyFiltersAndRender();
       });
     }
 
     if (sortSelect) {
-      sortSelect.addEventListener('change', (event) => {
+      bindOnce(sortSelect, 'change', (event) => {
         currentFilters.sort = event.target.value || 'date-newest';
         applyFiltersAndRender();
       });
     }
 
     if (categorySelect) {
-      categorySelect.addEventListener('change', (event) => {
+      bindOnce(categorySelect, 'change', (event) => {
         currentFilters.category = event.target.value || 'all';
         applyFiltersAndRender();
       });
     }
 
     if (moodSelect) {
-      moodSelect.addEventListener('change', (event) => {
+      bindOnce(moodSelect, 'change', (event) => {
         currentFilters.mood = event.target.value || 'all';
         applyFiltersAndRender();
       });
     }
 
-    if (container) {
-      applyFiltersAndRender();
+    if (container?.querySelectorAll) {
+      container.querySelectorAll('.play-in-card').forEach((btn) => {
+        btn.setAttribute('type', 'button');
+      });
+    }
+  };
+
+  try {
+    showLoadingState(container, 6);
+    if (featuredContainer) {
+      showLoadingState(featuredContainer, 3);
     }
 
-    // Wire play-in-card buttons: ensure any dynamically added play buttons are accessible
-    container.querySelectorAll && container.querySelectorAll('.play-in-card').forEach((btn) => {
-      btn.setAttribute('type', 'button');
-    });
-    // show debug banner when library is initialized
+    const rawPoems = getInlinePoemData() || [];
+    if (rawPoems.length) {
+      renderLibrary(rawPoems);
+      showPoemsDebugBanner();
+      return;
+    }
+
+    const fallbackPoems = await loadPoems();
+    if (Array.isArray(fallbackPoems) && fallbackPoems.length) {
+      renderLibrary(fallbackPoems);
+    }
+
     showPoemsDebugBanner();
   } catch (error) {
     if (container) {
@@ -324,7 +469,11 @@ async function initPoemDetail() {
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
-  const poems = (await loadPoems()).filter((poem) => !poem.draft && poem.visibility === 'published');
+
+  const dataSource = window.POEMS_DATA && Array.isArray(window.POEMS_DATA)
+    ? window.POEMS_DATA
+    : await loadPoems();
+  const poems = dataSource.filter((poem) => !poem.draft && poem.visibility === 'published');
   const poem = poems.find((entry) => entry.slug === slug);
 
   if (!poem) {
@@ -341,7 +490,7 @@ async function initPoemDetail() {
   const heroMedia = poem.video && !poem.audioOnly
     ? `
       <div class="custom-video-player" data-player>
-        <video class="detail-video" src="${poem.video}" poster="${poem.poster || poem.heroImage}" playsinline preload="metadata"></video>
+        <video class="detail-video" data-video-src="${poem.video}" data-lazy-poster="${poem.poster || poem.heroImage}" poster="" playsinline preload="none"></video>
         <div class="video-top-bar" aria-label="Video title">
           <div>
             <p class="video-top-title">${poem.title}</p>
@@ -397,7 +546,14 @@ async function initPoemDetail() {
 
   detailRoot.innerHTML = `
     <div class="reading-progress"><div class="reading-progress__bar"></div></div>
-    <div class="detail-shell reveal">
+    <div class="detail-shell"></div>
+  `;
+
+  initializeLazyMedia(detailRoot);
+
+  const detailShell = detailRoot.querySelector('.detail-shell');
+  if (detailShell) {
+    detailShell.innerHTML = `
       <div class="detail-hero">
         ${heroMedia}
         <div class="detail-sidebar">
@@ -426,33 +582,71 @@ async function initPoemDetail() {
           ${renderShareButtons(poem)}
         </div>
       </div>
-      <div class="quote-card reveal">
-        <strong>“${poem.quote}”</strong>
-      </div>
-      <div class="section-card reveal" id="poem-body">
-        <h2>Full poem</h2>
-        <p class="poem-body">${poem.fullPoem}</p>
-      </div>
-      <div class="section-card reveal">
-        <div class="section-title">
-          <h2>Related poems</h2>
-        </div>
-        <div class="related-grid">
-          ${related.map((entry) => `
-            <a class="related-card" href="poem.html?slug=${entry.slug}">
-              <strong>${entry.title}</strong>
-              <p>${entry.caption}</p>
-            </a>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
+    `;
 
-  detailRoot.querySelectorAll('.reveal').forEach((node) => node.classList.add('visible'));
-  if (window.initCustomVideoPlayer) {
-    window.initCustomVideoPlayer(detailRoot);
+    detailShell.querySelector('[data-share-native]')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const url = button.dataset.shareUrl;
+      const text = button.dataset.shareText;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: poem.title, text, url });
+        } catch (error) {
+          console.warn(error);
+        }
+      }
+    });
+
+    detailShell.querySelector('[data-copy-link]')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(button.dataset.shareUrl);
+        button.textContent = 'Link copied';
+        setTimeout(() => {
+          button.textContent = 'Copy link';
+        }, 1500);
+      } catch (error) {
+        console.warn(error);
+      }
+    });
   }
+
+  const initializePlayer = () => {
+    if (window.initCustomVideoPlayer) {
+      window.initCustomVideoPlayer(detailRoot);
+      return;
+    }
+    window.setTimeout(initializePlayer, 50);
+  };
+
+  initializePlayer();
+
+  const appendRevealedSection = (className, markup, delay) => {
+    window.setTimeout(() => {
+      const section = document.createElement('div');
+      section.className = className;
+      section.innerHTML = markup;
+      section.classList.add('reveal');
+      detailShell?.appendChild(section);
+      requestAnimationFrame(() => section.classList.add('visible'));
+    }, delay);
+  };
+
+  appendRevealedSection('quote-card', `<strong>“${poem.quote}”</strong>`, 90);
+  appendRevealedSection('section-card', `<h2>Full poem</h2><p class="poem-body">${poem.fullPoem}</p>`, 220);
+  appendRevealedSection('section-card', `
+    <div class="section-title">
+      <h2>Related poems</h2>
+    </div>
+    <div class="related-grid">
+      ${related.map((entry) => `
+        <a class="related-card" href="poem.html?slug=${entry.slug}">
+          <strong>${entry.title}</strong>
+          <p>${entry.caption}</p>
+        </a>
+      `).join('')}
+    </div>
+  `, 360);
 
   const progressBar = detailRoot.querySelector('.reading-progress__bar');
   const updateReadingProgress = () => {
@@ -464,31 +658,6 @@ async function initPoemDetail() {
   updateReadingProgress();
   window.addEventListener('scroll', updateReadingProgress, { passive: true });
 
-  detailRoot.querySelector('[data-share-native]')?.addEventListener('click', async (event) => {
-    const button = event.currentTarget;
-    const url = button.dataset.shareUrl;
-    const text = button.dataset.shareText;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: poem.title, text, url });
-      } catch (error) {
-        console.warn(error);
-      }
-    }
-  });
-
-  detailRoot.querySelector('[data-copy-link]')?.addEventListener('click', async (event) => {
-    const button = event.currentTarget;
-    try {
-      await navigator.clipboard.writeText(button.dataset.shareUrl);
-      button.textContent = 'Link copied';
-      setTimeout(() => {
-        button.textContent = 'Copy link';
-      }, 1500);
-    } catch (error) {
-      console.warn(error);
-    }
-  });
 
 }
 

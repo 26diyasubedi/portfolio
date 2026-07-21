@@ -217,11 +217,70 @@ section { padding: 38px 0 10px; }
 .filter-chip { border: 1px solid var(--border); background: transparent; color: var(--muted); padding: 8px 12px; border-radius: 999px; cursor: pointer; }
 .filter-chip.active { background: rgba(140,107,74,0.16); color: var(--accent-deep); }
 
-.poem-card { border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.poem-card { border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden; }
 .poem-card .thumb { border-radius: 16px; aspect-ratio: 4/3; object-fit: cover; }
-.poem-card h3 { margin: 0; font-size: 1.1rem; font-family: "Playfair Display", Georgia, serif; }
+.poem-card-body { display: grid; gap: 8px; }
+.poem-card h3 { margin: 0; font-size: 1.1rem; font-family: "Playfair Display", Georgia, serif; line-height: 1.3; }
 .poem-card .caption { margin: 0; color: var(--muted); }
-.poem-card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.poem-card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; justify-content: center; }
+.poem-read-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 168px;
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,239,231,0.95));
+  color: var(--accent-deep);
+  border: 1px solid rgba(140, 107, 74, 0.24);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 24px rgba(36, 29, 24, 0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+  transition: transform 220ms var(--transition), box-shadow 220ms var(--transition), background 220ms var(--transition), color 220ms var(--transition), border-color 220ms var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+body.theme-dark .poem-read-btn {
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  color: var(--accent-soft);
+  border-color: rgba(217, 179, 120, 0.28);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.poem-read-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: translateX(-120%);
+  transition: transform 500ms ease;
+}
+
+.poem-read-btn:hover,
+.poem-read-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(36, 29, 24, 0.14), inset 0 1px 0 rgba(255,255,255,0.75);
+  background: linear-gradient(135deg, rgba(140, 107, 74, 0.12), rgba(255,255,255,0.98));
+  color: var(--accent);
+  border-color: rgba(140, 107, 74, 0.36);
+}
+
+body.theme-dark .poem-read-btn:hover,
+body.theme-dark .poem-read-btn:focus-visible {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, rgba(217, 179, 120, 0.16), rgba(255,255,255,0.08));
+  color: var(--accent-soft);
+  border-color: rgba(217, 179, 120, 0.4);
+}
+
+.poem-read-btn:hover::before,
+.poem-read-btn:focus-visible::before {
+  transform: translateX(120%);
+}
 
 .detail-shell { border-radius: 28px; padding: 28px; margin-top: 16px; }
 .detail-hero { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
@@ -422,7 +481,8 @@ body.theme-dark .glass-panel {
   background: #000;
   width: 100%;
   aspect-ratio: 16 / 9;
-  min-height: 280px;
+  min-height: 340px;
+  max-height: 720px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
 }
 
@@ -430,7 +490,7 @@ body.theme-dark .glass-panel {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   background: #000;
 }
 
@@ -575,7 +635,17 @@ body.theme-dark .glass-panel {
   overflow: hidden;
   cursor: pointer;
   z-index: 6;
-  transition: height 180ms ease;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: height 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+
+.custom-video-player.is-visible .video-progress,
+.custom-video-player.is-seeking .video-progress {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .video-progress:hover {
@@ -796,7 +866,7 @@ body.theme-dark .glass-panel {
 }
 
 /* Play-in-card and featured card improvements */
-.thumb-wrap { position: relative; overflow: hidden; border-radius: 12px; aspect-ratio: 4/3; }
+.thumb-wrap { position: relative; overflow: hidden; border-radius: 12px; aspect-ratio: 4/3; background: linear-gradient(135deg, rgba(140,107,74,0.14), rgba(36,29,24,0.08)); }
 .thumb-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 260ms ease; }
 /* ensure video inserted into thumb-wrap fills the area */
 .thumb-wrap { background: #000; }
@@ -918,6 +988,54 @@ body.theme-dark .glass-panel {
   transform: translateY(-5px);
   box-shadow: var(--shadow-strong);
   border-color: rgba(140, 107, 74, 0.22);
+}
+
+.poem-card:hover .poem-read-btn,
+.poem-card:focus-within .poem-read-btn {
+  transform: translateY(-1px);
+}
+
+.poem-card--skeleton {
+  min-height: 280px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(247,239,231,0.55));
+  border: 1px solid rgba(140, 107, 74, 0.12);
+}
+
+body.theme-dark .poem-card--skeleton {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+}
+
+.skeleton-media,
+.skeleton-row,
+.skeleton-button {
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(140,107,74,0.12), rgba(140,107,74,0.22), rgba(140,107,74,0.12));
+  animation: shimmer 1.2s linear infinite;
+}
+
+.skeleton-media {
+  height: 160px;
+  border-radius: 16px;
+}
+
+.skeleton-row {
+  height: 12px;
+  width: 82%;
+}
+
+.skeleton-row--short {
+  width: 54%;
+}
+
+.skeleton-button {
+  height: 44px;
+  width: 60%;
+  margin-top: 6px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
 }
 
 @media (max-width: 700px) {
