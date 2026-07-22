@@ -6,15 +6,60 @@
 
 @media (max-width: 700px) {
   .page-shell { padding: 0 16px 48px; }
-  .site-header { flex-wrap: wrap; }
-  .main-nav { width: 100%; justify-content: space-between; }
+  .site-header {
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+  }
+  .brand { font-size: 1rem; }
+  .site-header .nav-pill { flex: 0 0 auto; padding: 9px 12px; }
+  .main-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 2px 0 6px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .main-nav::-webkit-scrollbar { display: none; }
+  .main-nav a {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
   .hero, .page-hero, .section-card, .detail-shell { padding: 20px; }
+  .hero { gap: 18px; }
+  .hero-copy h1 { font-size: clamp(2rem, 10vw, 3rem); }
+  .hero-actions, .toolbar, .chip-row,
+  .detail-actions, .sharing-row, .utility-row { align-items: stretch; }
+  .hero-actions > *, .toolbar > *,
+  .detail-actions > *, .sharing-row > *, .utility-row > * { min-height: 44px; }
   .section-title { flex-direction: column; align-items: start; }
   .library-toolbar { align-items: stretch; }
   .search-box { min-width: 100%; }
+  .library-toolbar > .form-field { width: 100%; }
   .collection-tools { gap: 14px; }
   .collection-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .detail-actions, .sharing-row, .utility-row { width: 100%; }
   .nav-pill, .ghost-btn, .primary-btn { justify-content: center; }
+  .poem-card, .feature-card, .related-card { padding: 14px; }
+  .poem-body { font-size: 1rem; line-height: 1.85; }
+  .custom-video-player { border-radius: 18px; }
   .back-to-top { right: 14px; bottom: 14px; }
+}
+
+@media (max-width: 480px) {
+  .page-shell { padding-right: 12px; padding-left: 12px; }
+  .site-header { gap: 8px; }
+  .brand { font-size: 0.92rem; letter-spacing: 0.12em; }
+  .site-header .nav-pill { font-size: 0.78rem; padding: 8px 10px; }
+  .hero, .page-hero, .section-card, .detail-shell { padding: 16px; border-radius: 20px; }
+  .collection-metrics { gap: 8px; }
+  .metric-card { padding: 12px; }
+  .section-title h2 { font-size: 1.3rem; }
+  .hero-actions > *, .toolbar > *,
+  .detail-actions > *, .sharing-row > *, .utility-row > * { width: 100%; }
+  .poem-read-btn { min-width: 0; }
 }

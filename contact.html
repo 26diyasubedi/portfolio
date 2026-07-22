@@ -1637,7 +1637,6 @@
             <nav class="main-nav" aria-label="Primary navigation">
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
-                <a href="projects.html">Projects</a>
                 <a href="poems.html">Poems</a>
                 <a href="contact.html" class="active">Contact</a>
             </nav>
@@ -1683,7 +1682,9 @@
                         <span class="letter-date" id="letterDate"></span>
                     </div>
 
-                    <form id="letterForm" novalidate>
+                    <form id="letterForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+                        <input type="hidden" name="access_key" value="90243dfd-099b-4eb6-a0ad-d600edceb337" />
+                        <input type="hidden" name="subject" value="New message from Diya Subedi portfolio" />
                         <!-- name -->
                         <div class="form-group">
                             <label for="nameField">Your name</label>
@@ -1772,7 +1773,7 @@
             </section>
 
             <!-- ═══ EXTRA NOTES ═══ -->
-            <section class="extra-notes" aria-label="Current mood and availability">
+            <!--<section class="extra-notes" aria-label="Current mood and availability">
                 <div class="extra-grid">
                     <div class="extra-item">
                         <span class="extra-icon">🌿</span>
@@ -1795,7 +1796,7 @@
                         <span class="extra-value"><span class="value-ornament">✧</span>Open to letters</span>
                     </div>
                 </div>
-            </section>
+            </section>-->
 
             <!-- ═══ CLOSING LETTER ═══ -->
             <section class="closing-letter" aria-label="Closing letter">
@@ -2103,7 +2104,7 @@
             }
 
             // ── form submission ──
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
                 if (!validateForm()) {
@@ -2119,8 +2120,18 @@
                 sendBtn.querySelector('.btn-text').textContent = 'Sending…';
                 sendBtn.querySelector('.btn-icon').textContent = '⟳';
 
-                // Simulate sending (like sealing an envelope)
-                setTimeout(function() {
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form),
+                        headers: { Accept: 'application/json' }
+                    });
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success) {
+                        throw new Error(result.message || 'Unable to send your letter.');
+                    }
+
                     // Hide form, show success
                     form.style.display = 'none';
                     successEl.classList.add('is-visible');
@@ -2130,21 +2141,14 @@
                     sendBtn.querySelector('.btn-text').textContent = originalText;
                     sendBtn.querySelector('.btn-icon').textContent = '✧';
 
-                    // Optionally, you could actually send the form data here
-                    // using fetch to a backend endpoint.
-
-                    // Log for debugging
-                    const formData = new FormData(form);
-                    console.log('Letter sent!', {
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        message: formData.get('message')
-                    });
-
                     // Show a toast
                     showToast('✧ Your letter has been sent.');
-
-                }, 1200);
+                } catch (error) {
+                    sendBtn.disabled = false;
+                    sendBtn.querySelector('.btn-text').textContent = originalText;
+                    sendBtn.querySelector('.btn-icon').textContent = '✧';
+                    showToast(error.message || 'Unable to send your letter. Please try again.');
+                }
             });
 
             // ── particles ──
