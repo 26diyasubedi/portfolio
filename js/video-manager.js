@@ -77,17 +77,36 @@ document.addEventListener('click', (event) => {
     wrapper.appendChild(controls);
     wrapper.appendChild(replayBtn);
 
-    // Replace thumbnail content with the video wrapper so playback happens in-place
+    // Keep the play button in the card so it remains available as a pause toggle.
     const thumbWrap = container.querySelector('.thumb-wrap');
-    // remove existing thumbnail and play button
+    const thumbnail = thumbWrap.querySelector('.thumb');
     try {
-      thumbWrap.innerHTML = '';
+      thumbnail?.remove();
     } catch (e) {}
     thumbWrap.appendChild(wrapper);
+    wrapper.appendChild(btn);
 
     // Smooth expand
     container.style.transition = 'all 260ms ease';
     container.style.transform = 'translateY(-4px)';
+
+    let controlsTimer = null;
+    const hideCardControls = () => {
+      if (!video.paused) {
+        wrapper.classList.add('is-controls-hidden');
+      }
+    };
+    const showCardControls = () => {
+      wrapper.classList.remove('is-controls-hidden');
+      if (controlsTimer) window.clearTimeout(controlsTimer);
+      if (!video.paused) {
+        controlsTimer = window.setTimeout(hideCardControls, 1500);
+      }
+    };
+
+    wrapper.addEventListener('mouseenter', showCardControls);
+    wrapper.addEventListener('mousemove', showCardControls);
+    wrapper.addEventListener('mouseleave', hideCardControls);
 
     // wire controls
     muteBtn.addEventListener('click', () => {
@@ -118,6 +137,28 @@ document.addEventListener('click', (event) => {
 
     video.addEventListener('play', () => {
       replayBtn.hidden = true;
+      btn.textContent = '⏸';
+      showCardControls();
+    });
+
+    video.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (video.paused) {
+        if (video.ended) {
+          try { video.currentTime = 0; } catch (e) {}
+        }
+        window.VideoManager.play(video);
+      } else {
+        window.VideoManager.pause(video);
+      }
+    });
+
+    video.addEventListener('pause', () => {
+      if (controlsTimer) window.clearTimeout(controlsTimer);
+      wrapper.classList.remove('is-controls-hidden');
+      if (!video.ended) {
+        btn.textContent = '▶';
+      }
     });
   }
 

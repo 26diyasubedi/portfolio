@@ -908,6 +908,7 @@ body.theme-dark .glass-panel {
   cursor: pointer;
   transition: transform 180ms var(--transition), opacity 180ms ease;
 }
+.play-in-card:hover { transform: translate(-50%, -50%) scale(1.06); }
 .play-in-card:focus { outline: 2px solid rgba(255,255,255,0.12); }
 .poem-card:hover .thumb-wrap img { transform: scale(1.03); }
 .card-video { border-radius: 12px; margin-top: 12px; width: 100%; height: auto; max-height: 60vh; object-fit: cover; display: block; z-index: 0; }
@@ -926,6 +927,11 @@ body.theme-dark .glass-panel {
 }
 .card-video-controls .mute-toggle { background: transparent; color: #fff; border: 0; font-size: 16px; cursor: pointer; }
 .card-video-controls .volume-range { width: 96px; }
+.card-video-wrapper.is-controls-hidden .play-in-card,
+.card-video-wrapper.is-controls-hidden .card-video-controls {
+  opacity: 0;
+  pointer-events: none;
+}
 .video-replay-btn {
   position: absolute;
   left: 50%;
