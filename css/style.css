@@ -932,6 +932,10 @@ body.theme-dark .glass-panel {
   opacity: 0;
   pointer-events: none;
 }
+.card-video-wrapper.is-volume-hidden .card-video-controls {
+  opacity: 0;
+  pointer-events: none;
+}
 .video-replay-btn {
   position: absolute;
   left: 50%;

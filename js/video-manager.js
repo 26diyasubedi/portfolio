@@ -4,9 +4,15 @@ class VideoManager {
     this.current = null;
   }
 
+  hideCardVolume(videoEl) {
+    const wrapper = videoEl?.closest('.card-video-wrapper');
+    if (wrapper) wrapper.classList.add('is-volume-hidden');
+  }
+
   play(videoEl) {
     if (!videoEl) return;
     if (this.current && this.current !== videoEl) {
+      this.hideCardVolume(this.current);
       try { this.current.pause(); } catch (e) {}
     }
     this.current = videoEl;
@@ -15,6 +21,7 @@ class VideoManager {
 
   pause(videoEl) {
     if (!videoEl) return;
+    this.hideCardVolume(videoEl);
     try { videoEl.pause(); } catch (e) {}
     if (this.current === videoEl) this.current = null;
   }
@@ -98,6 +105,7 @@ document.addEventListener('click', (event) => {
     };
     const showCardControls = () => {
       wrapper.classList.remove('is-controls-hidden');
+      wrapper.classList.remove('is-volume-hidden');
       if (controlsTimer) window.clearTimeout(controlsTimer);
       if (!video.paused) {
         controlsTimer = window.setTimeout(hideCardControls, 1500);
@@ -155,6 +163,7 @@ document.addEventListener('click', (event) => {
 
     video.addEventListener('pause', () => {
       if (controlsTimer) window.clearTimeout(controlsTimer);
+      wrapper.classList.add('is-volume-hidden');
       wrapper.classList.remove('is-controls-hidden');
       if (!video.ended) {
         btn.textContent = '▶';
