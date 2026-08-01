@@ -2,7 +2,7 @@
   // Cloudflare Pages static site — diyasubedi.com.np
   // Deploy the repository root as-is. There is no build step: every file
   // in this directory (including all poem-*.html pages) is served directly.
-  "name": "diyasubedi-com-np",
+  "name": "portfolio",
   "compatibility_date": "2026-08-01",
   "pages_build_output_dir": "."
 }
