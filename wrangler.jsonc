@@ -1,8 +1,12 @@
 {
-  // Cloudflare Pages static site — diyasubedi.com.np
-  // Deploy the repository root as-is. There is no build step: every file
-  // in this directory (including all poem-*.html pages) is served directly.
+  // Cloudflare Workers static-assets site — diyasubedi.com.np
+  // There is no build step: every file in this directory (including all
+  // poem-*.html pages) is served directly as a static asset.
   "name": "portfolio",
   "compatibility_date": "2026-08-01",
-  "pages_build_output_dir": "."
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  }
 }
