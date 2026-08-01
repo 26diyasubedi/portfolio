@@ -3,21 +3,52 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="About Diya Subedi, a poet and builder from Kathmandu creating warm, literary web experiences." />
-    <meta name="theme-color" content="#F7EFE7" />
+    <meta name="description" content="About Diya — a poet from Kathmandu who also builds websites." />
+    <meta name="theme-color" content="#f5efe6" />
     <title>About | Diya Subedi</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✧</text></svg>" type="image/svg+xml" />
+    <meta property="og:url" content="https://diyasubedi.com.np/about.html" />
+    <link rel="canonical" href="https://diyasubedi.com.np/about.html" />
+ <link rel="manifest" href="manifest.json" />
+ <link rel="apple-touch-icon" href="icons/favicon.svg" />
+ <link rel="alternate" type="application/rss+xml" title="Diya Subedi — Poems" href="feed.xml" />
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://diyasubedi.com.np/about.html",
+            "url": "https://diyasubedi.com.np/about.html",
+            "name": "About | Diya Subedi",
+            "description": "About Diya Subedi — a Nepali poet from Kathmandu who writes poems in Nepali and English and builds websites.",
+            "inLanguage": "en",
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "Diya Subedi",
+                "url": "https://diyasubedi.com.np/"
+            }
+        }
+    </script>
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('portfolio-theme');
+                if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (error) {}
+        })();
+    </script>
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/about.css?v=20260801">
     <style>
         /* ═══════════════════════════════════════════════════════
            CSS VARIABLES & RESET
            ═══════════════════════════════════════════════════════ */
         :root {
-            --bg-primary: #F7EFE7;
-            --bg-secondary: #F0E6DA;
+            --bg-primary: #f5efe6;
+            --bg-secondary: #f8f2e6;
             --bg-card: #FCF8F3;
             --text-primary: #1F1A16;
             --text-secondary: #4A3F38;
@@ -68,8 +99,24 @@
 
         /* ── dark mode ── */
         body.dark-mode {
-            --bg-primary: #1A1614;
-            --bg-secondary: #241F1B;
+            --bg-primary: #0b0b0d;
+            --bg-secondary: #141116;
+            --bg-card: #2A2420;
+            --text-primary: #ECE3DA;
+            --text-secondary: #C4B8AE;
+            --text-muted: #8A7A6E;
+            --border-light: #3A322C;
+            --shadow-soft: 0 8px 40px rgba(0, 0, 0, 0.3);
+            --shadow-lift: 0 20px 60px rgba(0, 0, 0, 0.4);
+            --accent-warm: #B8956E;
+            --accent-gold: #C4A88A;
+            --accent-rose: #8A6A5A;
+        }
+
+        /* ── dark mode — applied on <html> before first paint to prevent a flash ── */
+        html.dark-mode {
+            --bg-primary: #0b0b0d;
+            --bg-secondary: #141116;
             --bg-card: #2A2420;
             --text-primary: #ECE3DA;
             --text-secondary: #C4B8AE;
@@ -1346,7 +1393,7 @@
                         </h1>
                     </div>
                     <p class="hero-subtitle">
-                        Opening the first chapter of a quiet literary life where poetry and code share the same pulse.
+                        I'm Diya. I write poems in Nepali and English, and I built this whole site by hand to keep them in.
                     </p>
             </section>
 
@@ -1358,24 +1405,24 @@
                 </h2>
                 <div class="section-body reveal drop-cap">
                     <p>
-                        Hi, I'm <strong>Diya Subedi</strong>. I started writing poetry when I was in <strong>Class 10</strong>.
-                        At first, I never imagined those scattered thoughts would one day become something I would share with the world.
-                        They were simply pages I wrote whenever my mind felt too loud or my heart had too much to carry.
+                        Hi, I'm <strong>Diya Subedi</strong>. I started writing poems in <strong>Class 10</strong>, mostly during
+                        exam season, which is probably why half of them are dramatic. Back then it was just my notebook and me —
+                        I never thought anyone else would ever read any of it.
                     </p>
                     <p>
-                        For me, poetry isn't a hobby. It's the way I understand life. Almost every poem I write begins with something real —
-                        a conversation, a goodbye, a memory, a place, or a feeling that refuses to leave.
+                        Almost every poem I've written started with something real — a fight I didn't win, a bus ride,
+                        someone leaving. I write it down before I forget what it felt like.
                     </p>
                     <p>
-                        I don't chase perfect words. I simply try to write honestly enough that someone else might quietly think,
-                        <em>"I've felt this too."</em>
+                        I'm not trying to sound clever. I just want the person reading to stop for a second and think,
+                        <em>oh, that's exactly it.</em>
                     </p>
                 </div>
             </section>
 
             <!-- ═══ WHY I WRITE / WHY I BUILD ═══ -->
             <section class="about-section" aria-labelledby="why-title">
-                <span class="section-label reveal">Two sides of the same page</span>
+                <span class="section-label reveal">Why I do both</span>
                 <h2 class="section-title reveal" id="why-title">
                     <span class="title-ornament">❧</span> Why I write, why I build
                 </h2>
@@ -1384,10 +1431,9 @@
                         <div class="reveal">
                             <h3><span class="col-ornament">✧</span> Why I write</h3>
                             <p>
-                                I'm inspired by poets who taught me that a few simple lines can stay with a person for years.
-                                They made me fall in love with words, and that love slowly became my own voice.
-                                I began sharing my poems online partly to become more confident, partly to let more people
-                                discover the quiet beauty hidden in language.
+                                I used to copy poems I loved into a notebook, then write my own next to them,
+                                trying to copy the feeling. Posting online was terrifying at first. I share the poems
+                                that scare me most, because those are the ones people message me about.
                             </p>
                         </div>
                     </article>
@@ -1395,10 +1441,10 @@
                         <div class="reveal">
                             <h3><span class="col-ornament">✧</span> Why I build</h3>
                             <p>
-                                When I'm not writing, you'll usually find me reading, walking through quiet places,
-                                taking photographs, or travelling — collecting small moments that often find their way back
-                                into my poems. Technology became the way I could shape those moments into something tangible
-                                and shareable.
+                                I started learning HTML and CSS because I was tired of posting poems into a feed
+                                where they disappear the next day. I wanted a page where the poem is the whole point
+                                and nothing else is shouting at you. So I made this one, and I keep rebuilding it
+                                as I learn.
                             </p>
                         </div>
                     </article>
@@ -1407,7 +1453,7 @@
 
             <!-- ═══ TIMELINE ═══ -->
             <section class="about-section" aria-labelledby="timeline-title">
-                <span class="section-label reveal">A quiet chronicle</span>
+                <span class="section-label reveal">How I got here</span>
                 <h2 class="section-title reveal" id="timeline-title">
                     <span class="title-ornament">◈</span> Timeline
                 </h2>
@@ -1416,19 +1462,19 @@
                     <div class="timeline-items">
                         <article class="timeline-item">
                             <h4>First verse <span class="year-badge">Class 10</span></h4>
-                            <p>Discovered that ordinary moments have a quiet gravity when written down.</p>
+                            <p>Wrote my first poem for the school magazine. I still have the page it was printed on, cut out and folded inside a book.</p>
                         </article>
                         <article class="timeline-item">
                             <h4>Early web practice <span class="year-badge">2023</span></h4>
-                            <p>Started using HTML and CSS to give the same attention I give to words to the spaces people move through.</p>
+                            <p>Started learning HTML and CSS from YouTube videos. My first site was just text on a coloured background.</p>
                         </article>
                         <article class="timeline-item">
                             <h4>First published poems <span class="year-badge">2024</span></h4>
-                            <p>Learned how it feels to send a line into the world and trust it to find someone else.</p>
+                            <p>Posted a poem online for the first time. A stranger said it described their own life, and I couldn't stop grinning.</p>
                         </article>
                         <article class="timeline-item">
                             <h4>Current journey <span class="year-badge">Now</span></h4>
-                            <p>Building a quieter digital language that sits between literature, design, and code.</p>
+                            <p>Still rebuilding this site by hand. Every page is mine, mistakes included.</p>
                         </article>
                     </div>
                 </div>
@@ -1443,9 +1489,8 @@
                 <div class="journal-card reveal">
                     <span class="journal-marker">— from the notebook</span>
                     <p>
-                        I begin with a single question: what do I want this page to feel like? I gather moments from the day,
-                        let the ideas settle, and then shape them into a subtle structure that is gentle, honest, and easy to
-                        move through. Poetry, design, and code all arrive from the same quiet place.
+                        Most poems start as a messy first draft I write late at night. I sleep on it, then
+                        cut everything that sounds like I was showing off. Whatever survives is the poem.
                     </p>
                 </div>
             </section>
@@ -1459,17 +1504,17 @@
                 <div class="skill-grid">
                     <article class="skill-note reveal">
                         <h3><span class="skill-icon">✧</span>Poetry</h3>
-                        <p>Writing with honesty, atmosphere, and emotional restraint.</p>
+                        <p>Poems in Nepali and English, mostly about people I miss and things that happened to me.</p>
                         <span class="skill-underline"></span>
                     </article>
                     <article class="skill-note reveal">
                         <h3><span class="skill-icon">✧</span>Editorial design</h3>
-                        <p>Creating calm layouts with generous typography and whitespace.</p>
+                        <p>Making long text easy to read — good margins, comfortable line height, and lots of space.</p>
                         <span class="skill-underline"></span>
                     </article>
                     <article class="skill-note reveal">
                         <h3><span class="skill-icon">✧</span>Web craftsmanship</h3>
-                        <p>Building clean interfaces with thoughtful motion.</p>
+                        <p>Building pages by hand with HTML, CSS and JavaScript. No frameworks, no generators — just files I can open and understand.</p>
                         <span class="skill-underline"></span>
                     </article>
                 </div>
@@ -1482,10 +1527,10 @@
                     <span class="title-ornament">✦</span> Current focus
                 </h2>
                 <div class="focus-card reveal">
-                    <h3>Learning, building, and reading</h3>
+                    <h3>Grade 12, old poems, and faster pages</h3>
                     <p>
-                        Right now I am exploring how to make poetry feel natural on the web, how to let quiet storytelling
-                        breathe through interface design, and how to keep building with tools that stay gentle and expressive.
+                        I'm finishing Grade 12, rewriting the poems that don't sound like me anymore, and
+                        making this site load faster on the phones people in Nepal actually use.
                     </p>
                 </div>
             </section>
@@ -1496,8 +1541,8 @@
                     <span class="closing-ornament">❧</span> Thank you for reading
                 </h2>
                 <p>
-                    More than anything, I want my work to remind people that ordinary moments are never truly ordinary.
-                    Sometimes the smallest memory becomes the line that stays with us forever.
+                    I don't have a grand reason for any of this. I just kept writing the things I couldn't say
+                    out loud, and this site is where I keep them. Thanks for reading.
                 </p>
               
             </section>
@@ -1505,7 +1550,7 @@
                                 <div class="hero-quote">
                         <blockquote>
                             A bird in a cage mistakes a burning home for a burning world.
-                            <span class="quote-attribution">— Diyaa Kathmandu · 2026</span>
+                            <span class="quote-attribution">— Diya Subedi · 2026</span>
                         </blockquote>
                     </div>
 
@@ -1514,7 +1559,7 @@
         <!-- ── footer ── -->
         <footer class="page-footer">
             <span class="footer-ornament" aria-hidden="true">❧</span>
-            <p>Heartfelt work, made quietly and carefully.</p>
+            <p>Made by hand, in Kathmandu.</p>
         </footer>
 
     </div>
@@ -1538,12 +1583,13 @@
 
             function setTheme(dark) {
                 darkMode = dark;
+                document.documentElement.classList.toggle('dark-mode', dark);
                 body.classList.toggle('dark-mode', dark);
                 themeToggle.textContent = dark ? '☀ Light' : '☾ Dark';
-                localStorage.setItem('diya-theme', dark ? 'dark' : 'light');
+                localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light');
             }
 
-            const stored = localStorage.getItem('diya-theme');
+            const stored = localStorage.getItem('portfolio-theme');
             if (stored === 'dark') setTheme(true);
             else if (stored === 'light') setTheme(false);
             else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme(true);

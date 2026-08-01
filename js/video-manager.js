@@ -115,6 +115,7 @@ document.addEventListener('click', (event) => {
     wrapper.addEventListener('mouseenter', showCardControls);
     wrapper.addEventListener('mousemove', showCardControls);
     wrapper.addEventListener('mouseleave', hideCardControls);
+    wrapper.addEventListener('pointerdown', showCardControls);
 
     // wire controls
     muteBtn.addEventListener('click', () => {

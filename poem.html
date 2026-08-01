@@ -4,15 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Read a poem by Diya Subedi with detailed notes, related poems, and a reel-style media preview." />
-    <meta name="theme-color" content="#F7EFE7" />
+    <meta name="theme-color" content="#f5efe6" />
     <title>Poem | Diya Subedi</title>
+    <meta property="og:site_name" content="Diya Subedi" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Poem | Diya Subedi" />
+    <meta property="og:description" content="Read a poem by Diya Subedi with detailed notes, related poems, and a reel-style media preview." />
+    <meta property="og:url" content="https://diyasubedi.com.np/poem.html" />
+    <meta property="og:image" content="https://diyasubedi.com.np/icons/favicon.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Poem | Diya Subedi" />
+    <meta name="twitter:description" content="Read a poem by Diya Subedi with detailed notes, related poems, and a reel-style media preview." />
+    <link rel="canonical" href="https://diyasubedi.com.np/poem.html" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Diya Subedi — Poems" href="feed.xml" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('portfolio-theme');
+          if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('theme-dark');
+          }
+        } catch (error) {}
+      })();
+    </script>
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css?v=20260722" />
-    <link rel="stylesheet" href="css/responsive.css?v=20260722" />
-    <link rel="stylesheet" href="css/animations.css?v=20260722" />
+    <link rel="stylesheet" href="css/style.css?v=20260801" />
+    <link rel="stylesheet" href="css/responsive.css?v=20260801" />
+    <link rel="stylesheet" href="css/animations.css?v=20260801" />
   </head>
   <body>
     <a class="skip-link" href="#poemDetail">Skip to content</a>
@@ -26,13 +49,13 @@
           <a href="poems.html">Poems</a>
           <a href="contact.html">Contact</a>
         </nav>
-        <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
+        <button class="nav-pill" id="themeToggle" type="button" aria-label="Toggle dark mode">☾ Dark</button>
       </header>
 
       <main id="poemDetail"></main>
 
       <footer class="page-footer">
-        <p>Reading peacefully.</p>
+        <p>Thanks for reading.</p>
       </footer>
     </div>
 
@@ -42,13 +65,13 @@
     <div class="page-transition" aria-hidden="true"></div>
     <!-- Pointer cursor elements removed for simpler interaction -->
 
-    <script defer src="js/main.js?v=20260722"></script>
-    <script defer src="js/theme.js?v=20260722"></script>
-    <script defer src="js/poems-data.js?v=20260722"></script>
-    <script defer src="js/player.js?v=20260722"></script>
-    <script defer src="js/poems.js?v=20260722"></script>
-    <script defer src="js/video-manager.js?v=20260722"></script>
-    <script defer src="js/animations.js?v=20260722"></script>
-    <script defer src="js/particles.js?v=20260722"></script>
+    <script defer src="js/main.js?v=20260801"></script>
+    <script defer src="js/theme.js?v=20260801"></script>
+    <script defer src="js/poems-data.js?v=20260801"></script>
+    <script defer src="js/player.js?v=20260801"></script>
+    <script defer src="js/poems.js?v=20260801"></script>
+    <script defer src="js/video-manager.js?v=20260801"></script>
+    <script defer src="js/animations.js?v=20260801"></script>
+    <script defer src="js/particles.js?v=20260801"></script>
   </body>
 </html>

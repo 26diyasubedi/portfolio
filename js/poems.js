@@ -7,11 +7,6 @@ async function loadPoems() {
       const data = await response.json();
       if (Array.isArray(data) && data.length) {
         window.POEMS_DATA = data;
-        window.__poems_load_result = {
-          source: 'fetch',
-          count: data.length,
-          slugs: data.slice(0, 10).map((poem) => poem.slug)
-        };
         return data;
       }
     }
@@ -20,42 +15,11 @@ async function loadPoems() {
   }
 
   if (window.POEMS_DATA && Array.isArray(window.POEMS_DATA)) {
-    window.__poems_load_result = {
-      source: 'fallback',
-      count: window.POEMS_DATA.length,
-      slugs: window.POEMS_DATA.slice(0, 10).map((poem) => poem.slug)
-    };
     return window.POEMS_DATA;
   }
 
   const err = new Error('Unable to load poems.json');
-  window.__poems_load_result = { source: 'error', error: err.message };
   throw err;
-}
-
-// Small debug UI: shows where poems were loaded from and how many
-function showPoemsDebugBanner() {
-  try {
-    const existing = document.getElementById('poems-debug-banner');
-    if (existing) return;
-    const info = window.__poems_load_result || { source: 'unknown' };
-    const banner = document.createElement('div');
-    banner.id = 'poems-debug-banner';
-    banner.style.position = 'fixed';
-    banner.style.left = '12px';
-    banner.style.bottom = '12px';
-    banner.style.zIndex = 9999;
-    banner.style.padding = '8px 12px';
-    banner.style.background = 'rgba(36,29,24,0.9)';
-    banner.style.color = '#fff';
-    banner.style.borderRadius = '8px';
-    banner.style.fontSize = '13px';
-    banner.style.boxShadow = '0 8px 28px rgba(0,0,0,0.4)';
-    banner.textContent = `Poems source: ${info.source}` + (info.count ? ` — ${info.count} items` : info.error ? ` — ${info.error}` : '');
-    document.body.appendChild(banner);
-  } catch (e) {
-    console.warn('Could not show poems debug banner', e);
-  }
 }
 
 function formatDate(value) {
@@ -160,7 +124,7 @@ function createPoemCard(poem) {
         <p class="caption">${poem.caption}</p>
       </div>
       <div class="actions">
-        <a class="poem-read-btn" href="poem.html?slug=${poem.slug}">
+        <a class="poem-read-btn" href="poem-${poem.slug}.html">
           <span>Read the Poem</span>
         </a>
       </div>
@@ -380,6 +344,12 @@ async function initPoemLibrary() {
       }
     };
 
+    const searchParam = new URLSearchParams(window.location.search).get('search');
+    if (searchParam && searchField) {
+      searchField.value = searchParam;
+      currentFilters.query = searchParam;
+    }
+
     if (container) {
       applyFiltersAndRender();
     }
@@ -428,7 +398,6 @@ async function initPoemLibrary() {
     const rawPoems = getInlinePoemData() || [];
     if (rawPoems.length) {
       renderLibrary(rawPoems);
-      showPoemsDebugBanner();
       return;
     }
 
@@ -436,8 +405,6 @@ async function initPoemLibrary() {
     if (Array.isArray(fallbackPoems) && fallbackPoems.length) {
       renderLibrary(fallbackPoems);
     }
-
-    showPoemsDebugBanner();
   } catch (error) {
     if (container) {
       container.innerHTML = '<p class="section-card">The poetry archive could not be loaded right now.</p>';
@@ -447,18 +414,52 @@ async function initPoemLibrary() {
 }
 
 function createShareUrl(poem) {
-  return poem.shareUrl || `${window.location.origin}${window.location.pathname}?slug=${poem.slug}`;
+  return window.POEM_URL || `https://diyasubedi.com.np/poem-${poem.slug}.html`;
+}
+
+function isoDuration(value) {
+  const text = String(value || '').toLowerCase();
+  let minutes = 0;
+  let seconds = 0;
+  const minMatch = text.match(/(\d+)\s*min/);
+  const secMatch = text.match(/(\d+)\s*sec/);
+  if (minMatch) minutes = parseInt(minMatch[1], 10);
+  if (secMatch) seconds = parseInt(secMatch[1], 10);
+  if (!minMatch && !secMatch) {
+    const plain = parseInt(text.replace(/[^\d]/g, ''), 10);
+    if (Number.isFinite(plain)) seconds = plain;
+  }
+  if (!minutes && !seconds) return undefined;
+  const parts = [];
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours) parts.push(hours + 'H');
+  if (mins) parts.push(mins + 'M');
+  if (seconds) parts.push(seconds + 'S');
+  return 'PT' + parts.join('');
+}
+
+function appendJsonLd(id, data) {
+  if (document.getElementById(id)) return;
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.id = id;
+  script.textContent = JSON.stringify(data);
+  document.head.appendChild(script);
 }
 
 function renderShareButtons(poem) {
   const shareUrl = createShareUrl(poem);
   const shareText = `${poem.title} | ${poem.caption}`;
+  const instagramLink = poem.instagramUrl
+    ? `<a class="ghost-btn" href="${poem.instagramUrl}" target="_blank" rel="noreferrer">Open Instagram</a>`
+    : '';
 
   return `
     <div class="sharing-row">
       <button class="ghost-btn" type="button" data-share-native data-share-url="${shareUrl}" data-share-text="${shareText}">Share</button>
       <button class="ghost-btn" type="button" data-copy-link data-share-url="${shareUrl}">Copy link</button>
-      <a class="ghost-btn" href="${poem.instagramUrl}" target="_blank" rel="noreferrer">Open Instagram</a>
+      ${instagramLink}
     </div>
   `;
 }
@@ -468,7 +469,7 @@ async function initPoemDetail() {
   if (!detailRoot) return;
 
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug');
+  const slug = params.get('slug') || window.POEM_SLUG;
 
   const dataSource = window.POEMS_DATA && Array.isArray(window.POEMS_DATA)
     ? window.POEMS_DATA
@@ -485,7 +486,75 @@ async function initPoemDetail() {
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   if (themeMeta && poem.colorTheme) themeMeta.setAttribute('content', poem.colorTheme);
 
-  const related = poems.filter((entry) => poem.relatedPoems.includes(entry.id));
+  const poemUrl = window.POEM_URL || `https://diyasubedi.com.np/poem-${poem.slug}.html`;
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) canonicalLink.setAttribute('href', poemUrl);
+  const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+  if (ogUrlMeta) ogUrlMeta.setAttribute('content', poemUrl);
+
+  const setMeta = (selector, attr, content) => {
+    const element = document.querySelector(selector);
+    if (element && content) element.setAttribute(attr, content);
+  };
+  const siteUrl = 'https://diyasubedi.com.np/';
+  const ogImage = `${siteUrl}assets/og/${poem.slug}.jpg`;
+  setMeta('meta[property="og:title"]', 'content', document.title);
+  setMeta('meta[property="og:description"]', 'content', poem.seoDescription || poem.caption);
+  setMeta('meta[property="og:image"]', 'content', ogImage);
+  setMeta('meta[name="twitter:title"]', 'content', document.title);
+  setMeta('meta[name="twitter:description"]', 'content', poem.seoDescription || poem.caption);
+  setMeta('meta[name="twitter:image"]', 'content', ogImage);
+
+  if (!document.getElementById('poem-jsonld')) {
+    const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      '@id': poemUrl,
+      'url': poemUrl,
+      'headline': poem.title,
+      'name': poem.title,
+      'description': poem.seoDescription || poem.caption,
+      'inLanguage': poem.language || 'ne',
+      'genre': poem.category,
+      'keywords': [...(poem.tags || []), 'Nepali poem', 'poem in Nepali', 'poems in English'].join(', '),
+      'author': { '@type': 'Person', 'name': 'Diya Subedi', 'url': `${siteUrl}about.html` },
+      'publisher': { '@type': 'Person', 'name': 'Diya Subedi' },
+      'mainEntityOfPage': { '@type': 'WebPage', '@id': poemUrl },
+      'datePublished': poem.publishDate,
+      'image': ogImage
+    };
+    appendJsonLd('poem-jsonld', jsonLd);
+  }
+
+  appendJsonLd('breadcrumb-jsonld', {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': `${siteUrl}index.html` },
+      { '@type': 'ListItem', 'position': 2, 'name': 'Poems', 'item': `${siteUrl}poems.html` },
+      { '@type': 'ListItem', 'position': 3, 'name': poem.title, 'item': poemUrl }
+    ]
+  });
+
+  if (poem.video && !poem.audioOnly) {
+    appendJsonLd('video-jsonld', {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      '@id': `${poemUrl}#video`,
+      'name': `${poem.title} — Nepali poem`,
+      'description': poem.seoDescription || poem.caption,
+      'thumbnailUrl': ogImage,
+      'contentUrl': `${siteUrl}${poem.video}`,
+      'uploadDate': poem.publishDate,
+      'duration': isoDuration(poem.duration),
+      'genre': poem.category,
+      'inLanguage': poem.language || 'ne',
+      'author': { '@type': 'Person', 'name': 'Diya Subedi', 'url': `${siteUrl}about.html` },
+      'publisher': { '@type': 'Person', 'name': 'Diya Subedi' }
+    });
+  }
+
+  const related = poems.filter((entry) => (poem.relatedPoems || []).includes(entry.id));
   const playerOptions = window.DIYA_VIDEO_OPTIONS || { SPEED_OPTIONS: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], BOOST_OPTIONS: [{ label: 'Normal', value: 1 }, { label: '125%', value: 1.25 }, { label: '150%', value: 1.5 }, { label: '200%', value: 2 }, { label: '300%', value: 3 }] };
   const heroMedia = poem.video && !poem.audioOnly
     ? `
@@ -542,7 +611,7 @@ async function initPoemDetail() {
         </div>
       </div>
     `
-    : `<img src="${poem.heroImage}" alt="${poem.altText}" loading="eager" />`;
+    : `<img src="${poem.heroImage}" alt="${poem.altText}" loading="eager" fetchpriority="high" decoding="async" />`;
 
   detailRoot.innerHTML = `
     <div class="reading-progress"><div class="reading-progress__bar"></div></div>
@@ -554,6 +623,13 @@ async function initPoemDetail() {
   const detailShell = detailRoot.querySelector('.detail-shell');
   if (detailShell) {
     detailShell.innerHTML = `
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="poems.html">Poems</a></li>
+          <li class="breadcrumb-item breadcrumb-current" aria-current="page">${poem.title}</li>
+        </ol>
+      </nav>
       <div class="detail-hero">
         ${heroMedia}
         <div class="detail-sidebar">
@@ -640,7 +716,7 @@ async function initPoemDetail() {
     </div>
     <div class="related-grid">
       ${related.map((entry) => `
-        <a class="related-card" href="poem.html?slug=${entry.slug}">
+        <a class="related-card" href="poem-${entry.slug}.html">
           <strong>${entry.title}</strong>
           <p>${entry.caption}</p>
         </a>

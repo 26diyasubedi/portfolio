@@ -3,15 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#F7EFE7" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#f5efe6" />
     <title>Page not found | Diya Subedi</title>
+    <meta property="og:url" content="https://diyasubedi.com.np/404.html" />
+    <link rel="canonical" href="https://diyasubedi.com.np/404.html" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/favicon.svg" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('portfolio-theme');
+          if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('theme-dark');
+          }
+        } catch (error) {}
+      })();
+    </script>
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
-    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/style.css?v=20260801" />
+    <link rel="stylesheet" href="css/responsive.css?v=20260801" />
+    <link rel="stylesheet" href="css/animations.css?v=20260801" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -25,14 +40,14 @@
           <a href="poems.html">Poems</a>
           <a href="contact.html">Contact</a>
         </nav>
-        <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
+        <button class="nav-pill" id="themeToggle" type="button" aria-label="Toggle dark mode">☾ Dark</button>
       </header>
 
       <main id="content">
         <section class="page-hero reveal">
           <p class="eyebrow">404</p>
-          <h1>This page drifted away.</h1>
-          <p class="page-intro">The path you followed does not exist, but the rest of the portfolio is still here.</p>
+          <h1>This page went missing.</h1>
+          <p class="page-intro">The address doesn't exist, but the rest of the site is still here.</p>
           <div class="hero-actions">
             <a class="primary-btn" href="index.html">Return home</a>
             <a class="ghost-btn" href="poems.html">Read poems</a>
@@ -41,7 +56,7 @@
       </main>
 
       <footer class="page-footer">
-        <p>Some journeys end at a destination. Others become poems.</p>
+        <p>Even wrong turns are a way to find the poems.</p>
       </footer>
     </div>
 
@@ -51,9 +66,9 @@
     <div class="page-transition" aria-hidden="true"></div>
     <!-- Pointer cursor elements removed for simpler interaction -->
 
-    <script src="js/main.js"></script>
-    <script src="js/theme.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/particles.js"></script>
+    <script src="js/main.js?v=20260801"></script>
+    <script src="js/theme.js?v=20260801"></script>
+    <script src="js/animations.js?v=20260801"></script>
+    <script src="js/particles.js?v=20260801"></script>
   </body>
 </html>

@@ -1,28 +1,90 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Diya Subedi is a Grade 12 student from Kathmandu whose poetry, philosophy, and curiosity meet technology in a quiet, human portfolio." />
-    <meta name="theme-color" content="#F7EFE7" />
-    <meta property="og:title" content="Diya Subedi | Words, code, and quiet mornings" />
-    <meta property="og:description" content="A calm, editorial portfolio centered on poetry, code, and thoughtful digital work." />
+    <meta name="description" content="Free original poems by Diya Subedi — Nepali and English poetry read aloud on video with meaning notes. Love, sad, heartbreak and nostalgia poems from Kathmandu." />
+    <meta name="theme-color" content="#f5efe6" />
+    <meta property="og:site_name" content="Diya Subedi" />
+    <meta property="og:title" content="Diya Subedi | Nepali Poems in English and Nepali" />
+    <meta property="og:description" content="Nepali and English poems by Diya Subedi — love, sad, heartbreak and nostalgia poetry, each read aloud on video." />
     <meta property="og:type" content="website" />
-    <title>Diya Subedi | Words, code, and quiet mornings</title>
+    <meta property="og:url" content="https://diyasubedi.com.np/index.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Diya Subedi | Nepali Poems in English and Nepali" />
+    <meta name="twitter:description" content="Nepali and English poems by Diya Subedi — love, sad, heartbreak and nostalgia poetry, each read aloud on video." />
+    <link rel="canonical" href="https://diyasubedi.com.np/index.html" />
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://diyasubedi.com.np/index.html",
+            "url": "https://diyasubedi.com.np/index.html",
+            "name": "Diya Subedi",
+            "description": "Poems in Nepali and English by Diya Subedi, a poet from Kathmandu.",
+            "inLanguage": ["en", "ne"],
+            "publisher": {
+                "@type": "Person",
+                "name": "Diya Subedi",
+                "url": "https://diyasubedi.com.np/about.html"
+            },
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://diyasubedi.com.np/poems.html?search={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://diyasubedi.com.np/#organization",
+            "name": "Diya Subedi",
+            "url": "https://diyasubedi.com.np/index.html",
+            "logo": "https://diyasubedi.com.np/icons/favicon.svg",
+            "sameAs": []
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "@id": "https://diyasubedi.com.np/about.html#person",
+            "name": "Diya Subedi",
+            "url": "https://diyasubedi.com.np/about.html",
+            "description": "Poet from Kathmandu, Nepal. Writes poems in Nepali and English.",
+            "knowsLanguage": ["Nepali", "English"]
+        }
+    </script>
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('portfolio-theme');
+                if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('theme-dark');
+                }
+            } catch (error) {}
+        })();
+    </script>
+    <title>Diya Subedi | Nepali Poems in English and Nepali</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Diya Subedi — Poems" href="feed.xml" />
     <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css?v=20260721" />
-    <link rel="stylesheet" href="css/responsive.css?v=20260721" />
-    <link rel="stylesheet" href="css/animations.css?v=20260721" />
+    <link rel="stylesheet" href="css/style.css?v=20260801" />
+    <link rel="stylesheet" href="css/responsive.css?v=20260801" />
+    <link rel="stylesheet" href="css/animations.css?v=20260801" />
 
     <style>
-        /* ═══════════════════════════════════════════════════════
-           MAX CREATIVE DESIGN — COOL ANIMATED TEXT, FLOATING IDEAS
-           ═══════════════════════════════════════════════════════ */
+        /* -------------------------------------------------------
+           MAX CREATIVE DESIGN � COOL ANIMATED TEXT, FLOATING IDEAS
+           ------------------------------------------------------- */
 
-        /* ── root vars ── */
+        /* -- root vars -- */
         :root {
             --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
             --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
@@ -30,9 +92,8 @@
             --border-glow: rgba(140, 107, 74, 0.2);
         }
 
-        /* ── animated gradient background ── */
+        /* -- animated gradient background -- */
         body {
-            background: var(--bg);
             position: relative;
             overflow-x: hidden;
         }
@@ -61,7 +122,7 @@
             100% { transform: scale(1.05) rotate(0.5deg); }
         }
 
-        /* ── floating abstract shapes ── */
+        /* -- floating abstract shapes -- */
         .float-shape {
             position: fixed;
             border-radius: 50%;
@@ -120,7 +181,7 @@
             100% { transform: translate(-30px, 40px) scale(0.95) rotate(-2deg); }
         }
 
-        /* ── custom cursor glow ── */
+        /* -- custom cursor glow -- */
         .cursor-glow {
             position: fixed;
             width: 40px;
@@ -149,7 +210,7 @@
             .cursor-glow { display: none; }
         }
 
-        /* ── hero text ── */
+        /* -- hero text -- */
         .hero-copy h1 {
             font-size: clamp(2.4rem, 5vw, 4rem);
             font-weight: 900;
@@ -209,7 +270,7 @@
             100% { width: 80px; opacity: 0.6; }
         }
 
-        /* ── hero aside with parallax ── */
+        /* -- hero aside with parallax -- */
         .hero-aside {
             transform-style: preserve-3d;
             perspective: 800px;
@@ -220,8 +281,8 @@
             transform: rotateY(2deg) rotateX(1deg) translateZ(10px);
         }
 
-        /* ── hero stats with glow ── */
-        /* ── hero stats ── */
+        /* -- hero stats with glow -- */
+        /* -- hero stats -- */
 .hero-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -270,7 +331,7 @@
     border-color: transparent;
 }
 
-/* ── number styling ── */
+/* -- number styling -- */
 .hero-stat strong {
     display: block;
     font-size: 2.4rem;
@@ -304,7 +365,7 @@
     100% { opacity: 1; transform: scale(1) rotate(0); }
 }
 
-/* ── label styling ── */
+/* -- label styling -- */
 .hero-stat .muted-copy {
     display: block;
     font-size: 0.7rem;
@@ -320,13 +381,13 @@
     color: var(--text);
 }
 
-/* ── animation for initial appearance ── */
+/* -- animation for initial appearance -- */
 @keyframes fadeSlideUp {
     0% { opacity: 0; transform: translateY(16px); }
     100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ── responsive ── */
+/* -- responsive -- */
 @media (max-width: 820px) {
     .hero-stats {
         grid-template-columns: repeat(3, 1fr);
@@ -368,7 +429,7 @@
     }
 }
 
-/* ── reduced motion ── */
+/* -- reduced motion -- */
 @media (prefers-reduced-motion: reduce) {
     .hero-stats {
         opacity: 1 !important;
@@ -382,7 +443,7 @@
     }
 }
 
-        /* ── cards with floating glow ── */
+        /* -- cards with floating glow -- */
         .section-card,
         .poem-grid .poem-card,
         .timeline-card {
@@ -454,7 +515,7 @@
             box-shadow: 0 0 0 8px rgba(140, 107, 74, 0.12);
         }
 
-        /* ── contact items with 3D tilt ── */
+        /* -- contact items with 3D tilt -- */
         .contact-item {
             position: relative;
             transform-style: preserve-3d;
@@ -484,7 +545,7 @@
             transform: scale(1.2) rotate(-6deg);
         }
 
-        /* ── scroll reveal with different effects ── */
+        /* -- scroll reveal with different effects -- */
         .reveal {
             opacity: 0;
             transition: opacity 1s var(--transition-smooth), transform 1.2s var(--transition-smooth);
@@ -512,7 +573,7 @@
             filter: blur(0);
         }
 
-        /* ── stagger children with more space ── */
+        /* -- stagger children with more space -- */
         .stagger-children > * {
             opacity: 0;
             transform: translateY(40px) scale(0.96);
@@ -528,7 +589,7 @@
             transform: translateY(0) scale(1);
         }
 
-        /* ── scroll progress with glow ── */
+        /* -- scroll progress with glow -- */
         .scroll-progress__bar {
             background: linear-gradient(90deg, var(--accent), var(--accent-soft), var(--accent));
             background-size: 200% 100%;
@@ -544,7 +605,7 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* ── footer ── */
+        /* -- footer -- */
         .page-footer {
             border-top: 1px solid var(--border);
             padding: 32px 0 12px;
@@ -555,7 +616,7 @@
             position: relative;
         }
         .page-footer::before {
-            content: '❧';
+            content: '?';
             display: block;
             font-size: 1.4rem;
             color: var(--accent);
@@ -564,7 +625,7 @@
             letter-spacing: 0.3em;
         }
 
-        /* ── responsive tweaks ── */
+        /* -- responsive tweaks -- */
         @media (max-width: 820px) {
             .hero {
                 padding: 32px 24px;
@@ -725,11 +786,11 @@
                 <a href="poems.html">Poems</a>
                 <a href="contact.html">Contact</a>
             </nav>
-            <button class="nav-pill" id="themeToggle" type="button">☾ Dark</button>
+            <button class="nav-pill" id="themeToggle" type="button" aria-label="Toggle dark mode">? Dark</button>
         </header>
 
         <main id="content">
-            <!-- ═══ HERO ═══ -->
+            <!-- --- HERO --- -->
             <section class="hero reveal from-bottom" style="transition-delay:0.1s;">
                 <div class="hero-copy">
                     <p class="eyebrow">Starry Eyes</p>
@@ -753,8 +814,9 @@
                     </h1>
                     <span class="hero-underline" aria-hidden="true"></span>
                    <p class="lead">
-                       Not every feeling asks to be understood. <br>
-                         Some only ask to be remembered.
+                       This is a collection of <strong>Nepali poems</strong> written in <strong>Nepali and English</strong> — modern poetry about love, heartbreak, memories, and growing up in Kathmandu. Every poem has a short reading video, a note on its meaning, and the story behind it.
+                       I write because some feelings are too big to keep. <br>
+                         I post them here so they can find you instead.
                          </p>
                     <div class="hero-actions">
                         <a class="primary-btn" href="poems.html">Read Poems</a>
@@ -764,42 +826,42 @@
                     <div class="hero-stats">
                         <div class="hero-stat">
                             <strong><span class="count-num" data-count="19">0</span></strong>
-                            <span class="muted-copy">Published poems in the archive</span>
+                            <span class="muted-copy">Poems in the archive</span>
                         </div>
                         <div class="hero-stat">
-                            <strong><span class="count-num" data-count="3">0</span></strong>
-                            <span class="muted-copy">Core languages carried through the work</span>
+                            <strong><span class="count-num" data-count="2">0</span></strong>
+                            <span class="muted-copy">Languages I write in</span>
                         </div>
                         <div class="hero-stat">
-                            <strong><span class="count-num" data-count="1">0</span></strong>
-                            <span class="muted-copy">Editorial design system across the site</span>
+                            <strong><span class="count-num" data-count="2">0</span></strong>
+                            <span class="muted-copy">Years of building this site</span>
                         </div>
                     </div>
                 </div>
                 
-<aside class="hero-aside glass-panel" aria-label="A quiet introduction" data-parallax>
+<aside class="hero-aside glass-panel" aria-label="About Diya" data-parallax>
     <p class="lead-quote">
-        "Some memories fade. Others quietly become poems."
+        "I started writing in Class 10, mostly to empty my head onto paper."
     </p>
 
     <ul>
-        <li>17-year-old poet from Kathmandu, Nepal.</li>
-        <li>Writing about memory, silence, hope, and the questions that never leave.</li>
-        <li>A growing collection of poems, voice recordings, and quiet moments.</li>
+        <li>Grade 12 student in Kathmandu, Nepal.</li>
+        <li>I write in Nepali and English.</li>
+        <li>Poems, voice recordings, and the occasional video.</li>
     </ul>
 </aside>
 
 
             </section>
 
-            <!-- ═══ ABOUT ═══ -->
+            <!-- --- ABOUT --- -->
             <section class="reveal from-left">
                 <div class="section-title">
                     <div>
                         <p class="eyebrow">About Me</p>
-                        <h2>A life shaped by wondering</h2>
+                        <h2>Writing about the world I walk through</h2>
                     </div>
-                    <a href="about.html">Read the full story →</a>
+                    <a href="about.html">Read the full story ?</a>
                 </div>
                 <!--<div class="section-card">
                     <p>I grew up in Kathmandu, where the city's rhythm taught me to listen closely to footsteps, rain, and the silence between thoughts. Literature became the place where I could name what I felt. Computers became the place where I could build forms for those feelings, turning curiosity into something tangible.</p>
@@ -809,7 +871,10 @@
         -->
             <div class="section-card">
     <p>
-        These poems are pieces of places I have walked through, conversations I never finished, and memories that continued long after the moment had passed.
+        This website is a free collection of original poetry — love poems, sad poems, heartbreak poems, and nostalgia poems, written by a girl poet from Kathmandu. Some are in Nepali, some are in English, and every one of them is read aloud in a poem video.
+    </p>
+    <p>
+        Most of these poems started as something that actually happened to me � a goodbye I didn't get to say, a bus ride home, a festival I watched from the side.
     </p>
 
     <p>
@@ -817,41 +882,41 @@
     </p>
 </div>
 
-        <!-- ═══ POEMS ═══ -->
+        <!-- --- POEMS --- -->
             <section class="reveal from-right">
                 <div class="section-title">
                     <div>
                         <p class="eyebrow">Poems</p>
-                        <h2>The heart of the journey</h2>
+                        <h2>Poems I've written since Class 10</h2>
                     </div>
-                    <a href="poems.html">Explore all poems →</a>
+                    <a href="poems.html">Explore all poems ?</a>
                 </div>
                 <div class="poem-grid" id="featuredPoems"></div>
             </section>
 
 
-            <!-- ═══ PROJECTS ═══ -->
+            <!-- --- PROJECTS --- -->
             <section class="reveal scale-in">
                 <div class="section-title">
                     <div>
                         <p class="eyebrow">Projects</p>
-                        <h2>Things built with care</h2>
+                        <h2>Things I've built</h2>
                     </div>
-                    <a href="projects.html">See all projects →</a>
+                    <a href="projects.html">See all projects ?</a>
                 </div>
                 <div class="poem-grid stagger-children">
                     <article class="section-card">
-                        <h3>Quiet Studio Website</h3>
-                        <p>A reflective personal web experience built with thoughtful typography, gentle transitions, and a calm editorial tone.</p>
+                        <h3>This website</h3>
+                        <p>The site you're reading right now. Built by hand with HTML, CSS, and JavaScript � no frameworks, so it stays small and mine.</p>
                     </article>
                     <article class="section-card">
                         <h3>Poetry Archive</h3>
-                        <p>A small archive for organizing poems by mood, language, and year, with discovery tools designed for reading rather than browsing.</p>
+                        <p>Every poem on one searchable page. Filter by mood, or just scroll.</p>
                     </article>
                 </div>
             </section>
 
-            <!-- ═══ PRACTICE / TIMELINE ═══ -->
+            <!-- --- PRACTICE / TIMELINE --- -->
             <section class="reveal blur-in">
                 <div class="section-title">
                     <div>
@@ -862,44 +927,43 @@
                 <div class="timeline-grid stagger-children">
                     <article class="timeline-card">
                         <h3>Poetry as a library</h3>
-                        <p>Refined the poems into a searchable reading collection with detailed pages, share actions, and a clearer editorial hierarchy.</p>
+                        <p>Made the poems searchable so people can find them by mood, language, or year.</p>
                     </article>
                     <article class="timeline-card">
                         <h3>Web fundamentals</h3>
-                        <p>Kept the site hand-built with HTML, CSS, and JavaScript so the structure stays easy to maintain and extend.</p>
+                        <p>Kept the site hand-built with HTML, CSS, and JavaScript so it stays easy to fix and grow.</p>
                     </article>
                 </div>
             </section>
 
-            <!-- ═══ CONTACT ═══ -->
+            <!-- --- CONTACT --- -->
             <section class="reveal from-bottom contact-section">
                 <div class="section-title">
                     <div>
                         <p class="eyebrow">Get in Touch</p>
-                        <h2>Let's create something meaningful together.</h2>
+                        <h2>Say hello.</h2>
                     </div>
                 </div>
 
                 <div class="section-card">
                     <p class="contact-text">
-                        Whether you'd like to discuss poetry, technology, collaborate on a project,
-                        or simply share a favorite quote, my inbox is always open. I'd love to hear
-                        your thoughts and connect.
+                        If you want to talk about poems, share feedback, or send me a line you
+                        can't stop thinking about, my inbox is open.
                     </p>
 
                     <div class="contact-list">
                         <a href="mailto:diyasubedi26@gmail.com" class="contact-item">
-                            <span class="icon">✉️</span>
+                            <span class="icon">??</span>
                             <span>diyasubedi26@gmail.com</span>
                         </a>
 
                         <a href="https://instagram.com/uwyiz_" target="_blank" class="contact-item">
-                            <span class="icon">📸</span>
+                            <span class="icon">??</span>
                             <span>@uwyiz_</span>
                         </a>
 
                         <a href="https://github.com/26diyasubedi" target="_blank" class="contact-item">
-                            <span class="icon">💻</span>
+                            <span class="icon">??</span>
                             <span>github.com/26diyasubedi</span>
                         </a>
                     </div>
@@ -908,29 +972,29 @@
         </main>
 
         <footer class="page-footer">
-            <p>Some journeys end at a destination. Others become poems.(napra)</p>
-            <p>© 2026 Diya Subedi. Crafted with words, curiosity, and quiet mornings.</p>
+            <p>Thank you for reading.</p>
+            <p>� 2026 Diya Subedi. Poems and hand-built websites.</p>
         </footer>
     </div>
 
-    <button class="nav-pill back-to-top" data-back-to-top type="button">↑ Back to top</button>
+    <button class="nav-pill back-to-top" data-back-to-top type="button">? Back to top</button>
     <div class="page-loading" aria-hidden="true"><div class="loader-mark"></div></div>
     <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__bar"></div></div>
     <div class="page-transition" aria-hidden="true"></div>
 
-    <script defer src="js/main.js?v=20260721"></script>
-    <script defer src="js/theme.js?v=20260721"></script>
-    <script defer src="js/poems-data.js?v=20260721"></script>
-    <script defer src="js/poems.js?v=20260721"></script>
-    <script defer src="js/video-manager.js?v=20260721"></script>
-    <script defer src="js/animations.js?v=20260721"></script>
-    <script defer src="js/particles.js?v=20260721"></script>
+    <script defer src="js/main.js?v=20260801"></script>
+    <script defer src="js/theme.js?v=20260801"></script>
+    <script defer src="js/poems-data.js?v=20260801"></script>
+    <script defer src="js/poems.js?v=20260801"></script>
+    <script defer src="js/video-manager.js?v=20260801"></script>
+    <script defer src="js/animations.js?v=20260801"></script>
+    <script defer src="js/particles.js?v=20260801"></script>
 
     <script>
     (function() {
         'use strict';
 
-        // ── counter animation ──
+        // -- counter animation --
         const counters = document.querySelectorAll('.count-num');
         let countersAnimated = false;
 
@@ -976,7 +1040,7 @@
             if (!countersAnimated) animateCounters();
         }, 4000);
 
-        // ── stagger children observer ──
+        // -- stagger children observer --
         const staggerEls = document.querySelectorAll('.stagger-children');
         const staggerObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -988,7 +1052,7 @@
 
         staggerEls.forEach(el => staggerObserver.observe(el));
 
-        // ── reveal observer ──
+        // -- reveal observer --
         const revealEls = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1000,7 +1064,7 @@
 
         revealEls.forEach(el => revealObserver.observe(el));
 
-        // ── custom cursor glow ──
+        // -- custom cursor glow --
         const glow = document.getElementById('cursorGlow');
         if (glow && window.matchMedia('(pointer: fine)').matches) {
             let mouseX = 0, mouseY = 0;
@@ -1025,7 +1089,7 @@
             });
         }
 
-        // ── card mouse follow glow ──
+        // -- card mouse follow glow --
         const cards = document.querySelectorAll('.section-card, .poem-grid .poem-card, .timeline-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -1037,9 +1101,9 @@
             });
         });
 
-        // ── hero aside parallax on mouse ──
+        // -- hero aside parallax on mouse (desktop only) --
         const aside = document.querySelector('.hero-aside');
-        if (aside) {
+        if (aside && window.matchMedia('(pointer: fine)').matches) {
             document.addEventListener('mousemove', (e) => {
                 const x = (e.clientX / window.innerWidth - 0.5) * 4;
                 const y = (e.clientY / window.innerHeight - 0.5) * 4;
@@ -1051,13 +1115,13 @@
             });
         }
 
-        // ── poem cards stagger delay ──
+        // -- poem cards stagger delay --
         const poemCards = document.querySelectorAll('.poem-grid .poem-card');
         poemCards.forEach((card, index) => {
             card.style.transitionDelay = (index * 0.06) + 's';
         });
 
-        console.log('✧ Max creative design loaded — floating ideas, animated text, and immersive interactions.');
+        console.log('? Max creative design loaded � floating ideas, animated text, and immersive interactions.');
     })();
     </script>
 </body>

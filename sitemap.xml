@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>index.html</loc></url>
-  <url><loc>about.html</loc></url>
-  <url><loc>projects.html</loc></url>
-  <url><loc>poems.html</loc></url>
-  <url><loc>contact.html</loc></url>
-  <url><loc>404.html</loc></url>
+  <url><loc>https://diyasubedi.com.np/index.html</loc><lastmod>2026-08-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://diyasubedi.com.np/poems.html</loc><lastmod>2026-08-01</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://diyasubedi.com.np/about.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://diyasubedi.com.np/projects.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://diyasubedi.com.np/contact.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://diyasubedi.com.np/404.html</loc><lastmod>2026-08-01</lastmod><changefreq>yearly</changefreq><priority>0.1</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-kayeu-chan-timro-lagi-pani.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-bilauney-chan-yi-yaad-haru.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-haraeka-aasha-ani-aastha.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-samjhanako-sajh.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-tuteka-tara.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-smritiko-jhyalale-sanchera-rakheko-hawa.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-swarthi-sarkar.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-chad-ki-chakku.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-i-dont-pray-to-god-anymore.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-the-way-i-loved.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-too-busy-to-glow.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-ko-hau-timi.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-birsine-bhayen.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-i-love-love.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-antim-saajh.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-an-ordinary-dayy.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-kaha-chha-ra-khusi.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-mero-desh-timi-feri-uthnu-chha.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://diyasubedi.com.np/poem-it-never-did.html</loc><lastmod>2026-08-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

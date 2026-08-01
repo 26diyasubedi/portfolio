@@ -1,7 +1,11 @@
 @media (max-width: 900px) {
-  .hero, .detail-hero, .poem-grid, .related-grid, .feature-grid, .stats-grid, .timeline-grid, .testimonial-grid, .screen-grid, .latest-strip, .collection-metrics, .achievement-grid { grid-template-columns: 1fr; }
-  .poem-grid { gap: 14px; }
+  .hero, .detail-hero, .feature-grid, .stats-grid, .timeline-grid, .testimonial-grid, .screen-grid, .latest-strip, .collection-metrics, .achievement-grid { grid-template-columns: 1fr; }
   .hero-stats { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 620px) {
+  .poem-grid, .related-grid { grid-template-columns: 1fr; }
+  .poem-grid { gap: 14px; }
 }
 
 @media (max-width: 700px) {
@@ -18,6 +22,7 @@
     width: 100%;
     justify-content: flex-start;
     gap: 2px;
+    flex-wrap: nowrap;
     overflow-x: auto;
     padding: 2px 0 6px;
     scrollbar-width: none;

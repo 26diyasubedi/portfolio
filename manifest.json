@@ -1,0 +1,19 @@
+{
+  "name": "Diya Subedi — Nepali Poems",
+  "short_name": "Diya Poems",
+  "description": "Nepali poems in English and Nepali, written and narrated by Diya Subedi.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5efe6",
+  "theme_color": "#f5efe6",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

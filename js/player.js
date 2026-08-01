@@ -129,6 +129,7 @@
       if (!video.src && !video.currentSrc) {
         ensureVideoSource();
       }
+      ensureAudioRouting();
       if (video.muted || video.volume === 0) {
         video.muted = false;
         if (video.volume === 0) {
@@ -142,9 +143,7 @@
       playPauseBtn.textContent = video.paused ? playIcon : pauseIcon;
       playPauseBtn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
       centerPlay.hidden = !video.paused;
-      if (!video.paused) {
-        centerPlay.classList.remove('is-visible');
-      }
+      centerPlay.classList.toggle('is-visible', video.paused);
     };
 
     const updateMuteButton = () => {
@@ -174,7 +173,10 @@
     };
 
     const ensureAudioRouting = () => {
-      if (audioContext) return;
+      if (audioContext) {
+        audioContext.resume?.().catch(() => {});
+        return;
+      }
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (!AudioContextClass) return;
       audioContext = new AudioContextClass();
@@ -183,6 +185,7 @@
       audioSource.connect(gainNode);
       gainNode.connect(audioContext.destination);
       gainNode.gain.value = activeBoost;
+      audioContext.resume?.().catch(() => {});
     };
 
     const setAudioBoost = (boost) => {
@@ -244,12 +247,14 @@
       previewTooltip.hidden = false;
     };
 
-    const beginSeek = (clientX) => {
+    const beginSeek = (clientX, pointerId) => {
       isDragging = true;
       root.classList.add('is-seeking');
       updatePreview(clientX);
       seekTo(((clientX - progressWrap.getBoundingClientRect().left) / progressWrap.getBoundingClientRect().width) * (video.duration || 0));
-      progressWrap.setPointerCapture?.(event.pointerId);
+      if (pointerId !== undefined) {
+        progressWrap.setPointerCapture?.(pointerId);
+      }
     };
 
     const endSeek = () => {
@@ -372,7 +377,7 @@
 
     progressWrap.addEventListener('pointerdown', (event) => {
       event.preventDefault();
-      beginSeek(event.clientX);
+      beginSeek(event.clientX, event.pointerId);
     });
 
     progressWrap.addEventListener('pointermove', (event) => {
@@ -580,7 +585,6 @@
       setAudioBoost(1);
     }
 
-    ensureAudioRouting();
     updateVolumeUi();
     updatePlayButton();
     updateTimeDisplay();
