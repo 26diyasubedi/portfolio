@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💖 For Anuja · my darling</title>
+  <style>
+    /* ----- RESET & BASE ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      background: #1a1418;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ----- FLOATING HEARTS BACKGROUND ----- */
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .heart-float {
+      position: absolute;
+      font-size: 1.8rem;
+      color: rgba(255, 120, 150, 0.25);
+      animation: floatUp linear infinite;
+      will-change: transform;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(720deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* ----- MAIN CARD ----- */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(560px, 92vw);
+      padding: 32px 24px 40px;
+      background: rgba(255, 248, 242, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      animation: cardEntry 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      transform: scale(0.9) translateY(30px);
+    }
+    @keyframes cardEntry {
+      0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* ----- TITLE & NAME ----- */
+    .name {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #fff0e6;
+      text-shadow: 0 0 40px rgba(255, 150, 180, 0.2);
+      animation: glowPulse 2.5s ease-in-out infinite;
+      margin-bottom: 8px;
+      font-family: 'Georgia', serif;
+    }
+    @keyframes glowPulse {
+      0%,
+      100% {
+        text-shadow: 0 0 30px rgba(255, 150, 180, 0.2);
+      }
+      50% {
+        text-shadow: 0 0 60px rgba(255, 150, 180, 0.5), 0 0 120px rgba(255, 100, 140, 0.2);
+      }
+    }
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: rgba(255, 200, 210, 0.8);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
+      animation: fadeSlide 1.8s ease 0.6s both;
+    }
+    @keyframes fadeSlide {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ----- LOVE MESSAGE (animated) ----- */
+    .love-message {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: #ffb0c0;
+      text-shadow: 0 0 30px rgba(255, 100, 140, 0.3);
+      margin: 16px 0 20px;
+      animation: heartBeat 1.6s ease-in-out infinite;
+      display: inline-block;
+      padding: 0 12px;
+      position: relative;
+    }
+    .love-message .heart {
+      display: inline-block;
+      animation: heartPulse 1.2s ease-in-out infinite;
+      color: #ff6b8a;
+      margin: 0 6px;
+    }
+    @keyframes heartPulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      15% {
+        transform: scale(1.3);
+      }
+      30% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.2);
+      }
+      60% {
+        transform: scale(1);
+      }
+    }
+    @keyframes heartBeat {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+
+    /* ----- LETTER ENVELOPE (interactive) ----- */
+    .letter-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      margin: 20px auto 16px;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      perspective: 800px;
+      border-radius: 20px;
+      background: transparent;
+    }
+    .letter-scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 20px;
+    }
+    .letter-scene.open {
+      transform: rotateX(-6deg) translateY(-8px);
+    }
+    .envelope-back {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, #f7eee5, #efe2d6);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 46%;
+      background: linear-gradient(180deg, #f7eee5, #efe2d6);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+      transform-origin: top center;
+      z-index: 3;
+      border-radius: 20px 20px 0 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .flap.open {
+      transform: rotateX(180deg) translateY(-12px);
+      opacity: 0.3;
+    }
+    .seal {
+      position: absolute;
+      top: 34%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at 30% 30%, #f5c0c0, #d48b8b);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(212, 139, 139, 0.3);
+      z-index: 4;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .seal.hidden {
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+    }
+    .letter-paper {
+      position: absolute;
+      bottom: 6%;
+      left: 8%;
+      width: 84%;
+      height: 68%;
+      background: #fffcf9;
+      border-radius: 12px 12px 16px 16px;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.03), 0 8px 32px rgba(0, 0, 0, 0.02);
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
+      transform: translateY(12%) scale(0.92);
+      opacity: 0.5;
+      z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .letter-paper.reveal {
+      transform: translateY(-4%) scale(1);
+      opacity: 1;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+    }
+    .letter-paper .msg-main {
+      font-family: 'Georgia', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4a3540;
+      line-height: 1.4;
+    }
+    .letter-paper .msg-main .highlight {
+      color: #d48b8b;
+    }
+    .letter-paper .msg-sub {
+      font-size: 0.85rem;
+      color: #a0848a;
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .letter-paper .heart-big {
+      font-size: 2.2rem;
+      color: #d48b8b;
+      margin-bottom: 4px;
+      animation: heartPulse 1.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    /* ----- BUTTONS ----- */
+    .btn-group {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .btn {
+      padding: 10px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff0e6;
+      font-family: 'Georgia', serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .btn:hover {
+      background: rgba(255, 200, 210, 0.12);
+      border-color: rgba(255, 200, 210, 0.3);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(255, 100, 140, 0.1);
+    }
+    .btn-primary {
+      background: rgba(255, 150, 180, 0.15);
+      border-color: rgba(255, 150, 180, 0.2);
+    }
+    .btn-primary:hover {
+      background: rgba(255, 150, 180, 0.25);
+    }
+
+    /* ----- FOOTER / tiny secret ----- */
+    .footer-note {
+      margin-top: 24px;
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.15);
+      letter-spacing: 0.06em;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      align-items: center;
+    }
+    .footer-note .secret-star {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.8rem;
+      color: rgba(255, 200, 210, 0.2);
+    }
+    .footer-note .secret-star:hover {
+      color: rgba(255, 200, 210, 0.8);
+      transform: scale(1.2);
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 520px) {
+      .card {
+        padding: 24px 16px 32px;
+        border-radius: 32px;
+      }
+      .letter-wrap {
+        max-width: 100%;
+        aspect-ratio: 4 / 3.2;
+      }
+      .letter-paper .msg-main {
+        font-size: 1.1rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .hearts-bg {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING HEARTS -->
+  <div class="hearts-bg" id="heartsBg" aria-hidden="true"></div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+
+    <!-- NAME -->
+    <div class="name">Anuja</div>
+    <div class="subtitle">my darling · my girl</div>
+
+    <!-- LOVE MESSAGE with animated heart -->
+    <div class="love-message">
+      <span class="heart">❤</span> I Love You <span class="heart">❤</span>
+    </div>
+
+    <!-- LETTER ENVELOPE -->
+    <div class="letter-wrap" id="letterWrap">
+      <div class="letter-scene" id="letterScene">
+        <div class="envelope-back"></div>
+        <div class="flap" id="flap"></div>
+        <div class="seal" id="seal">💌</div>
+        <div class="letter-paper" id="letterPaper">
+          <span class="heart-big">❤</span>
+          <span class="msg-main">
+            You are my <span class="highlight">everything</span>.
+          </span>
+          <span class="msg-sub">— forever yours</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="btn-group">
+      <button class="btn btn-primary" id="openBtn">💌 Open Letter</button>
+      <button class="btn" id="resetBtn">↻ Reset</button>
+      <button class="btn" id="partyBtn">🎉 Party</button>
+    </div>
+
+    <!-- FOOTER with secret star -->
+    <div class="footer-note">
+      <span>made with love</span>
+      <span class="secret-star" id="secretStar">✦</span>
+      <span>for you</span>
+    </div>
+
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ----- DOM refs -----
+      const letterWrap = document.getElementById('letterWrap');
+      const scene = document.getElementById('letterScene');
+      const flap = document.getElementById('flap');
+      const seal = document.getElementById('seal');
+      const paper = document.getElementById('letterPaper');
+      const openBtn = document.getElementById('openBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const partyBtn = document.getElementById('partyBtn');
+      const secretStar = document.getElementById('secretStar');
+      const heartsBg = document.getElementById('heartsBg');
+
+      let isOpen = false;
+      let secretFound = false;
+
+      // ----- LETTER TOGGLE -----
+      function toggleLetter() {
+        isOpen = !isOpen;
+        if (isOpen) {
+          scene.classList.add('open');
+          flap.classList.add('open');
+          seal.classList.add('hidden');
+          paper.classList.add('reveal');
+          openBtn.textContent = '✉ Close Letter';
+        } else {
+          scene.classList.remove('open');
+          flap.classList.remove('open');
+          seal.classList.remove('hidden');
+          paper.classList.remove('reveal');
+          openBtn.textContent = '💌 Open Letter';
+        }
+      }
+
+      letterWrap.addEventListener('click', function(e) {
+        if (e.target.closest('.seal') && !isOpen) {
+          // clicking seal also opens
+          toggleLetter();
+        } else if (!e.target.closest('.letter-paper')) {
+          toggleLetter();
+        }
+      });
+
+      openBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleLetter();
+      });
+
+      resetBtn.addEventListener('click', function() {
+        if (isOpen) toggleLetter();
+        // also reset secret?
+        if (secretFound) {
+          secretFound = false;
+          secretStar.textContent = '✦';
+          secretStar.style.color = '';
+        }
+        // remove any extra hearts from party
+        document.querySelectorAll('.party-heart').forEach(el => el.remove());
+      });
+
+      // ----- PARTY: burst of hearts -----
+      partyBtn.addEventListener('click', function() {
+        // create 30 floating hearts that fly outward
+        const colors = ['#ff6b8a', '#ff8fa3', '#ffb3c6', '#ffc2d1', '#ffd9e2'];
+        for (let i = 0; i < 35; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'party-heart';
+          heart.textContent = ['❤', '♥', '💖', '💗', '💕'][Math.floor(Math.random() * 5)];
+          heart.style.position = 'fixed';
+          heart.style.fontSize = (1.2 + Math.random() * 2.2) + 'rem';
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+          heart.style.pointerEvents = 'none';
+          heart.style.zIndex = '9999';
+          heart.style.left = (window.innerWidth / 2 - 20 + (Math.random() - 0.5) * 120) + 'px';
+          heart.style.top = (window.innerHeight / 2 - 20 + (Math.random() - 0.5) * 120) + 'px';
+          heart.style.opacity = '1';
+          heart.style.transition = 'all 2.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          document.body.appendChild(heart);
+
+          // random direction
+          const angle = Math.random() * Math.PI * 2;
+          const distance = 120 + Math.random() * 300;
+          const dx = Math.cos(angle) * distance;
+          const dy = Math.sin(angle) * distance - 100;
+
+          requestAnimationFrame(() => {
+            heart.style.transform = `translate(${dx}px, ${dy}px) scale(1.4) rotate(${Math.random()*360}deg)`;
+            heart.style.opacity = '0';
+          });
+
+          // remove after animation
+          setTimeout(() => {
+            heart.remove();
+          }, 2800);
+        }
+        // also trigger open letter if not open
+        if (!isOpen) toggleLetter();
+      });
+
+      // ----- SECRET STAR -----
+      secretStar.addEventListener('click', function() {
+        if (!secretFound) {
+          secretFound = true;
+          this.textContent = '❤';
+          this.style.color = '#ff6b8a';
+          // show a hidden message in the letter
+          const paperMsg = paper.querySelector('.msg-main');
+          if (paperMsg) {
+            paperMsg.innerHTML = 'You found the secret! <span class="highlight">I adore you.</span>';
+          }
+          // also open letter
+          if (!isOpen) toggleLetter();
+          // add a little celebration
+          partyBtn.click();
+        }
+      });
+
+      // ----- GENERATE FLOATING HEARTS BACKGROUND -----
+      function createHearts() {
+        const count = 28;
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'heart-float';
+          heart.textContent = ['❤', '♥', '💖', '💗', '💕'][Math.floor(Math.random() * 5)];
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.fontSize = (0.8 + Math.random() * 2.2) + 'rem';
+          heart.style.animationDuration = (12 + Math.random() * 20) + 's';
+          heart.style.animationDelay = (Math.random() * 20) + 's';
+          heart.style.opacity = 0.2 + Math.random() * 0.3;
+          heartsBg.appendChild(heart);
+        }
+      }
+      createHearts();
+
+      // ----- AUTO OPEN letter after a few seconds? no, let user.
+
+      console.log('💖 For Anuja — my darling');
+    })();
+  </script>
+</body>
+</html>

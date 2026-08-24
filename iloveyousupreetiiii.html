@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✨ Supriti · Stars Align</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0a12;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ---------- SKY ---------- */
+        .sky {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at 50% 30%, #1a1730 0%, #0b0a12 70%);
+        }
+        .star-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1.5px 1.5px at 60% 20%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(1.5px 1.5px at 80% 50%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(2px 2px at 10% 80%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1.5px 1.5px at 50% 90%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 70% 60%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(2px 2px at 30% 10%, rgba(255, 255, 255, 0.3), transparent),
+                radial-gradient(1px 1px at 95% 80%, rgba(255, 255, 255, 0.5), transparent);
+            background-size: 100% 100%;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* ---------- CARD ---------- */
+        .card {
+            position: relative;
+            z-index: 1;
+            width: min(560px, 92vw);
+            padding: 40px 36px 48px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .card:hover {
+            transform: scale(1.01);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 100px;
+            background: rgba(255, 215, 140, 0.12);
+            border: 1px solid rgba(255, 215, 140, 0.15);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #f0d9b0;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: #fff3e0;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        h1 em {
+            font-style: italic;
+            color: #f5d7a8;
+        }
+        .sub {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 28px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        /* ---------- CONSTELLATION CANVAS ---------- */
+        .constellation-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-width: 400px;
+            margin: 0 auto 24px;
+            border-radius: 24px;
+            background: radial-gradient(ellipse at center, rgba(30, 25, 60, 0.6), rgba(10, 8, 20, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.4s ease;
+        }
+        .constellation-wrap:hover {
+            box-shadow: 0 0 60px rgba(255, 215, 140, 0.04);
+        }
+        .constellation-wrap canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: auto;
+        }
+
+        /* ---------- BUTTON ---------- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            border-radius: 100px;
+            border: none;
+            background: linear-gradient(135deg, #f5d7a8, #e8b88a);
+            color: #1a1425;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(245, 215, 168, 0.15);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 48px rgba(245, 215, 168, 0.25);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+        .btn-primary .icon {
+            font-size: 1.1rem;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+        .btn-secondary:hover {
+            color: rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.06em;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 520px) {
+            .card {
+                padding: 28px 20px 32px;
+                border-radius: 28px;
+            }
+            .constellation-wrap {
+                max-width: 100%;
+                border-radius: 18px;
+            }
+            .btn-primary {
+                padding: 12px 28px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            .star-bg {
+                animation: none;
+            }
+            .card:hover {
+                transform: none;
+            }
+            .btn-primary:hover {
+                transform: none;
+            }
+        }
+
+        /* ---------- MESSAGE REVEAL ---------- */
+        .msg-reveal {
+            margin-top: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #f5d7a8;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 2.8rem;
+            letter-spacing: 0.02em;
+        }
+        .msg-reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .msg-reveal .heart {
+            color: #f28b8b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky" aria-hidden="true">
+        <div class="star-bg"></div>
+    </div>
+
+    <div class="card">
+        <div class="badge">✦ for Supriti</div>
+        <h1>Stars <em>align</em><br />for you</h1>
+        <p class="sub">Tap the sky to create a constellation</p>
+
+        <div class="constellation-wrap" id="canvasWrap">
+            <canvas id="constellationCanvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="msg-reveal" id="msgReveal">
+            <span class="heart">❤</span> I Love You, Supriti
+        </div>
+
+        <button class="btn-primary" id="resetBtn">
+            <span class="icon">✦</span> Reshoot the stars
+        </button>
+        <button class="btn-secondary" id="revealBtn">↻ reveal message</button>
+        <div class="footer-note">tap · draw · connect</div>
+    </div>
+
+    <script>
+        (function() {
+            const canvas = document.getElementById('constellationCanvas');
+            const ctx = canvas.getContext('2d');
+            const wrap = document.getElementById('canvasWrap');
+            const msgEl = document.getElementById('msgReveal');
+            const resetBtn = document.getElementById('resetBtn');
+            const revealBtn = document.getElementById('revealBtn');
+
+            const W = 600,
+                H = 600;
+            canvas.width = W;
+            canvas.height = H;
+
+            // ---------- CONFIG ----------
+            const MAX_STARS = 60;
+            const CONNECT_DIST = 100;
+            const STAR_RADIUS = 3.5;
+
+            // ---------- STATE ----------
+            let stars = [];
+            let connections = [];
+            let revealed = false;
+
+            // ---------- HELPERS ----------
+            function random(min, max) { return Math.random() * (max - min) + min; }
+
+            function dist(a, b) {
+                return Math.hypot(a.x - b.x, a.y - b.y);
+            }
+
+            // ---------- GENERATE STARS ----------
+            function generateStars(count) {
+                const pts = [];
+                // cluster around center with some randomness
+                for (let i = 0; i < count; i++) {
+                    const angle = random(0, Math.PI * 2);
+                    const radius = random(40, 260);
+                    const x = W / 2 + Math.cos(angle) * radius + random(-60, 60);
+                    const y = H / 2 + Math.sin(angle) * radius + random(-60, 60);
+                    pts.push({
+                        x: Math.min(Math.max(x, 20), W - 20),
+                        y: Math.min(Math.max(y, 20), H - 20),
+                        r: random(2, 5),
+                        baseR: random(2, 5),
+                        phase: random(0, Math.PI * 2),
+                        speed: random(0.005, 0.02),
+                    });
+                }
+                return pts;
+            }
+
+            // ---------- COMPUTE CONNECTIONS ----------
+            function computeConnections(pts) {
+                const conns = [];
+                for (let i = 0; i < pts.length; i++) {
+                    for (let j = i + 1; j < pts.length; j++) {
+                        const d = dist(pts[i], pts[j]);
+                        if (d < CONNECT_DIST) {
+                            conns.push({ i, j, d, alpha: 1 - d / CONNECT_DIST });
+                        }
+                    }
+                }
+                // sort by distance (closest first)
+                conns.sort((a, b) => a.d - b.d);
+                // keep only the most relevant ones (max 2 per star)
+                const keep = new Set();
+                const countPerStar = new Map();
+                for (const c of conns) {
+                    const key = `${Math.min(c.i,c.j)}-${Math.max(c.i,c.j)}`;
+                    if (keep.has(key)) continue;
+                    const a = countPerStar.get(c.i) || 0;
+                    const b = countPerStar.get(c.j) || 0;
+                    if (a < 3 && b < 3) {
+                        keep.add(key);
+                        countPerStar.set(c.i, a + 1);
+                        countPerStar.set(c.j, b + 1);
+                    }
+                }
+                return conns.filter(c => {
+                    const key = `${Math.min(c.i,c.j)}-${Math.max(c.i,c.j)}`;
+                    return keep.has(key);
+                });
+            }
+
+            // ---------- DRAW ----------
+            let time = 0;
+
+            function draw() {
+                time += 0.01;
+                ctx.clearRect(0, 0, W, H);
+
+                // background glow
+                const grad = ctx.createRadialGradient(W / 2, H / 2, 20, W / 2, H / 2, 280);
+                grad.addColorStop(0, 'rgba(245, 215, 168, 0.03)');
+                grad.addColorStop(1, 'rgba(245, 215, 168, 0)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
+
+                // connections
+                for (const c of connections) {
+                    const a = stars[c.i];
+                    const b = stars[c.j];
+                    if (!a || !b) continue;
+                    const alpha = c.alpha * 0.35 + 0.15 * Math.sin(time + c.i + c.j);
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = `rgba(245, 215, 168, ${alpha * 0.6})`;
+                    ctx.lineWidth = 1.2 + 0.8 * c.alpha;
+                    ctx.stroke();
+                }
+
+                // stars
+                for (const s of stars) {
+                    const pulse = 0.8 + 0.2 * Math.sin(time * s.speed * 2 + s.phase);
+                    const r = s.r * pulse;
+                    // glow
+                    const grad2 = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * 4);
+                    grad2.addColorStop(0, `rgba(255, 235, 200, ${0.2 * pulse})`);
+                    grad2.addColorStop(1, 'rgba(255, 235, 200, 0)');
+                    ctx.fillStyle = grad2;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, r * 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // core
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 245, 230, ${0.7 + 0.3 * pulse})`;
+                    ctx.fill();
+                    // highlight
+                    ctx.beginPath();
+                    ctx.arc(s.x - r * 0.3, s.y - r * 0.3, r * 0.3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${0.3 * pulse})`;
+                    ctx.fill();
+                }
+
+                // if revealed, draw a subtle heart glow
+                if (revealed) {
+                    const grd = ctx.createRadialGradient(W / 2, H / 2, 10, W / 2, H / 2, 200);
+                    grd.addColorStop(0, 'rgba(245, 215, 168, 0.08)');
+                    grd.addColorStop(1, 'rgba(245, 215, 168, 0)');
+                    ctx.fillStyle = grd;
+                    ctx.beginPath();
+                    ctx.arc(W / 2, H / 2, 200, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            // ---------- INIT ----------
+            function initStars() {
+                stars = generateStars(MAX_STARS);
+                connections = computeConnections(stars);
+                revealed = false;
+                msgEl.classList.remove('show');
+            }
+
+            // ---------- REVEAL MESSAGE ----------
+            function revealMessage() {
+                revealed = true;
+                msgEl.classList.add('show');
+                // add a few new stars for sparkle
+                for (let i = 0; i < 8; i++) {
+                    const angle = random(0, Math.PI * 2);
+                    const radius = random(20, 180);
+                    const x = W / 2 + Math.cos(angle) * radius;
+                    const y = H / 2 + Math.sin(angle) * radius;
+                    stars.push({
+                        x: Math.min(Math.max(x, 10), W - 10),
+                        y: Math.min(Math.max(y, 10), H - 10),
+                        r: random(3, 6),
+                        baseR: random(3, 6),
+                        phase: random(0, Math.PI * 2),
+                        speed: random(0.01, 0.03),
+                    });
+                }
+                connections = computeConnections(stars);
+            }
+
+            // ---------- EVENTS ----------
+            // tap canvas → reveal
+            wrap.addEventListener('click', (e) => {
+                if (!revealed) revealMessage();
+            });
+
+            // reveal button
+            revealBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!revealed) revealMessage();
+            });
+
+            // reset
+            resetBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                initStars();
+                msgEl.classList.remove('show');
+                revealed = false;
+            });
+
+            // ---------- START ----------
+            initStars();
+            draw();
+
+            // responsive resize: keep canvas crisp
+            function resizeCanvas() {
+                const rect = wrap.getBoundingClientRect();
+                const size = rect.width;
+                // canvas is already 600x600, just scale via CSS
+            }
+            window.addEventListener('resize', resizeCanvas);
+
+            console.log('✨ Constellation of Love — for Supriti');
+        })();
+    </script>
+
+</body>
+</html>
