@@ -61,6 +61,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const certificateInput = document.querySelector('[data-certificate-input]');
+  const certificatePreview = document.querySelector('[data-certificate-preview]');
+  certificateInput?.addEventListener('change', () => {
+    const file = certificateInput.files?.[0];
+    if (!file || !certificatePreview) return;
+
+    certificatePreview.replaceChildren();
+    if (file.type.startsWith('image/')) {
+      const image = document.createElement('img');
+      image.src = URL.createObjectURL(file);
+      image.alt = `Preview of ${file.name}`;
+      image.addEventListener('load', () => URL.revokeObjectURL(image.src), { once: true });
+      certificatePreview.appendChild(image);
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(file);
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = `Open ${file.name}`;
+    certificatePreview.appendChild(link);
+  });
+
   if (loading) {
     window.requestAnimationFrame(() => loading.classList.add('is-hidden'));
   }

@@ -5,7 +5,7 @@
   <link>https://diyasubedi.com.np/poems.html</link>
   <description>Nepali poems in English and Nepali, written and narrated by Diya Subedi.</description>
   <language>ne</language>
-  <lastBuildDate>Sat, 01 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 24 Aug 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://diyasubedi.com.np/feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>Kayeu Chan Timro Lagi Pani</title>
@@ -158,6 +158,14 @@
     <description>A spoken-word poem about death, being forgotten, and the realization that the moments still matter even when the name doesn't.</description>
     <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
     <category>Existential</category>
+  </item>
+  <item>
+    <title>Chhori!</title>
+    <link>https://diyasubedi.com.np/poem-chhori.html</link>
+    <guid isPermaLink="true">https://diyasubedi.com.np/poem-chhori.html</guid>
+    <description>A Nepali spoken-word poem condemning violence against children and the mindset that allows childhood innocence and trust to be destroyed.</description>
+    <pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate>
+    <category>Social Justice</category>
   </item>
 </channel>
 </rss>

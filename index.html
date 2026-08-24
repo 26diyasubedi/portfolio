@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Free original poems by Diya Subedi — Nepali and English poetry read aloud on video with meaning notes. Love, sad, heartbreak and nostalgia poems from Kathmandu." />
+    <meta name="description" content="Read original Nepali and English poems by Diya Subedi, a young poet from Kathmandu. Explore poems about memory, love, heartbreak, and growing up." />
     <meta name="theme-color" content="#f5efe6" />
     <meta property="og:site_name" content="Diya Subedi" />
     <meta property="og:title" content="Diya Subedi | Nepali Poems in English and Nepali" />
-    <meta property="og:description" content="Nepali and English poems by Diya Subedi — love, sad, heartbreak and nostalgia poetry, each read aloud on video." />
+    <meta property="og:description" content="Original Nepali and English poetry by Diya Subedi, including poems about memory, love, heartbreak, and everyday life." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://diyasubedi.com.np/index.html" />
     <meta name="twitter:card" content="summary" />
@@ -277,10 +277,269 @@
             perspective: 800px;
             transition: transform 0.2s ease-out;
             will-change: transform;
+            background: transparent;
+            box-shadow: none;
+        }
+        .hero-aside.glass-panel {
+            background: transparent;
+            border: 0;
         }
         .hero-aside:hover {
             transform: rotateY(2deg) rotateX(1deg) translateZ(10px);
         }
+
+    .hero-aside-inner {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+.hero-aside-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border, rgba(36, 29, 24, 0.08));
+    background: var(--surface-muted, #faf8f5);
+}
+
+.hero-aside-content {
+    min-width: 0; /* helps long text wrap nicely */
+}
+
+.hero-aside .lead-quote {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.hero-aside ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.hero-aside li {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: var(--text, #242424);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Profile card inside the side panel */
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 14px 24px;
+}
+
+/* Bigger profile image */
+.profile-image {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border, rgba(36, 29, 24, 0.08));
+    background: var(--surface-muted, #faf8f5);
+    margin-bottom: 16px;
+}
+
+/* "A Poet" text */
+.profile-tagline {
+    margin: 0 0 16px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text, #242424);
+}
+
+/* Music player container */
+.profile-player {
+    width: 100%;
+    max-width: 240px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, rgba(36, 29, 24, 0.08));
+    box-shadow: 0 4px 16px rgba(36, 29, 24, 0.04);
+}
+
+/* Play button */
+.player-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent, #8c6b4a); /* adjust to your accent color */
+    color: #fff;
+    cursor: pointer;
+    transition: transform 150ms ease, background 150ms ease;
+}
+
+.player-btn:hover {
+    transform: scale(1.05);
+    background: var(--accent-gold, #a67c52);
+}
+
+.player-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.player-text {
+    /* hidden visually, but kept for accessibility */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Track info */
+.player-track {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 0;
+}
+
+.track-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text, #242424);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.track-artist {
+    font-size: 0.75rem;
+    color: var(--muted, #6b6b6b);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+/* Responsive: on small screens */
+@media (max-width: 520px) {
+    .profile-image {
+        width: 215px;
+        height: 215px;
+    }
+
+    .profile-player {
+        max-width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /* -- hero stats with glow -- */
         /* -- hero stats -- */
@@ -813,34 +1072,108 @@
                         <span class="word">needed</span>
                         <span class="word">them.</span>
                     </h1>
-                    <span class="hero-underline" aria-hidden="true"></span>
-                   <p class="lead">
-                       This is a collection of <strong>Nepali poems</strong> written in <strong>Nepali and English</strong> — modern poetry about love, heartbreak, memories, and growing up in Kathmandu. Every poem has a short reading video, a note on its meaning, and the story behind it.
-                       I write because some feelings are too big to keep. <br>
-                         I post them here so they can find you instead.
-                         </p>
+                    <span> </span>
+
+<p class="lead">
+    I write poems in Nepali and English about memories, relationships, family,
+    heartbreak, and the small moments that stay with us. Some poems come with
+    a reading video and a short note about where they came from.
+</p>
+
+<p class="lead">
+    This is my little archive of words. I hope you find something here that
+    feels familiar.
+</p>
                     <div class="hero-actions">
                         <a class="primary-btn" href="poems.html">Read Poems</a>
                         <a class="ghost-btn" href="projects.html">View Projects</a>
                         <a class="ghost-btn" href="about.html">About Me</a>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <strong><span class="count-num" data-count="19">0</span></strong>
-                            <span class="muted-copy">Poems in the archive</span>
-                        </div>
-                        <div class="hero-stat">
-                            <strong><span class="count-num" data-count="2">0</span></strong>
-                            <span class="muted-copy">Languages I write in</span>
-                        </div>
-                        <div class="hero-stat">
-                            <strong><span class="count-num" data-count="2">0</span></strong>
-                            <span class="muted-copy">Years of building this site</span>
-                        </div>
+                        <a class="ghost-btn" href="contact.html">Contact</a>
                     </div>
                 </div>
+
+
+
+<aside class="hero-aside glass-panel" aria-label="About Diya">
+    <div class="profile-card">
+        <img
+            src="assets/galary/diya.jpg"
+            alt="Portrait of Diya Subedi"
+            class="profile-image"
+            style="object-position: 50% 45%;"
+            loading="lazy"
+        />
+
+        <p class="profile-tagline"> <b style="font-size: 30px;">Diya Subedi</b></p>
+
+        <!-- Simple music player -->
+        <div class="profile-player">
+            <audio
+                id="profileAudio"
+                src="assets/videos/feel.mp3"
+                preload="metadata"
+            ></audio>
+
+            <button
+                type="button"
+                class="player-btn"
+                id="playerBtn"
+                aria-label="Play song"
+            >
+                <span class="player-icon" aria-hidden="true">▶</span>
+                <span class="player-text">Play</span>
+            </button>
+
+            <div class="player-track">
+                <span class="track-name">Feel </span>
+                <span class="track-artist">Montell Frazier</span>
+            </div>
+        </div>
+        <div class="hero-stats profile-stats" aria-label="Archive overview">
+            <div class="hero-stat">
+                <strong><span class="count-num" data-count="21">0</span></strong>
+                <span class="muted-copy">Poems in the archive</span>
+            </div>
+            <div class="hero-stat">
+                <strong><span class="count-num" data-count="2">0</span></strong>
+                <span class="muted-copy">Languages I write in</span>
+            </div>
+        </div>
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 
-<aside class="hero-aside glass-panel" aria-label="About Diya" data-parallax>
+<!--<aside class="hero-aside glass-panel" aria-label="About Diya" data-parallax>
     <p class="lead-quote">
         "I started writing in Class 10, mostly to empty my head onto paper."
     </p>
@@ -850,7 +1183,7 @@
         <li>I write in Nepali and English.</li>
         <li>Send me messages anonymously through contact page</li>
     </ul>
-</aside>
+</aside> -->
 
 
             </section>
@@ -860,28 +1193,49 @@
                 <div class="section-title">
                     <div>
                         <p class="eyebrow">About Me</p>
-                        <h2>Writing about the world I walk through</h2>
+                        <h2>Mastidhapakale</h2>
                     </div>
                     <a href="about.html">Read the full story --></a>
                 </div>
-                <!--<div class="section-card">
-                    <p>I grew up in Kathmandu, where the city's rhythm taught me to listen closely to footsteps, rain, and the silence between thoughts. Literature became the place where I could name what I felt. Computers became the place where I could build forms for those feelings, turning curiosity into something tangible.</p>
-                    <p>Poetry and logic do not feel like opposites to me. One helps me understand the human heart. The other helps me shape an idea with structure and clarity. I am learning both with equal seriousness.</p>
-                </div>
-            </section>
-        -->
-            <div class="section-card">
-    <p>
-        This website is a free collection of original poetry. love poems, sad poems, heartbreak poems, and nostalgia poems, written by a girl poet from Kathmandu. Some are in Nepali, some are in English, and every one of them is read aloud in a poem video.
-    </p>
-    <p>
-        Most of these poems started as something that actually happened to me.  A goodbye I didn't get to say, something that i didn't express, a festival I watched from the side.
+                <div class="about-grid">
+                <div class="section-card about-copy">
+     <p style="font-size: 20px;">
+        This is a collection of poems I have written over the years. I write
+        about love, distance, family, memory, and the moments that are difficult
+        to explain in conversation.
     </p>
 
-    <p>
-        If you stay for a while, I hope you find something that reminds you of your own story.
+    <p style="font-size: 20px;" >
+        Many of these poems began with something personal an unfinished
+        goodbye, a message I never sent, or a memory I kept returning to.
+        Some are written in Nepali and others in English.
     </p>
-</div>
+
+    <p style="font-size: 20px;">
+        I built this website so the poems could live somewhere outside my
+        notebooks. I hope one of them feels familiar to you.
+    </p>
+                </div>
+                <aside class="about-gallery">
+                    <div class="about-gallery-image">
+                        <img src="assets/galary/521431673_17939091333028393_2595131084425235857_n..jpg" alt="A moment from Diya's gallery" loading="lazy" />
+                        <span class="about-gallery-count">05 photographs</span>
+                    </div>
+                    <div class="about-gallery-footer">
+                        <div>
+                            <p class="gallery-kicker">A small visual diary</p>
+                            <h3>Things worth remembering</h3>
+                        </div>
+                        <button class="gallery-open" type="button" data-gallery-open aria-haspopup="dialog">
+                            Open gallery <span aria-hidden="true">+</span>
+                        </button>
+                    </div>
+                </aside>
+                </div>
+
+
+
+            </section>
 
         <!-- --- POEMS --- -->
             <section class="reveal from-right">
@@ -908,16 +1262,33 @@
                 <div class="poem-grid stagger-children">
                     <article class="section-card">
                         <h3>This website</h3>
-                        <p>The site you're reading right now. Built by hand with HTML, CSS, and JavaScript.</p>
+
+
+                                <p>
+    I built this site from scratch to keep my poems, videos, and notes in one
+    place. It is still changing as I learn more.
+                                  </p>
+
+
                     </article>
                     <article class="section-card">
-                        <h3>Poetry Archive</h3>
-                        <p>Every poem on one searchable page. Filter by mood, or just scroll.</p>
-                    </article>
-                </div>
+                        <h3>Poetry archive</h3>
+
+
+<p>
+    A searchable page for my poems. You can browse by language, mood, or year,
+    or simply scroll through them.
+</p>
+
+
+</div>
             </section>
 
-            <!-- --- PRACTICE / TIMELINE --- -->
+
+<!---
+
+
+
             <section class="reveal blur-in">
                 <div class="section-title">
                     <div>
@@ -937,7 +1308,14 @@
                 </div>
             </section>
 
+
+   --->
+<br>
+
+
+
             <!-- --- CONTACT --- -->
+             <br><br><br>
             <section class="reveal from-bottom contact-section">
                 <div class="section-title">
                     <div>
@@ -979,6 +1357,26 @@
     </div>
 
     <button class="nav-pill back-to-top" data-back-to-top type="button">? Back to top</button>
+    <dialog class="gallery-dialog" data-gallery-dialog aria-labelledby="gallery-title">
+        <div class="gallery-dialog-inner">
+            <div class="gallery-dialog-header">
+                <div>
+                    <p class="gallery-kicker">From the gallery</p>
+                    <h2 id="gallery-title">A few moments</h2>
+                </div>
+                <div class="gallery-dialog-tools">
+                    <span class="gallery-count" data-gallery-count aria-live="polite">01 / 05</span>
+                    <button class="gallery-close" type="button" data-gallery-close aria-label="Close gallery">Close</button>
+                </div>
+            </div>
+            <div class="gallery-stage">
+                <button class="gallery-arrow" type="button" data-gallery-previous aria-label="Previous photo">Previous</button>
+                <img data-gallery-image src="assets/galary/1.jpg" alt="Gallery photo 1 of 5" />
+                <button class="gallery-arrow" type="button" data-gallery-next aria-label="Next photo">Next</button>
+            </div>
+            <div class="gallery-thumbnails" data-gallery-thumbnails aria-label="Gallery photos"></div>
+        </div>
+    </dialog>
     <div class="page-loading" aria-hidden="true"><div class="loader-mark"></div></div>
     <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__bar"></div></div>
     <div class="page-transition" aria-hidden="true"></div>
@@ -990,8 +1388,38 @@
     <script defer src="js/video-manager.js?v=20260801"></script>
     <script defer src="js/animations.js?v=20260801"></script>
     <script defer src="js/particles.js?v=20260801"></script>
+    <script defer src="js/gallery.js?v=20260824"></script>
 
     <script>
+    (function () {
+        const audio = document.getElementById('profileAudio');
+        const button = document.getElementById('playerBtn');
+        const icon = button?.querySelector('.player-icon');
+        const text = button?.querySelector('.player-text');
+
+        if (!audio || !button || !icon || !text) return;
+
+        const updatePlayer = () => {
+            const playing = !audio.paused && !audio.ended;
+            icon.textContent = playing ? '⏸' : '▶';
+            text.textContent = playing ? 'Pause' : 'Play';
+            button.setAttribute('aria-label', playing ? 'Pause song' : 'Play song');
+        };
+
+        audio.volume = 0.5;
+        button.addEventListener('click', () => {
+            if (audio.paused || audio.ended) {
+                audio.play().catch(() => updatePlayer());
+            } else {
+                audio.pause();
+            }
+        });
+        audio.addEventListener('play', updatePlayer);
+        audio.addEventListener('pause', updatePlayer);
+        audio.addEventListener('ended', updatePlayer);
+        updatePlayer();
+    })();
+
     (function() {
         'use strict';
 
@@ -1122,7 +1550,7 @@
             card.style.transitionDelay = (index * 0.06) + 's';
         });
 
-        console.log('? Max creative design loaded � floating ideas, animated text, and immersive interactions.');
+        console.log('Portfolio loaded.');
     })();
     </script>
 </body>

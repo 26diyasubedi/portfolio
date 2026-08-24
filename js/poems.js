@@ -2,7 +2,7 @@ const POEMS_URL = 'data/poems.json';
 
 async function loadPoems() {
   try {
-    const response = await fetch(POEMS_URL, { cache: 'force-cache' });
+    const response = await fetch(`${POEMS_URL}?v=20260824`, { cache: 'no-store' });
     if (response.ok) {
       const data = await response.json();
       if (Array.isArray(data) && data.length) {
@@ -395,15 +395,16 @@ async function initPoemLibrary() {
       showLoadingState(featuredContainer, 3);
     }
 
-    const rawPoems = getInlinePoemData() || [];
-    if (rawPoems.length) {
-      renderLibrary(rawPoems);
-      return;
-    }
-
-    const fallbackPoems = await loadPoems();
-    if (Array.isArray(fallbackPoems) && fallbackPoems.length) {
-      renderLibrary(fallbackPoems);
+    try {
+      const freshPoems = await loadPoems();
+      if (Array.isArray(freshPoems) && freshPoems.length) {
+        renderLibrary(freshPoems);
+        return;
+      }
+    } catch (error) {
+      const fallbackPoems = getInlinePoemData() || [];
+      if (fallbackPoems.length) renderLibrary(fallbackPoems);
+      else throw error;
     }
   } catch (error) {
     if (container) {
@@ -471,9 +472,13 @@ async function initPoemDetail() {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug') || window.POEM_SLUG;
 
-  const dataSource = window.POEMS_DATA && Array.isArray(window.POEMS_DATA)
-    ? window.POEMS_DATA
-    : await loadPoems();
+  let dataSource;
+  try {
+    dataSource = await loadPoems();
+  } catch (error) {
+    dataSource = getInlinePoemData() || [];
+    if (!dataSource.length) throw error;
+  }
   const poems = dataSource.filter((poem) => !poem.draft && poem.visibility === 'published');
   const poem = poems.find((entry) => entry.slug === slug);
 
@@ -576,7 +581,7 @@ async function initPoemDetail() {
           <div class="video-controls-left">
             <button class="video-control-btn" data-play-pause type="button" aria-label="Play or pause">▶</button>
             <button class="video-control-btn" data-restart type="button" aria-label="Restart">↺</button>
-            <button class="video-control-btn" data-mute type="button" aria-label="Mute">🔊</button>
+            <button class="video-control-btn" data-mute type="button" aria-label="Mute">Mute</button>
             <input class="video-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume" />
             <span class="video-time video-time-current">00:00</span>
             <span class="video-time-separator">/</span>

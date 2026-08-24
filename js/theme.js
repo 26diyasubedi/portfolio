@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.toggle('theme-dark', isDark);
     body.classList.toggle('theme-dark', isDark);
     if (toggle) {
-      toggle.textContent = isDark ? '☀ Light' : '☾ Dark';
+      toggle.innerHTML = isDark
+        ? '<span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Light</span>'
+        : '<span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Dark</span>';
+      toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
       toggle.setAttribute('aria-pressed', String(isDark));
     }
     if (themeMeta) themeMeta.setAttribute('content', isDark ? '#0b0b0d' : '#f5efe6');

@@ -1,3 +1,5 @@
+@import url("site-polish.css?v=20260824");
+
 :root {
   color-scheme: light;
   --bg: #f5efe6;
@@ -1163,4 +1165,51 @@ body.theme-dark .poem-card--skeleton {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Editorial defaults: keep the writing louder than the interface. */
+body {
+  background-image: linear-gradient(rgba(32, 35, 31, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(32, 35, 31, 0.018) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.ambient-layer,
+.float-shape,
+.cursor-glow,
+#particles-canvas,
+.grain-overlay,
+.page-loading,
+.page-transition { display: none !important; }
+
+.hero,
+.page-hero,
+.section-card,
+.poem-card,
+.feature-card,
+.detail-shell,
+.quote-card { backdrop-filter: none; }
+
+.lead,
+.page-intro,
+.section-card p,
+.poem-body,
+.lead-quote { max-width: 68ch; }
+
+.poem-body { font-size: clamp(1rem, 1.1vw, 1.12rem); line-height: 1.9; }
+.form-field:focus,
+button:focus-visible,
+a:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 3px; }
+.poem-read-btn,
+.primary-btn { background: var(--accent); background-image: none; box-shadow: 0 8px 20px rgba(36, 29, 24, 0.1); }
+.poem-read-btn:hover,
+.poem-read-btn:focus-visible,
+.primary-btn:hover,
+.primary-btn:focus-visible { background: var(--accent-deep); box-shadow: 0 10px 24px rgba(36, 29, 24, 0.14); }
+.poem-card:hover,
+.poem-card:focus-within { transform: translateY(-2px); }
+.poem-card::before { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .poem-card:hover,
+  .feature-card:hover { transform: none; }
 }

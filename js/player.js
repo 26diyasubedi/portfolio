@@ -81,8 +81,8 @@
     let activeBoost = Number(getStoredValue(STORAGE_KEYS.audioBoost, '1')) || 1;
     const playIcon = '▶';
     const pauseIcon = '⏸';
-    const muteIcon = '🔇';
-    const unmuteIcon = '🔊';
+    const muteIcon = 'Unmute';
+    const unmuteIcon = 'Mute';
     const restartIcon = '↺';
 
     const showControls = (force = false) => {

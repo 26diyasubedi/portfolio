@@ -66,7 +66,7 @@ document.addEventListener('click', (event) => {
     const muteBtn = document.createElement('button');
     muteBtn.className = 'mute-toggle';
     muteBtn.type = 'button';
-    muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    muteBtn.textContent = video.muted ? 'Unmute' : 'Mute';
     const vol = document.createElement('input');
     vol.type = 'range'; vol.min = 0; vol.max = 1; vol.step = 0.01; vol.value = video.volume || 1;
     vol.className = 'volume-range';
@@ -120,14 +120,14 @@ document.addEventListener('click', (event) => {
     // wire controls
     muteBtn.addEventListener('click', () => {
       video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      muteBtn.textContent = video.muted ? 'Unmute' : 'Mute';
     });
 
     vol.addEventListener('input', () => {
       const v = parseFloat(vol.value);
       video.volume = v;
-      if (v > 0 && video.muted) { video.muted = false; muteBtn.textContent = '🔊'; }
-      if (v === 0) { video.muted = true; muteBtn.textContent = '🔇'; }
+      if (v > 0 && video.muted) { video.muted = false; muteBtn.textContent = 'Mute'; }
+      if (v === 0) { video.muted = true; muteBtn.textContent = 'Unmute'; }
     });
 
     replayBtn.addEventListener('click', (event) => {

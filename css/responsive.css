@@ -3,6 +3,12 @@
   .hero-stats { grid-template-columns: 1fr; }
 }
 
+@media (min-width: 701px) and (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(240px, 0.62fr) !important; }
+  .hero-aside { order: -1; }
+  .profile-image { width: 220px; height: 220px; }
+}
+
 @media (max-width: 620px) {
   .poem-grid, .related-grid { grid-template-columns: 1fr; }
   .poem-grid { gap: 14px; }
