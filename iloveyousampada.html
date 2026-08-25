@@ -1,2237 +1,1410 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>S A M P U — a little universe for you</title>
-<meta name="description" content="A tiny universe, built for Sampu." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-/* =========================================================
-   SAMPUPEDIA — A little universe for Sampu
-   ========================================================= */
-
-:root{
-  --midnight:#0a0e27;
-  --midnight-2:#0f1433;
-  --cream:#f5e8d0;
-  --cream-soft:#efe2c6;
-  --lavender:#b8a9d4;
-  --dusty-blue:#7a93b8;
-  --peach:#f3c7a8;
-  --gold:#e8c878;
-  --coral:#d89a8a;
-  --rose:#e8a5a5;
-  --ink:#2a2340;
-  --paper:#f8efd8;
-  --paper-shadow:rgba(10,14,39,.35);
-  --line:rgba(245,232,208,.18);
-  --glow:rgba(232,200,120,.55);
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-x:hidden}
-body{
-  font-family:'Cormorant Garamond',serif;
-  background:var(--midnight);
-  color:var(--cream);
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  overflow-x:hidden;
-}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-img{max-width:100%;display:block}
-
-/* ---------- paper texture overlay ---------- */
-body::before{
-  content:"";
-  position:fixed;inset:0;
-  pointer-events:none;
-  background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(232,165,165,.08), transparent 55%),
-    radial-gradient(ellipse at 80% 90%, rgba(243,199,168,.07), transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(232,200,120,.04), transparent 70%);
-  z-index:1;
-  mix-blend-mode:screen;
-}
-body::after{
-  content:"";
-  position:fixed;inset:0;
-  pointer-events:none;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.91 0 0 0 0 0.82 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity:.35;
-  z-index:2;
-  mix-blend-mode:overlay;
-}
-
-/* ---------- typography ---------- */
-.hand{font-family:'Caveat',cursive;font-weight:600}
-.serif{font-family:'Cormorant Garamond',serif}
-.sans{font-family:'Inter',system-ui,sans-serif;letter-spacing:.04em}
-.small-caps{font-variant:small-caps;letter-spacing:.22em}
-
-/* ---------- sound toggle ---------- */
-#sound-toggle{
-  position:fixed;top:18px;right:18px;z-index:1000;
-  padding:8px 14px;border:1px solid var(--line);
-  border-radius:999px;font-size:11px;
-  color:var(--cream-soft);background:rgba(10,14,39,.55);
-  backdrop-filter:blur(8px);
-  transition:all .3s ease;
-  opacity:0;
-}
-#sound-toggle.show{opacity:1}
-#sound-toggle:hover{border-color:var(--gold);color:var(--gold)}
-
-/* ---------- LOVE RISES ANIMATION ---------- */
-.love-particle{
-  position:fixed;
-  pointer-events:none;
-  z-index:9999;
-  font-size:20px;
-  animation:loveRise 3s ease-out forwards;
-  opacity:0;
-}
-@keyframes loveRise{
-  0%{
-    opacity:0;
-    transform:translateY(0) scale(0.5) rotate(0deg);
-  }
-  10%{
-    opacity:1;
-    transform:translateY(-20px) scale(1) rotate(10deg);
-  }
-  90%{
-    opacity:1;
-  }
-  100%{
-    opacity:0;
-    transform:translateY(-400px) scale(0.8) rotate(360deg);
-  }
-}
-
-/* =========================================================
-   INTRO
-   ========================================================= */
-#intro{
-  position:fixed;inset:0;z-index:500;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--midnight);
-  transition:opacity 1.2s ease, visibility 1.2s ease;
-}
-#intro.gone{opacity:0;visibility:hidden;pointer-events:none}
-
-.intro-stars{position:absolute;inset:0;overflow:hidden}
-.intro-star{
-  position:absolute;width:2px;height:2px;border-radius:50%;
-  background:var(--rose);
-  box-shadow:0 0 6px var(--rose);
-  opacity:0;
-  animation:twinkle 4s ease-in-out infinite;
-}
-@keyframes twinkle{
-  0%,100%{opacity:.15;transform:scale(.8)}
-  50%{opacity:.9;transform:scale(1.1)}
-}
-
-.intro-title{
-  position:relative;z-index:3;
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;
-  font-size:clamp(38px,8vw,88px);
-  letter-spacing:.35em;
-  color:var(--cream);
-  display:flex;gap:.1em;
-  text-indent:.35em;
-}
-.intro-title span{
-  display:inline-block;
-  opacity:0;
-  transform:translateY(8px);
-  animation:letterIn 1.4s cubic-bezier(.2,.7,.2,1) forwards;
-}
-.intro-title span:nth-child(1){animation-delay:.6s}
-.intro-title span:nth-child(2){animation-delay:1.2s}
-.intro-title span:nth-child(3){animation-delay:1.8s}
-.intro-title span:nth-child(4){animation-delay:2.4s}
-.intro-title span:nth-child(5){animation-delay:3.0s}
-@keyframes letterIn{
-  to{opacity:1;transform:translateY(0)}
-}
-
-.intro-sub{
-  margin-top:22px;
-  font-family:'Caveat',cursive;
-  font-size:clamp(16px,2.2vw,22px);
-  color:var(--rose);
-  opacity:0;
-  animation:fadeIn 1.6s ease 4s forwards;
-  letter-spacing:.02em;
-}
-@keyframes fadeIn{to{opacity:.9}}
-
-#enter-btn{
-  margin-top:60px;
-  padding:12px 32px;
-  font-family:'Cormorant Garamond',serif;
-  font-size:13px;
-  letter-spacing:.4em;
-  color:var(--cream-soft);
-  border:1px solid var(--line);
-  border-radius:999px;
-  opacity:0;
-  animation:fadeIn 1.6s ease 5s forwards;
-  transition:all .5s ease;
-  position:relative;
-  overflow:hidden;
-}
-#enter-btn::before{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 50%, var(--rose), transparent 70%);
-  opacity:0;transition:opacity .5s ease;
-}
-#enter-btn:hover{border-color:var(--rose);color:var(--rose)}
-#enter-btn:hover::before{opacity:.25}
-
-/* =========================================================
-   UNIVERSE (main scrollable world)
-   ========================================================= */
-#universe{
-  position:relative;
-  min-height:100vh;
-  opacity:0;
-  transition:opacity 1.5s ease;
-  padding-bottom:120px;
-}
-#universe.show{opacity:1}
-
-/* ambient starfield (light, CSS only) */
-.starfield{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(1px 1px at 10% 20%, rgba(232,165,165,.7), transparent 50%),
-    radial-gradient(1px 1px at 25% 70%, rgba(245,232,208,.5), transparent 50%),
-    radial-gradient(1px 1px at 40% 40%, rgba(232,200,120,.6), transparent 50%),
-    radial-gradient(1px 1px at 55% 85%, rgba(232,165,165,.4), transparent 50%),
-    radial-gradient(1px 1px at 70% 15%, rgba(184,169,212,.6), transparent 50%),
-    radial-gradient(1px 1px at 85% 55%, rgba(245,232,208,.5), transparent 50%),
-    radial-gradient(1px 1px at 92% 30%, rgba(243,199,168,.5), transparent 50%),
-    radial-gradient(1px 1px at 15% 90%, rgba(232,165,165,.4), transparent 50%),
-    radial-gradient(1px 1px at 60% 5%, rgba(232,200,120,.5), transparent 50%),
-    radial-gradient(1px 1px at 33% 25%, rgba(232,165,165,.3), transparent 50%),
-    radial-gradient(1px 1px at 78% 75%, rgba(184,169,212,.4), transparent 50%),
-    radial-gradient(1px 1px at 5% 50%, rgba(245,232,208,.5), transparent 50%);
-  animation:drift 120s linear infinite;
-}
-@keyframes drift{
-  from{transform:translateY(0)}
-  to{transform:translateY(-40px)}
-}
-
-/* ---------- scene wrappers ---------- */
-.scene{
-  position:relative;
-  z-index:5;
-  padding:clamp(60px,10vh,120px) clamp(20px,5vw,80px);
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.scene-title{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;
-  font-size:clamp(28px,4vw,48px);
-  letter-spacing:.25em;
-  color:var(--cream);
-  text-align:center;
-  margin-bottom:12px;
-  text-indent:.25em;
-}
-.scene-sub{
-  font-family:'Caveat',cursive;
-  font-size:clamp(16px,2vw,20px);
-  color:var(--rose);
-  text-align:center;
-  margin-bottom:clamp(30px,6vh,60px);
-  opacity:.85;
-}
-
-/* =========================================================
-   CONSTELLATION OF MEMORIES
-   ========================================================= */
-#constellation-scene{min-height:120vh}
-.constellation-wrap{
-  position:relative;
-  width:min(900px,92vw);
-  aspect-ratio:1/1;
-  max-height:80vh;
-}
-.constellation-svg{
-  position:absolute;inset:0;width:100%;height:100%;
-  overflow:visible;
-}
-.constellation-svg .line{
-  stroke:rgba(232,165,165,.3);
-  stroke-width:.6;
-  stroke-dasharray:600;
-  stroke-dashoffset:600;
-  animation:drawLine 3s ease forwards;
-}
-@keyframes drawLine{to{stroke-dashoffset:0}}
-
-.star-node{
-  cursor:pointer;
-  transition:transform .4s ease;
-  transform-origin:center;
-}
-.star-node:hover{transform:scale(1.25)}
-.star-node:focus-visible{outline:2px solid var(--rose);outline-offset:6px;border-radius:50%}
-.star-core{
-  fill:var(--rose);
-  filter:drop-shadow(0 0 6px rgba(232,165,165,.7));
-}
-.star-halo{
-  fill:none;
-  stroke:var(--rose);
-  stroke-width:.4;
-  opacity:.4;
-  animation:pulseHalo 4s ease-in-out infinite;
-}
-@keyframes pulseHalo{
-  0%,100%{opacity:.2;r:8}
-  50%{opacity:.5;r:12}
-}
-.star-label{
-  font-family:'Caveat',cursive;
-  font-size:13px;
-  fill:var(--rose);
-  opacity:0;
-  transition:opacity .3s ease;
-  pointer-events:none;
-}
-.star-node:hover .star-label,
-.star-node:focus .star-label{opacity:1}
-
-/* secret invisible star */
-.star-secret{
-  fill:transparent;
-  cursor:pointer;
-}
-.star-secret:hover{fill:rgba(232,165,165,.3)}
-
-/* ---------- memory modal ---------- */
-#memory-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;
-  align-items:center;justify-content:center;
-  background:rgba(10,14,39,.85);
-  backdrop-filter:blur(12px);
-  padding:20px;
-  opacity:0;
-  transition:opacity .6s ease;
-}
-#memory-modal.open{display:flex;opacity:1}
-.memory-card{
-  position:relative;
-  max-width:560px;width:100%;
-  background:linear-gradient(180deg, rgba(248,239,216,.96), rgba(239,226,198,.96));
-  color:var(--ink);
-  border-radius:4px;
-  padding:clamp(24px,4vw,44px);
-  box-shadow:
-    0 30px 60px rgba(0,0,0,.5),
-    0 0 0 1px rgba(232,165,165,.3);
-  transform:scale(.92);
-  transition:transform .6s cubic-bezier(.2,.7,.2,1);
-  font-family:'Cormorant Garamond',serif;
-}
-#memory-modal.open .memory-card{transform:scale(1)}
-.memory-card::before{
-  content:"";position:absolute;inset:0;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity:.4;pointer-events:none;border-radius:4px;
-}
-.memory-date{
-  font-family:'Caveat',cursive;
-  font-size:15px;
-  color:var(--rose);
-  margin-bottom:6px;
-}
-.memory-title{
-  font-size:clamp(24px,3.5vw,34px);
-  font-weight:400;
-  font-style:italic;
-  margin-bottom:18px;
-  color:var(--ink);
-  line-height:1.15;
-}
-.memory-image{
-  width:100%;aspect-ratio:4/3;
-  background:var(--midnight-2);
-  border-radius:2px;
-  margin-bottom:18px;
-  overflow:hidden;
-  position:relative;
-  border:1px solid rgba(42,35,64,.15);
-}
-.memory-image img{width:100%;height:100%;object-fit:cover}
-.memory-image .placeholder{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  color:var(--cream-soft);font-family:'Caveat',cursive;font-size:16px;opacity:.6;
-  text-align:center;padding:20px;
-}
-.memory-text{
-  font-size:clamp(16px,1.6vw,19px);
-  line-height:1.65;
-  color:#3a3050;
-  font-style:italic;
-}
-.memory-note{
-  margin-top:18px;
-  font-family:'Caveat',cursive;
-  font-size:17px;
-  color:var(--rose);
-  transform:rotate(-1.5deg);
-  display:inline-block;
-}
-.memory-close{
-  position:absolute;top:14px;right:14px;
-  width:32px;height:32px;border-radius:50%;
-  border:1px solid rgba(42,35,64,.25);
-  color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  transition:all .3s ease;
-}
-.memory-close:hover{background:var(--ink);color:var(--cream)}
-
-/* =========================================================
-   PHOTO PLANETS
-   ========================================================= */
-#planets-scene{min-height:110vh}
-.planets-orbit{
-  position:relative;
-  width:min(700px,90vw);
-  aspect-ratio:1/1;
-  max-height:75vh;
-}
-.planet{
-  position:absolute;
-  width:clamp(80px,12vw,130px);
-  height:clamp(80px,12vw,130px);
-  border-radius:50%;
-  cursor:pointer;
-  transition:transform .5s cubic-bezier(.2,.7,.2,1);
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;
-  font-family:'Caveat',cursive;
-  font-size:clamp(12px,1.4vw,15px);
-  color:var(--cream);
-  padding:10px;
-  box-shadow:inset -10px -15px 30px rgba(0,0,0,.35), 0 0 40px rgba(0,0,0,.3);
-}
-.planet:hover{transform:scale(1.12)}
-.planet:focus-visible{outline:2px solid var(--rose);outline-offset:8px;border-radius:50%}
-.planet-1{background:radial-gradient(circle at 30% 30%, #e8a5a5, #8a4a4a);top:8%;left:10%;animation:floatA 9s ease-in-out infinite}
-.planet-2{background:radial-gradient(circle at 30% 30%, #b8a9d4, #5a4a7a);top:15%;right:12%;animation:floatB 11s ease-in-out infinite}
-.planet-3{background:radial-gradient(circle at 30% 30%, #e8c878, #8a6a2a);bottom:20%;left:8%;animation:floatA 13s ease-in-out infinite}
-.planet-4{background:radial-gradient(circle at 30% 30%, #7a93b8, #2a3a5a);bottom:10%;right:15%;animation:floatB 10s ease-in-out infinite}
-.planet-5{background:radial-gradient(circle at 30% 30%, #f3c7a8, #9a6a4a);top:45%;left:42%;animation:floatA 12s ease-in-out infinite;width:clamp(100px,15vw,160px);height:clamp(100px,15vw,160px)}
-@keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-
-.planet-ring{
-  position:absolute;inset:-20px;
-  border:1px dashed rgba(232,165,165,.2);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-/* planet gallery */
-#planet-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;
-  background:rgba(10,14,39,.92);
-  backdrop-filter:blur(14px);
-  overflow-y:auto;
-  padding:60px 20px;
-  opacity:0;transition:opacity .5s ease;
-}
-#planet-modal.open{display:block;opacity:1}
-.planet-gallery{
-  max-width:1100px;margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-  gap:30px;
-  padding:40px 0;
-}
-.gallery-photo{
-  position:relative;
-  background:var(--paper);
-  padding:10px 10px 40px;
-  box-shadow:0 12px 30px rgba(0,0,0,.4);
-  transform:rotate(var(--r,0deg));
-  transition:transform .4s ease;
-}
-.gallery-photo:nth-child(odd){--r:-2deg}
-.gallery-photo:nth-child(even){--r:2.5deg}
-.gallery-photo:nth-child(3n){--r:-1deg}
-.gallery-photo:hover{transform:rotate(0) scale(1.04)}
-.gallery-photo .img{
-  aspect-ratio:4/3;background:var(--midnight-2);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--cream-soft);font-family:'Caveat',cursive;font-size:14px;
-  text-align:center;padding:10px;
-}
-.gallery-photo .cap{
-  position:absolute;bottom:8px;left:0;right:0;
-  text-align:center;
-  font-family:'Caveat',cursive;
-  font-size:15px;
-  color:var(--ink);
-}
-.planet-modal-close{
-  position:fixed;top:20px;right:20px;z-index:10;
-  padding:10px 18px;
-  border:1px solid var(--line);border-radius:999px;
-  color:var(--cream);font-size:12px;letter-spacing:.2em;
-  background:rgba(10,14,39,.6);
-  backdrop-filter:blur(8px);
-}
-.planet-modal-close:hover{border-color:var(--rose);color:var(--rose)}
-
-/* =========================================================
-   SAMPUPEDIA
-   ========================================================= */
-#sampupedia-scene{min-height:100vh}
-.sampupedia{
-  max-width:720px;width:100%;
-  background:linear-gradient(180deg, rgba(248,239,216,.95), rgba(239,226,198,.95));
-  color:var(--ink);
-  padding:clamp(30px,5vw,60px);
-  border-radius:2px;
-  box-shadow:0 30px 60px rgba(0,0,0,.45);
-  position:relative;
-  font-family:'Cormorant Garamond',serif;
-}
-.sampupedia::before{
-  content:"";position:absolute;inset:0;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity:.4;pointer-events:none;border-radius:2px;
-}
-.sampupedia h2{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:400;
-  font-size:clamp(28px,4vw,44px);
-  letter-spacing:.3em;
-  text-align:center;
-  margin-bottom:8px;
-  text-indent:.3em;
-  color:var(--ink);
-}
-.sampupedia .edition{
-  text-align:center;
-  font-family:'Caveat',cursive;
-  color:var(--rose);
-  font-size:15px;
-  margin-bottom:30px;
-  letter-spacing:.1em;
-}
-.sampupedia hr{
-  border:0;border-top:1px solid rgba(42,35,64,.2);
-  margin:18px 0;
-}
-.sp-row{
-  display:grid;
-  grid-template-columns:180px 1fr;
-  gap:12px;
-  padding:10px 0;
-  font-size:clamp(15px,1.5vw,18px);
-  border-bottom:1px dotted rgba(42,35,64,.15);
-}
-.sp-row:last-child{border-bottom:0}
-.sp-label{
-  font-variant:small-caps;
-  letter-spacing:.18em;
-  font-size:12px;
-  color:#6a5a7a;
-  padding-top:4px;
-}
-.sp-value{
-  font-style:italic;
-  color:var(--ink);
-  line-height:1.5;
-}
-
-/* =========================================================
-   OBSERVATIONS
-   ========================================================= */
-#observations-scene{min-height:100vh}
-.observations-grid{
-  position:relative;
-  width:min(1100px,95vw);
-  min-height:600px;
-}
-.obs-note{
-  position:absolute;
-  background:var(--paper);
-  color:var(--ink);
-  padding:14px 18px;
-  font-family:'Caveat',cursive;
-  font-size:clamp(15px,1.6vw,18px);
-  max-width:240px;
-  box-shadow:0 10px 25px rgba(0,0,0,.35);
-  cursor:pointer;
-  transition:transform .4s ease, box-shadow .4s ease;
-  line-height:1.4;
-  border-radius:1px;
-}
-.obs-note:hover{transform:scale(1.08) rotate(0deg);box-shadow:0 18px 40px rgba(0,0,0,.5);z-index:10}
-.obs-note::before{
-  content:"";position:absolute;top:-6px;left:50%;transform:translateX(-50%);
-  width:20px;height:6px;background:rgba(232,165,165,.7);border-radius:2px;
-}
-
-/* expanded observation */
-.obs-expanded{
-  position:fixed;inset:0;z-index:600;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(10,14,39,.85);backdrop-filter:blur(10px);
-  padding:20px;opacity:0;transition:opacity .5s ease;
-}
-.obs-expanded.open{display:flex;opacity:1}
-.obs-expanded-card{
-  max-width:520px;width:100%;
-  background:var(--paper);color:var(--ink);
-  padding:clamp(30px,5vw,50px);
-  font-family:'Caveat',cursive;
-  font-size:clamp(22px,3vw,30px);
-  line-height:1.5;
-  text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,.5);
-  transform:scale(.9);transition:transform .5s cubic-bezier(.2,.7,.2,1);
-  position:relative;
-}
-.obs-expanded.open .obs-expanded-card{transform:scale(1)}
-.obs-close{
-  position:absolute;top:12px;right:12px;
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid rgba(42,35,64,.25);
-  color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-}
-.obs-close:hover{background:var(--ink);color:var(--cream)}
-
-/* =========================================================
-   MESSAGE CLOUD
-   ========================================================= */
-#messages-scene{min-height:100vh;overflow:hidden}
-.message-cloud{
-  position:relative;
-  width:min(1100px,95vw);
-  height:min(600px,70vh);
-}
-.msg-frag{
-  position:absolute;
-  font-family:'Caveat',cursive;
-  font-size:clamp(15px,1.7vw,19px);
-  color:var(--cream);
-  padding:8px 14px;
-  background:rgba(232,165,165,.08);
-  border:1px solid rgba(232,165,165,.25);
-  border-radius:999px;
-  cursor:pointer;
-  transition:all .4s ease;
-  white-space:nowrap;
-}
-.msg-frag:hover{background:rgba(232,165,165,.2);border-color:var(--rose);color:var(--rose)}
-.msg-frag.drift-1{animation:driftMsg1 22s ease-in-out infinite}
-.msg-frag.drift-2{animation:driftMsg2 28s ease-in-out infinite}
-.msg-frag.drift-3{animation:driftMsg3 25s ease-in-out infinite}
-@keyframes driftMsg1{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-10px)}}
-@keyframes driftMsg2{0%,100%{transform:translate(0,0)}50%{transform:translate(-12px,14px)}}
-@keyframes driftMsg3{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,12px)}}
-
-/* message expanded */
-.msg-expanded{
-  position:fixed;inset:0;z-index:600;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(10,14,39,.88);backdrop-filter:blur(12px);
-  padding:20px;opacity:0;transition:opacity .5s ease;
-}
-.msg-expanded.open{display:flex;opacity:1}
-.msg-expanded-card{
-  max-width:520px;width:100%;
-  background:linear-gradient(180deg, rgba(248,239,216,.96), rgba(239,226,198,.96));
-  color:var(--ink);
-  padding:clamp(30px,5vw,50px);
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(18px,2vw,22px);
-  font-style:italic;
-  line-height:1.7;
-  text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,.5);
-  position:relative;
-  transform:translateY(20px);opacity:0;
-  transition:all .6s cubic-bezier(.2,.7,.2,1);
-}
-.msg-expanded.open .msg-expanded-card{transform:translateY(0);opacity:1}
-.msg-expanded-card .mood{
-  display:block;margin-top:18px;
-  font-family:'Caveat',cursive;font-size:15px;
-  color:var(--rose);font-style:normal;
-}
-.msg-close{
-  position:absolute;top:12px;right:12px;
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid rgba(42,35,64,.25);
-  color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-}
-.msg-close:hover{background:var(--ink);color:var(--cream)}
-
-/* =========================================================
-   VOICE STAR
-   ========================================================= */
-#voice-scene{min-height:80vh}
-.voice-star-wrap{
-  position:relative;
-  width:140px;height:140px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-}
-.voice-star-core{
-  width:40px;height:40px;
-  background:radial-gradient(circle, var(--rose), var(--peach));
-  border-radius:50%;
-  box-shadow:0 0 30px rgba(232,165,165,.6);
-  animation:voicePulse 3s ease-in-out infinite;
-}
-@keyframes voicePulse{
-  0%,100%{transform:scale(1);box-shadow:0 0 30px rgba(232,165,165,.6)}
-  50%{transform:scale(1.15);box-shadow:0 0 50px rgba(232,165,165,.8)}
-}
-.voice-star-ring{
-  position:absolute;inset:0;
-  border:1px solid rgba(232,165,165,.3);
-  border-radius:50%;
-  animation:voiceRing 4s ease-out infinite;
-}
-.voice-star-ring:nth-child(2){animation-delay:1.3s}
-.voice-star-ring:nth-child(3){animation-delay:2.6s}
-@keyframes voiceRing{
-  0%{transform:scale(.5);opacity:.8}
-  100%{transform:scale(2);opacity:0}
-}
-.voice-label{
-  margin-top:30px;
-  font-family:'Caveat',cursive;
-  font-size:18px;
-  color:var(--rose);
-  text-align:center;
-}
-
-/* listening mode */
-#voice-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(10,14,39,.95);
-  padding:20px;opacity:0;transition:opacity .6s ease;
-}
-#voice-modal.open{display:flex;opacity:1}
-.voice-player{
-  max-width:420px;width:100%;
-  text-align:center;
-  color:var(--cream);
-}
-.voice-player h3{
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;font-size:24px;
-  letter-spacing:.2em;margin-bottom:30px;
-}
-.voice-player audio{
-  width:100%;margin:20px 0;
-  filter:sepia(.2) hue-rotate(180deg) invert(.1);
-}
-.voice-player .after{
-  margin-top:30px;
-  font-family:'Caveat',cursive;
-  font-size:19px;
-  color:var(--rose);
-  opacity:0;
-  transition:opacity 1s ease;
-}
-.voice-player .after.show{opacity:1}
-.voice-close{
-  position:absolute;top:20px;right:20px;
-  padding:10px 18px;
-  border:1px solid var(--line);border-radius:999px;
-  color:var(--cream);font-size:12px;letter-spacing:.2em;
-}
-.voice-close:hover{border-color:var(--rose);color:var(--rose)}
-
-/* =========================================================
-   MOON OF LITTLE THINGS
-   ========================================================= */
-#moon-scene{min-height:100vh}
-.moon{
-  width:clamp(180px,22vw,260px);
-  height:clamp(180px,22vw,260px);
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #f5e8d0, #e8a5a5 60%, #8a4a4a);
-  box-shadow:
-    inset -20px -30px 60px rgba(0,0,0,.4),
-    0 0 80px rgba(232,165,165,.3);
-  cursor:pointer;
-  position:relative;
-  transition:transform .5s ease;
-}
-.moon:hover{transform:scale(1.05)}
-.moon::before,.moon::after{
-  content:"";position:absolute;border-radius:50%;
-  background:rgba(42,35,64,.15);
-}
-.moon::before{width:20%;height:20%;top:25%;left:20%}
-.moon::after{width:12%;height:12%;bottom:20%;right:25%}
-.moon-label{
-  margin-top:30px;
-  font-family:'Caveat',cursive;
-  font-size:18px;
-  color:var(--rose);
-  text-align:center;
-}
-
-/* moon drawers */
-#moon-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;
-  background:rgba(10,14,39,.92);
-  backdrop-filter:blur(12px);
-  overflow-y:auto;
-  padding:60px 20px;
-  opacity:0;transition:opacity .5s ease;
-}
-#moon-modal.open{display:block;opacity:1}
-.moon-drawers{
-  max-width:900px;margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:20px;
-  padding:40px 0;
-}
-.drawer{
-  background:linear-gradient(180deg, rgba(248,239,216,.95), rgba(239,226,198,.95));
-  color:var(--ink);
-  padding:20px;
-  border-radius:2px;
-  box-shadow:0 10px 25px rgba(0,0,0,.35);
-  cursor:pointer;
-  transition:transform .4s ease;
-  font-family:'Cormorant Garamond',serif;
-  position:relative;
-}
-.drawer:hover{transform:translateY(-4px)}
-.drawer-label{
-  font-variant:small-caps;letter-spacing:.18em;
-  font-size:11px;color:#6a5a7a;margin-bottom:10px;
-}
-.drawer-content{
-  font-size:17px;font-style:italic;line-height:1.5;
-}
-.drawer.hidden-drawer{
-  background:linear-gradient(180deg, rgba(232,165,165,.2), rgba(243,199,168,.15));
-  border:1px dashed var(--rose);
-  color:var(--cream);
-}
-.drawer.hidden-drawer .drawer-label{color:var(--rose)}
-
-/* =========================================================
-   HIDDEN ROOM
-   ========================================================= */
-#room-locked{
-  text-align:center;
-  padding:40px;
-  color:var(--cream-soft);
-  font-family:'Caveat',cursive;
-  font-size:17px;
-  opacity:.6;
-}
-#hidden-room-scene{
-  display:none;
-  min-height:120vh;
-  background:
-    radial-gradient(ellipse at 50% 30%, rgba(232,165,165,.15), transparent 60%),
-    linear-gradient(180deg, #2a1f3a 0%, #1a1428 100%);
-  position:relative;
-}
-#hidden-room-scene.show{display:block}
-.room{
-  position:relative;
-  width:min(1000px,95vw);
-  aspect-ratio:16/10;
-  max-height:80vh;
-  margin:0 auto;
-  background:linear-gradient(180deg, #3a2a4a 0%, #2a1f3a 70%, #1a1428 100%);
-  border-radius:4px;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.6);
-}
-.room-wall{
-  position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(90deg, transparent 0, transparent 80px, rgba(0,0,0,.05) 80px, rgba(0,0,0,.05) 81px);
-}
-.room-floor{
-  position:absolute;bottom:0;left:0;right:0;height:25%;
-  background:linear-gradient(180deg, #2a1f3a, #0f0a1a);
-}
-.room-lamp{
-  position:absolute;top:15%;right:15%;
-  width:60px;height:100px;
-}
-.lamp-shade{
-  width:60px;height:40px;
-  background:linear-gradient(180deg, var(--rose), var(--coral));
-  border-radius:50% 50% 10% 10% / 60% 60% 10% 10%;
-  box-shadow:0 0 60px rgba(232,165,165,.5);
-  animation:lampGlow 4s ease-in-out infinite;
-}
-@keyframes lampGlow{
-  0%,100%{box-shadow:0 0 60px rgba(232,165,165,.5)}
-  50%{box-shadow:0 0 80px rgba(232,165,165,.7)}
-}
-.lamp-cord{
-  width:2px;height:60px;background:rgba(245,232,208,.3);
-  margin:0 auto;
-}
-.room-desk{
-  position:absolute;bottom:20%;left:15%;
-  width:45%;height:30%;
-  background:linear-gradient(180deg, #5a4a3a, #3a2a1a);
-  border-radius:2px;
-  box-shadow:0 10px 30px rgba(0,0,0,.5);
-}
-.room-photos{
-  position:absolute;top:18%;left:10%;
-  display:flex;gap:12px;flex-wrap:wrap;
-  width:35%;
-}
-.room-photo{
-  width:70px;height:70px;
-  background:var(--paper);
-  padding:4px;
-  box-shadow:0 4px 10px rgba(0,0,0,.4);
-  transform:rotate(var(--r,0deg));
-  cursor:pointer;
-  transition:transform .3s ease;
-}
-.room-photo:nth-child(1){--r:-5deg}
-.room-photo:nth-child(2){--r:3deg}
-.room-photo:nth-child(3){--r:-2deg}
-.room-photo:nth-child(4){--r:6deg}
-.room-photo:hover{transform:rotate(0) scale(1.1)}
-.room-photo-inner{
-  width:100%;height:100%;
-  background:var(--midnight-2);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Caveat',cursive;font-size:9px;color:var(--cream-soft);
-  text-align:center;padding:2px;
-}
-.room-notebook{
-  position:absolute;bottom:25%;left:25%;
-  width:100px;height:70px;
-  background:var(--paper);
-  border-radius:2px;
-  box-shadow:0 6px 15px rgba(0,0,0,.4);
-  cursor:pointer;
-  transition:transform .3s ease;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Caveat',cursive;font-size:12px;color:var(--ink);
-}
-.room-notebook:hover{transform:translateY(-4px)}
-.room-envelope{
-  position:absolute;bottom:28%;right:20%;
-  width:90px;height:60px;
-  background:var(--cream);
-  cursor:pointer;
-  transition:transform .3s ease;
-  box-shadow:0 6px 15px rgba(0,0,0,.4);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Caveat',cursive;font-size:11px;color:var(--ink);
-}
-.room-envelope::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:50%;
-  background:linear-gradient(135deg, transparent 48%, var(--rose) 48%, var(--rose) 52%, transparent 52%);
-}
-.room-envelope:hover{transform:translateY(-4px) rotate(-2deg)}
-
-/* notebook modal */
-#notebook-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(10,14,39,.9);backdrop-filter:blur(10px);
-  padding:20px;opacity:0;transition:opacity .5s ease;
-}
-#notebook-modal.open{display:flex;opacity:1}
-.notebook{
-  max-width:600px;width:100%;
-  background:linear-gradient(180deg, var(--paper), var(--cream-soft));
-  color:var(--ink);
-  padding:clamp(30px,5vw,50px);
-  border-radius:2px;
-  box-shadow:0 30px 60px rgba(0,0,0,.5);
-  font-family:'Cormorant Garamond',serif;
-  position:relative;
-  min-height:400px;
-}
-.notebook::before{
-  content:"";position:absolute;left:40px;top:0;bottom:0;width:1px;
-  background:rgba(232,165,165,.3);
-}
-.notebook-page{
-  display:none;
-  animation:pageIn .5s ease;
-}
-.notebook-page.active{display:block}
-@keyframes pageIn{
-  from{opacity:0;transform:translateX(20px)}
-  to{opacity:1;transform:translateX(0)}
-}
-.notebook-page h3{
-  font-family:'Caveat',cursive;
-  font-size:24px;
-  color:var(--rose);
-  margin-bottom:20px;
-  margin-left:20px;
-}
-.notebook-page p{
-  font-size:clamp(16px,1.6vw,19px);
-  line-height:1.7;
-  font-style:italic;
-  margin-left:20px;
-  margin-bottom:16px;
-}
-.notebook-nav{
-  display:flex;justify-content:space-between;
-  margin-top:30px;padding-top:20px;
-  border-top:1px dotted rgba(42,35,64,.2);
-}
-.notebook-nav button{
-  padding:8px 16px;
-  font-family:'Caveat',cursive;font-size:16px;
-  color:var(--ink);
-  border:1px solid rgba(42,35,64,.25);
-  border-radius:999px;
-  transition:all .3s ease;
-}
-.notebook-nav button:hover:not(:disabled){background:var(--ink);color:var(--cream)}
-.notebook-nav button:disabled{opacity:.3;cursor:not-allowed}
-.notebook-close{
-  position:absolute;top:12px;right:12px;
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid rgba(42,35,64,.25);
-  color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-}
-.notebook-close:hover{background:var(--ink);color:var(--cream)}
-
-/* envelope / final letter */
-#envelope-modal{
-  position:fixed;inset:0;z-index:600;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(10,14,39,.95);
-  padding:20px;opacity:0;transition:opacity .6s ease;
-  overflow-y:auto;
-}
-#envelope-modal.open{display:flex;opacity:1}
-.envelope-outer{
-  max-width:640px;width:100%;
-  text-align:center;
-}
-.envelope{
-  width:240px;height:160px;
-  background:var(--cream);
-  margin:0 auto 40px;
-  position:relative;
-  cursor:pointer;
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
-  transition:transform .4s ease;
-}
-.envelope:hover{transform:scale(1.05)}
-.envelope::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:50%;
-  background:linear-gradient(135deg, transparent 48%, var(--rose) 48%, var(--rose) 52%, transparent 52%);
-}
-.envelope-label{
-  position:absolute;bottom:20%;left:0;right:0;
-  font-family:'Caveat',cursive;font-size:18px;color:var(--ink);
-}
-.final-letter{
-  display:none;
-  background:linear-gradient(180deg, rgba(248,239,216,.98), rgba(239,226,198,.98));
-  color:var(--ink);
-  padding:clamp(30px,5vw,60px);
-  border-radius:2px;
-  box-shadow:0 30px 60px rgba(0,0,0,.5);
-  font-family:'Cormorant Garamond',serif;
-  text-align:left;
-  animation:letterIn 1s ease;
-}
-.final-letter.show{display:block}
-@keyframes letterIn{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.final-letter .greeting{
-  font-size:clamp(22px,2.8vw,30px);
-  font-style:italic;
-  margin-bottom:30px;
-  color:var(--ink);
-}
-.final-letter p{
-  font-size:clamp(16px,1.7vw,19px);
-  line-height:1.75;
-  margin-bottom:22px;
-  color:#3a3050;
-}
-.final-letter .closing{
-  margin-top:40px;
-  font-family:'Caveat',cursive;
-  font-size:clamp(20px,2.4vw,26px);
-  color:var(--rose);
-}
-.final-line{
-  margin-top:60px;
-  text-align:center;
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic;
-  font-size:clamp(16px,1.8vw,20px);
-  color:var(--cream);
-  opacity:0;
-  transition:opacity 2s ease;
-  line-height:1.6;
-}
-.final-line.show{opacity:1}
-.final-name{
-  margin-top:40px;
-  text-align:center;
-  font-family:'Cormorant Garamond',serif;
-  font-weight:300;
-  letter-spacing:.3em;
-  font-size:clamp(22px,3vw,32px);
-  color:var(--cream);
-  text-indent:.3em;
-  opacity:0;transition:opacity 2s ease 1s;
-}
-.final-name.show{opacity:1}
-.final-star{
-  width:8px;height:8px;margin:20px auto;
-  background:var(--rose);border-radius:50%;
-  box-shadow:0 0 12px rgba(232,165,165,.6);
-  opacity:0;transition:opacity 2s ease 2s;
-}
-.final-star.show{opacity:1}
-.restart-btn{
-  display:block;margin:40px auto 0;
-  padding:10px 24px;
-  font-family:'Caveat',cursive;font-size:16px;
-  color:var(--cream-soft);
-  border:1px solid var(--line);border-radius:999px;
-  opacity:0;transition:opacity 2s ease 3s;
-}
-.restart-btn.show{opacity:1}
-.restart-btn:hover{border-color:var(--rose);color:var(--rose)}
-
-/* final easter egg */
-.final-egg{
-  position:fixed;bottom:20px;right:20px;
-  width:6px;height:6px;
-  background:var(--rose);border-radius:50%;
-  opacity:.3;cursor:pointer;
-  transition:all .4s ease;
-  z-index:700;
-  display:none;
-}
-.final-egg.show{display:block}
-.final-egg:hover{opacity:1;transform:scale(2)}
-.final-egg-msg{
-  position:fixed;bottom:40px;right:20px;
-  max-width:280px;
-  background:var(--paper);color:var(--ink);
-  padding:16px 20px;
-  font-family:'Caveat',cursive;font-size:16px;
-  border-radius:2px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  display:none;
-  z-index:701;
-}
-.final-egg-msg.show{display:block;animation:fadeIn .5s ease}
-.final-egg-msg img{
-  width:100%;aspect-ratio:4/3;
-  background:var(--midnight-2);
-  margin-bottom:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Caveat',cursive;font-size:13px;color:var(--cream-soft);
-  text-align:center;padding:10px;
-}
-
-/* secret toast */
-#secret-toast{
-  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);
-  background:var(--paper);color:var(--ink);
-  padding:12px 24px;
-  font-family:'Caveat',cursive;font-size:17px;
-  border-radius:999px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  z-index:800;
-  transition:transform .5s cubic-bezier(.2,.7,.2,1);
-  pointer-events:none;
-}
-#secret-toast.show{transform:translateX(-50%) translateY(0)}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width:768px){
-  .constellation-wrap{aspect-ratio:3/4;max-height:none}
-  .planets-orbit{aspect-ratio:3/4;max-height:none}
-  .planet{width:90px;height:90px;font-size:11px}
-  .planet-5{width:110px;height:110px}
-  .planet-1{top:5%;left:5%}
-  .planet-2{top:5%;right:5%}
-  .planet-3{top:35%;left:5%}
-  .planet-4{top:35%;right:5%}
-  .planet-5{top:65%;left:50%;transform:translateX(-50%)}
-  .sp-row{grid-template-columns:1fr;gap:4px}
-  .obs-note{position:relative !important;top:auto !important;left:auto !important;right:auto !important;bottom:auto !important;max-width:100%;margin-bottom:16px;transform:none !important}
-  .observations-grid{display:flex;flex-direction:column;min-height:auto}
-  .message-cloud{height:auto;display:flex;flex-direction:column;gap:12px;align-items:center}
-  .msg-frag{position:relative !important;top:auto !important;left:auto !important;right:auto !important;bottom:auto !important;white-space:normal;text-align:center}
-  .room{aspect-ratio:3/4}
-  .room-desk{width:70%;left:15%}
-  .room-photos{width:60%;left:20%}
-}
-
-@media (max-width:430px){
-  .scene{padding:50px 16px}
-  .intro-title{letter-spacing:.2em}
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.2s !important;
-  }
-  .starfield{animation:none}
-  .planet{animation:none}
-  .msg-frag{animation:none}
-  .love-particle{animation:none;display:none}
-}
-
-/* focus visible */
-:focus-visible{outline:2px solid var(--rose);outline-offset:4px}
-</style>
-</head>
-<body>
-
-<!-- ============ SOUND TOGGLE ============ -->
-<button id="sound-toggle" aria-label="Toggle sound">SOUND OFF</button>
-
-<!-- ============ INTRO ============ -->
-<section id="intro" aria-label="Introduction">
-  <div class="intro-stars" id="intro-stars"></div>
-  <h1 class="intro-title" aria-label="Sampu">
-    <span>S</span><span>A</span><span>M</span><span>P</span><span>U</span>
-  </h1>
-  <p class="intro-sub" id="intro-sub">i love you so much, my sampu ♥</p>
-  <button id="enter-btn">OPEN THE SKY</button>
-</section>
-
-<!-- ============ UNIVERSE ============ -->
-<main id="universe" aria-label="Sampu's universe">
-  <div class="starfield" aria-hidden="true"></div>
-
-  <!-- SCENE 1: CONSTELLATION OF MEMORIES -->
-  <section class="scene" id="constellation-scene">
-    <h2 class="scene-title">THE CONSTELLATION</h2>
-    <p class="scene-sub">each star — a memory i love with all my heart</p>
-    <div class="constellation-wrap" id="constellation-wrap">
-      <svg class="constellation-svg" id="constellation-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet"></svg>
-    </div>
-  </section>
-
-  <!-- SCENE 2: PHOTO PLANETS -->
-  <section class="scene" id="planets-scene">
-    <h2 class="scene-title">THE PLANETS</h2>
-    <p class="scene-sub">little worlds of us, because i love every moment</p>
-    <div class="planets-orbit" id="planets-orbit"></div>
-  </section>
-
-  <!-- SCENE 3: SAMPUPEDIA -->
-  <section class="scene" id="sampupedia-scene">
-    <div class="sampupedia">
-      <h2>SAMPUPEDIA</h2>
-      <p class="edition">— the girl i love, documented —</p>
-      <hr/>
-      <div id="sampupedia-body"></div>
-    </div>
-  </section>
-
-  <!-- SCENE 4: OBSERVATIONS -->
-  <section class="scene" id="observations-scene">
-    <h2 class="scene-title">THINGS I LOVE ABOUT YOU</h2>
-    <p class="scene-sub">every little thing, because you're the best</p>
-    <div class="observations-grid" id="observations-grid"></div>
-  </section>
-
-  <!-- SCENE 5: MESSAGE CLOUD -->
-  <section class="scene" id="messages-scene">
-    <h2 class="scene-title">A CLOUD OF LOVE</h2>
-    <p class="scene-sub">all the ways i want to say i love you</p>
-    <div class="message-cloud" id="message-cloud"></div>
-  </section>
-
-  <!-- SCENE 6: VOICE STAR -->
-  <section class="scene" id="voice-scene">
-    <h2 class="scene-title">A QUIET STAR</h2>
-    <p class="scene-sub">something i recorded, because i love you</p>
-    <div class="voice-star-wrap" id="voice-star" role="button" tabindex="0" aria-label="Play voice note">
-      <div class="voice-star-ring"></div>
-      <div class="voice-star-ring"></div>
-      <div class="voice-star-ring"></div>
-      <div class="voice-star-core"></div>
-    </div>
-    <p class="voice-label">voice note</p>
-  </section>
-
-  <!-- SCENE 7: MOON OF LITTLE THINGS -->
-  <section class="scene" id="moon-scene">
-    <h2 class="scene-title">THE MOON OF LITTLE THINGS</h2>
-    <p class="scene-sub">small things i love about us</p>
-    <div class="moon" id="moon" role="button" tabindex="0" aria-label="Open moon of little things"></div>
-    <p class="moon-label">tap to open</p>
-  </section>
-
-  <!-- SCENE 8: HIDDEN ROOM (unlocked via secrets) -->
-  <section class="scene" id="hidden-room-scene">
-    <h2 class="scene-title">THE LITTLE ROOM</h2>
-    <p class="scene-sub">where all my love for you lives</p>
-    <div class="room">
-      <div class="room-wall"></div>
-      <div class="room-floor"></div>
-      <div class="room-lamp">
-        <div class="lamp-cord"></div>
-        <div class="lamp-shade"></div>
-      </div>
-      <div class="room-photos" id="room-photos"></div>
-      <div class="room-desk"></div>
-      <div class="room-notebook" id="room-notebook" role="button" tabindex="0">notebook</div>
-      <div class="room-envelope" id="room-envelope" role="button" tabindex="0">for sampu</div>
-    </div>
-  </section>
-
-  <!-- locked placeholder -->
-  <section class="scene" id="room-locked-scene">
-    <div id="room-locked">
-      <p>a little room is hidden somewhere in this universe.</p>
-      <p>find the secrets. they're waiting for you, my love.</p>
-    </div>
-  </section>
-</main>
-
-<!-- ============ MODALS ============ -->
-<div id="memory-modal" role="dialog" aria-modal="true" aria-label="Memory"></div>
-<div id="planet-modal" role="dialog" aria-modal="true" aria-label="Planet gallery"></div>
-<div class="obs-expanded" id="obs-expanded" role="dialog" aria-modal="true"></div>
-<div class="msg-expanded" id="msg-expanded" role="dialog" aria-modal="true"></div>
-<div id="voice-modal" role="dialog" aria-modal="true" aria-label="Voice note"></div>
-<div id="moon-modal" role="dialog" aria-modal="true" aria-label="Moon of little things"></div>
-<div id="notebook-modal" role="dialog" aria-modal="true" aria-label="Notebook"></div>
-<div id="envelope-modal" role="dialog" aria-modal="true" aria-label="Final letter"></div>
-
-<div id="secret-toast" aria-live="polite"></div>
-<div class="final-egg" id="final-egg" aria-label="One last secret"></div>
-<div class="final-egg-msg" id="final-egg-msg"></div>
-
-<script>
-/* =========================================================
-   EDITABLE CONTENT
-   ========================================================= */
-
-const CONTENT = {
-
-  introSubtitle: "i love you so much, my sampu ♥",
-
-  names: {
-    full: "Sampada",
-    short: "Sampu",
-    affectionate: "my Sampu",
-    darling: "my darling"
-  },
-
-  memories: [
-    {
-      id: "memory-01",
-      date: "i love every day with you",
-      title: "you are the best thing ever",
-      description: "i love you so much. thank you for being you, my sampu. you make everything better just by existing.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ i love you always",
-      starPosition: { x: 150, y: 140 }
-    },
-    {
-      id: "memory-02",
-      date: "i love you more every day",
-      title: "you're my favorite person",
-      description: "i love you so much it's crazy. you're the best, sampu. thank you for everything, my darling.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ you're the best",
-      starPosition: { x: 320, y: 90 }
-    },
-    {
-      id: "memory-03",
-      date: "i love you endlessly",
-      title: "thank you for being you",
-      description: "i love you very much. you're amazing, sampu. i'm so lucky to have you in my life.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ my sampu, my everything",
-      starPosition: { x: 470, y: 200 }
-    },
-    {
-      id: "memory-04",
-      date: "i love you always",
-      title: "you make me so happy",
-      description: "i love you so much. you're the best friend anyone could ask for. thank you, my sampu.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ i love you very much",
-      starPosition: { x: 420, y: 380 }
-    },
-    {
-      id: "memory-05",
-      date: "i love you forever",
-      title: "you're everything to me",
-      description: "i love you so much it hurts sometimes. you're the best, sampu. i love you very very much.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ you're my world",
-      starPosition: { x: 220, y: 430 }
-    },
-    {
-      id: "memory-06",
-      date: "i love you completely",
-      title: "thank you, my sampu",
-      description: "i love you. you're the best thing that ever happened to me. thank you for everything, my darling sampu.",
-      image: "",
-      imageAlt: "i love you",
-      note: "♥ i love you so much",
-      starPosition: { x: 100, y: 320 }
-    }
-  ],
-
-  constellationLines: [
-    [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[1,4]
-  ],
-
-  planets: [
-    {
-      id: "planet-1",
-      name: "i love our moments together",
-      className: "planet-1",
-      photos: [
-        { caption: "i love this memory ♥", placeholder: "photo i love" },
-        { caption: "you're the best ♥", placeholder: "photo i love" },
-        { caption: "i love you so much ♥", placeholder: "photo i love" },
-        { caption: "thank you, my sampu ♥", placeholder: "photo i love" }
-      ]
-    },
-    {
-      id: "planet-2",
-      name: "i love every day with you",
-      className: "planet-2",
-      photos: [
-        { caption: "i love this day ♥", placeholder: "i love this" },
-        { caption: "you're amazing ♥", placeholder: "i love you" },
-        { caption: "my favorite person ♥", placeholder: "i love you" }
-      ]
-    },
-    {
-      id: "planet-3",
-      name: "i love remembering us",
-      className: "planet-3",
-      photos: [
-        { caption: "i love this ♥", placeholder: "i love this" },
-        { caption: "you're the best ♥", placeholder: "i love you" },
-        { caption: "my sampu ♥", placeholder: "i love you" }
-      ]
-    },
-    {
-      id: "planet-4",
-      name: "i love our silly moments",
-      className: "planet-4",
-      photos: [
-        { caption: "i love laughing with you ♥", placeholder: "i love this" },
-        { caption: "you're so funny ♥", placeholder: "i love you" }
-      ]
-    },
-    {
-      id: "planet-5",
-      name: "i love you, sampu",
-      className: "planet-5",
-      photos: [
-        { caption: "i love you ♥", placeholder: "i love you" },
-        { caption: "you're perfect ♥", placeholder: "i love you" },
-        { caption: "my darling sampu ♥", placeholder: "i love you" }
-      ]
-    }
-  ],
-
-  sampupedia: [
-    { label: "Name", value: "Sampada" },
-    { label: "Known as", value: "Sampu" },
-    { label: "Also known as", value: "my Sampu, my darling, the best" },
-    { label: "Species", value: "the most amazing person ever" },
-    { label: "Habitat", value: "everywhere i love" },
-    { label: "Special abilities", value: "being the best, making me happy, being perfect" },
-    { label: "Most common phrase", value: "i love you too" },
-    { label: "Chaos level", value: "10/10, but i love it" },
-    { label: "Likelihood of making my day", value: "100%, always, i love you" }
-  ],
-
-  observations: [
-    { text: "i love the way you smile ♥", x: 10, y: 15, rotate: -3 },
-    { text: "i love how you make everything better ♥", x: 60, y: 8, rotate: 2 },
-    { text: "i love that you're the best ♥", x: 25, y: 45, rotate: -1 },
-    { text: "i love everything about you ♥", x: 70, y: 40, rotate: 3 },
-    { text: "i love you so much ♥", x: 15, y: 75, rotate: -2 },
-    { text: "you're my favorite person ♥", x: 55, y: 70, rotate: 1 }
-  ],
-
-  messages: [
-    { fragment: "i love you ♥", full: "i love you so much, sampu. you're the best thing in my life. thank you for everything.", mood: "♥ with all my heart" },
-    { fragment: "you're the best ♥", full: "you're the best, sampu. i love you very much. thank you for being you.", mood: "♥ always" },
-    { fragment: "i love you so much ♥", full: "i love you so much it's crazy. you're amazing, my sampu. i love you forever.", mood: "♥ completely" },
-    { fragment: "thank you, my sampu ♥", full: "thank you for everything, my sampu. i love you very much. you're the best.", mood: "♥ gratefully" },
-    { fragment: "you make me happy ♥", full: "you make me so happy, sampu. i love you. you're the best friend ever.", mood: "♥ truly" },
-    { fragment: "i love you always ♥", full: "i love you always, my sampu. you're everything to me. thank you for being you.", mood: "♥ forever" },
-    { fragment: "my darling sampu ♥", full: "my darling sampu, i love you so much. you're the best. i love you very very much.", mood: "♥ with love" }
-  ],
-
-  voiceNote: {
-    title: "i love you, sampu",
-    audioSrc: "",
-    afterMessage: "i love you so much, my sampu. you're the best. thank you for everything. ♥"
-  },
-
-  moonDrawers: [
-    { label: "i love you", content: "i love you, sampu. you're the best. thank you for everything, my darling." },
-    { label: "you're amazing", content: "you're amazing, sampu. i love you so much. you make everything better." },
-    { label: "my favorite", content: "you're my favorite person, sampu. i love you very much. thank you for being you." },
-    { label: "i love us", content: "i love us, sampu. we're the best. i love you so much, my darling." },
-    { label: "thank you", content: "thank you for everything, sampu. i love you. you're the best friend ever." },
-    { label: "my sampu", content: "my sampu, i love you so much. you're everything to me. thank you, my darling.", hidden: true }
-  ],
-
-  notebookPages: [
-    {
-      title: "i love you, page one",
-      paragraphs: [
-        "i love you so much, sampu. you're the best thing that ever happened to me. thank you for everything.",
-        "i love you very much, my sampu. you're amazing. thank you for being you."
-      ]
-    },
-    {
-      title: "you're the best, page two",
-      paragraphs: [
-        "you're the best, sampu. i love you so much. thank you for making me so happy.",
-        "i love you always, my darling. you're everything to me. thank you, my sampu."
-      ]
-    },
-    {
-      title: "thank you, page three",
-      paragraphs: [
-        "thank you for everything, sampu. i love you very much. you're the best friend anyone could ask for.",
-        "i love you so much, my sampu. you're perfect. thank you for being in my life."
-      ]
-    },
-    {
-      title: "my sampu, page four",
-      paragraphs: [
-        "my sampu, i love you. you're the best. thank you for everything, my darling.",
-        "i love you forever, sampu. you're everything to me. this is just the beginning."
-      ]
-    }
-  ],
-
-  finalLetter: {
-    greeting: "My dearest Sampu,",
-    paragraphs: [
-      "i love you so much. you're the best thing in my life. thank you for everything, my sampu. i love you very much.",
-      "you're amazing, sampu. i love you. you make everything better just by being you. thank you for being the best.",
-      "i love you so much it's crazy, my sampu. you're my favorite person. thank you for everything, my darling.",
-      "i love you always, sampu. you're everything to me. thank you for being you, my sampu. i love you very very much."
-    ],
-    closing: "i love you, always and forever, my sampu ♥",
-    finalLine: "i love you so much, sampu. you're the best. thank you for everything, my darling. i love you very much.",
-    finalName: "SAMPADA",
-    finalSubtitle: "my sampu, i love you"
-  },
-
-  finalEasterEgg: {
-    message: "i love you even more, sampu ♥",
-    photoPlaceholder: "one last i love you, just for you ♥"
-  },
-
-  secretMessages: [
-    "i love you, you found one ♥",
-    "i love you so much, keep going ♥",
-    "you're the best, keep looking ♥",
-    "i love you, this one was hidden ♥",
-    "you're amazing, you found it ♥",
-    "i love you very much, almost there ♥",
-    "you found them all, my sampu. i love you ♥"
-  ]
-};
-
-/* =========================================================
-   UI CODE
-   ========================================================= */
-
-const state = {
-  secretsFound: 0,
-  secretToasts: CONTENT.secretMessages,
-  roomUnlocked: false,
-  soundOn: false,
-  currentNotebookPage: 0,
-  constellationClickCount: 0
-};
-
-const $ = (sel, ctx=document) => ctx.querySelector(sel);
-const $$ = (sel, ctx=document) => [...ctx.querySelectorAll(sel)];
-const el = (tag, props={}, children=[]) => {
-  const e = document.createElement(tag);
-  for (const k in props) {
-    if (k === 'class') e.className = props[k];
-    else if (k === 'html') e.innerHTML = props[k];
-    else if (k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), props[k]);
-    else if (k === 'style' && typeof props[k] === 'object') Object.assign(e.style, props[k]);
-    else e.setAttribute(k, props[k]);
-  }
-  children.forEach(c => {
-    if (typeof c === 'string') e.appendChild(document.createTextNode(c));
-    else if (c) e.appendChild(c);
-  });
-  return e;
-};
-
-// LOVE RISES ANIMATION
-function triggerLoveRises(x, y) {
-  const symbols = ['♥', '♡', '❤', '💕', '💖'];
-  const count = 8;
-  
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => {
-      const particle = el('div', {
-        class: 'love-particle',
-        style: {
-          left: (x + (Math.random() - 0.5) * 100) + 'px',
-          top: y + 'px',
-          fontSize: (16 + Math.random() * 16) + 'px',
-          animationDuration: (2.5 + Math.random() * 1.5) + 's'
-        }
-      }, [symbols[Math.floor(Math.random() * symbols.length)]]);
-      
-      document.body.appendChild(particle);
-      
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
-        }
-      }, 4000);
-    }, i * 80);
-  }
-}
-
-function showToast(msg){
-  const t = $('#secret-toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-function registerSecret(){
-  state.secretsFound++;
-  const msg = state.secretToasts[Math.min(state.secretsFound-1, state.secretToasts.length-1)];
-  showToast(msg);
-  if (state.secretsFound >= 7 && !state.roomUnlocked) {
-    state.roomUnlocked = true;
-    setTimeout(unlockRoom, 1200);
-  }
-}
-
-function unlockRoom(){
-  $('#room-locked-scene').style.display = 'none';
-  $('#hidden-room-scene').classList.add('show');
-  setTimeout(() => {
-    $('#hidden-room-scene').scrollIntoView({ behavior:'smooth', block:'start' });
-  }, 400);
-}
-
-// ---------- intro ----------
-(function initIntro(){
-  $('#intro-sub').textContent = CONTENT.introSubtitle;
-
-  const starsContainer = $('#intro-stars');
-  for (let i=0; i<40; i++){
-    const s = el('div', { class:'intro-star', style:{
-      left: Math.random()*100+'%',
-      top: Math.random()*100+'%',
-      animationDelay: (Math.random()*4)+'s',
-      animationDuration: (3+Math.random()*4)+'s'
-    }});
-    starsContainer.appendChild(s);
-  }
-
-  $('#enter-btn').addEventListener('click', (e) => {
-    triggerLoveRises(e.clientX, e.clientY);
-    $('#intro').classList.add('gone');
-    setTimeout(() => {
-      $('#universe').classList.add('show');
-      $('#sound-toggle').classList.add('show');
-    }, 800);
-  });
-})();
-
-// ---------- sound toggle ----------
-$('#sound-toggle').addEventListener('click', () => {
-  state.soundOn = !state.soundOn;
-  $('#sound-toggle').textContent = state.soundOn ? 'SOUND ON' : 'SOUND OFF';
-});
-
-// ---------- constellation ----------
-(function buildConstellation(){
-  const svg = $('#constellation-svg');
-  const ns = 'http://www.w3.org/2000/svg';
-
-  CONTENT.constellationLines.forEach(([a,b], i) => {
-    const ma = CONTENT.memories[a], mb = CONTENT.memories[b];
-    const line = document.createElementNS(ns, 'line');
-    line.setAttribute('x1', ma.starPosition.x);
-    line.setAttribute('y1', ma.starPosition.y);
-    line.setAttribute('x2', mb.starPosition.x);
-    line.setAttribute('y2', mb.starPosition.y);
-    line.setAttribute('class', 'line');
-    line.style.animationDelay = (i*0.3)+'s';
-    svg.appendChild(line);
-  });
-
-  CONTENT.memories.forEach((m, i) => {
-    const g = document.createElementNS(ns, 'g');
-    g.setAttribute('class', 'star-node');
-    g.setAttribute('tabindex', '0');
-    g.setAttribute('role', 'button');
-    g.setAttribute('aria-label', 'Memory: ' + m.title);
-    g.setAttribute('transform', `translate(${m.starPosition.x},${m.starPosition.y})`);
-
-    const halo = document.createElementNS(ns, 'circle');
-    halo.setAttribute('class', 'star-halo');
-    halo.setAttribute('r', '10');
-    halo.style.animationDelay = (i*0.5)+'s';
-    g.appendChild(halo);
-
-    const core = document.createElementNS(ns, 'circle');
-    core.setAttribute('class', 'star-core');
-    core.setAttribute('r', '3.5');
-    g.appendChild(core);
-
-    const label = document.createElementNS(ns, 'text');
-    label.setAttribute('class', 'star-label');
-    label.setAttribute('x', '12');
-    label.setAttribute('y', '4');
-    label.textContent = m.title.length > 24 ? m.title.slice(0,22)+'…' : m.title;
-    g.appendChild(label);
-
-    const openMem = (e) => {
-      triggerLoveRises(e.clientX, e.clientY);
-      openMemory(i);
-    };
-    g.addEventListener('click', openMem);
-    g.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openMem(); } });
-
-    svg.appendChild(g);
-  });
-
-  const secret = document.createElementNS(ns, 'g');
-  secret.setAttribute('class', 'star-node');
-  secret.setAttribute('transform', 'translate(560,40)');
-  secret.setAttribute('tabindex', '0');
-  secret.setAttribute('role', 'button');
-  secret.setAttribute('aria-label', 'a hidden star');
-  const sc = document.createElementNS(ns, 'circle');
-  sc.setAttribute('class', 'star-secret');
-  sc.setAttribute('r', '14');
-  secret.appendChild(sc);
-  secret.addEventListener('click', () => registerSecret());
-  svg.appendChild(secret);
-
-  svg.addEventListener('dblclick', (e) => {
-    if (e.target === svg || e.target.classList.contains('line')) {
-      registerSecret();
-      showToast("you clicked the empty sky. i love you ♥");
-    }
-  });
-})();
-
-function openMemory(idx){
-  const m = CONTENT.memories[idx];
-  const modal = $('#memory-modal');
-  modal.innerHTML = '';
-
-  const card = el('div', { class:'memory-card' });
-
-  const close = el('button', { class:'memory-close', 'aria-label':'Close', html:'✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  card.appendChild(close);
-
-  card.appendChild(el('div', { class:'memory-date' }, [m.date]));
-  card.appendChild(el('h3', { class:'memory-title' }, [m.title]));
-
-  const imgWrap = el('div', { class:'memory-image' });
-  if (m.image) {
-    imgWrap.appendChild(el('img', { src:m.image, alt:m.imageAlt || '', loading:'lazy' }));
-  } else {
-    imgWrap.appendChild(el('div', { class:'placeholder' }, ['[ add a photo here ]']));
-  }
-  card.appendChild(imgWrap);
-
-  card.appendChild(el('p', { class:'memory-text' }, [m.description]));
-  if (m.note) card.appendChild(el('div', { class:'memory-note' }, [m.note]));
-
-  modal.appendChild(card);
-  modal.classList.add('open');
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal(modal);
-  });
-}
-
-function closeModal(m){
-  m.classList.remove('open');
-  setTimeout(() => { m.innerHTML = ''; }, 500);
-}
-
-// ---------- planets ----------
-(function buildPlanets(){
-  const orbit = $('#planets-orbit');
-  CONTENT.planets.forEach((p, i) => {
-    const planet = el('div', {
-      class: 'planet ' + p.className,
-      role: 'button',
-      tabindex: '0',
-      'aria-label': p.name
-    }, [p.name]);
-    planet.appendChild(el('div', { class:'planet-ring' }));
-    const openPlanetHandler = (e) => {
-      triggerLoveRises(e.clientX, e.clientY);
-      openPlanet(i);
-    };
-    planet.addEventListener('click', openPlanetHandler);
-    planet.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openPlanet(i); } });
-    orbit.appendChild(planet);
-  });
-
-  let centerClicks = 0;
-  const centerPlanet = orbit.children[4];
-  if (centerPlanet) {
-    centerPlanet.addEventListener('click', () => {
-      centerClicks++;
-      if (centerClicks === 3) {
-        registerSecret();
-        showToast("i love you, the center planet whispered ♥");
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#121b34" />
+    <meta
+      name="description"
+      content="A small, strange, completely personal universe for Sampu."
+    />
+    <title>For Sampu, with unreasonable amounts of love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Kalam:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #111a31;
+        --night: #121b34;
+        --night2: #1b2945;
+        --paper: #f7f0df;
+        --paper2: #fff9ec;
+        --sun: #f3c66d;
+        --coral: #e98c76;
+        --blue: #8fb8c9;
+        --lav: #b9afd7;
+        --muted: #67728a;
+        --line: rgba(247, 240, 223, 0.2);
+        --shadow: 0 22px 70px rgba(8, 13, 30, 0.2);
       }
-    });
-  }
-})();
-
-function openPlanet(idx){
-  const p = CONTENT.planets[idx];
-  const modal = $('#planet-modal');
-  modal.innerHTML = '';
-
-  const close = el('button', { class:'planet-modal-close', html:'CLOSE ✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  modal.appendChild(close);
-
-  modal.appendChild(el('h2', { class:'scene-title', style:{ marginTop:'40px' } }, [p.name.toUpperCase()]));
-
-  const gallery = el('div', { class:'planet-gallery' });
-  p.photos.forEach(ph => {
-    const card = el('div', { class:'gallery-photo' });
-    const img = el('div', { class:'img' }, [ph.placeholder || '[ photo ]']);
-    card.appendChild(img);
-    card.appendChild(el('div', { class:'cap' }, [ph.caption]));
-    gallery.appendChild(card);
-  });
-  modal.appendChild(gallery);
-
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal(modal);
-  });
-}
-
-// ---------- sampupedia ----------
-(function buildSampupedia(){
-  const body = $('#sampupedia-body');
-  CONTENT.sampupedia.forEach(row => {
-    const r = el('div', { class:'sp-row' });
-    r.appendChild(el('div', { class:'sp-label' }, [row.label]));
-    const val = el('div', { class:'sp-value' }, [row.value]);
-    r.appendChild(val);
-    body.appendChild(r);
-  });
-})();
-
-// ---------- observations ----------
-(function buildObservations(){
-  const grid = $('#observations-grid');
-  CONTENT.observations.forEach((o, i) => {
-    const note = el('div', {
-      class:'obs-note',
-      style:{
-        left: o.x+'%',
-        top: o.y+'%',
-        transform: `rotate(${o.rotate}deg)`
-      },
-      role:'button',
-      tabindex:'0',
-      'aria-label':'observation'
-    }, [o.text]);
-    const open = (e) => {
-      triggerLoveRises(e.clientX, e.clientY);
-      openObservation(i);
-    };
-    note.addEventListener('click', open);
-    note.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); open(); } });
-    grid.appendChild(note);
-  });
-})();
-
-function openObservation(idx){
-  const o = CONTENT.observations[idx];
-  const modal = $('#obs-expanded');
-  modal.innerHTML = '';
-  const card = el('div', { class:'obs-expanded-card' });
-  const close = el('button', { class:'obs-close', 'aria-label':'Close', html:'✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  card.appendChild(close);
-  card.appendChild(el('div', {}, [o.text]));
-  modal.appendChild(card);
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-}
-
-// ---------- message cloud ----------
-(function buildMessages(){
-  const cloud = $('#message-cloud');
-  const drifts = ['drift-1','drift-2','drift-3'];
-  CONTENT.messages.forEach((m, i) => {
-    const frag = el('div', {
-      class: 'msg-frag ' + drifts[i%3],
-      style:{
-        left: (10 + (i*13)%80)+'%',
-        top: (15 + (i*17)%70)+'%'
-      },
-      role:'button',
-      tabindex:'0',
-      'aria-label': m.fragment
-    }, [m.fragment]);
-    const open = (e) => {
-      triggerLoveRises(e.clientX, e.clientY);
-      openMessage(i);
-    };
-    frag.addEventListener('click', open);
-    frag.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); open(); } });
-    cloud.appendChild(frag);
-  });
-})();
-
-function openMessage(idx){
-  const m = CONTENT.messages[idx];
-  const modal = $('#msg-expanded');
-  modal.innerHTML = '';
-  const card = el('div', { class:'msg-expanded-card' });
-  const close = el('button', { class:'msg-close', 'aria-label':'Close', html:'✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  card.appendChild(close);
-  card.appendChild(el('div', {}, [m.full]));
-  card.appendChild(el('span', { class:'mood' }, [m.mood]));
-  modal.appendChild(card);
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-}
-
-// ---------- voice star ----------
-$('#voice-star').addEventListener('click', (e) => {
-  triggerLoveRises(e.clientX, e.clientY);
-  openVoice();
-});
-$('#voice-star').addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openVoice(); } });
-
-function openVoice(){
-  const modal = $('#voice-modal');
-  modal.innerHTML = '';
-  const close = el('button', { class:'voice-close', html:'CLOSE ✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  modal.appendChild(close);
-
-  const player = el('div', { class:'voice-player' });
-  player.appendChild(el('h3', {}, [CONTENT.voiceNote.title.toUpperCase()]));
-
-  if (CONTENT.voiceNote.audioSrc) {
-    const audio = el('audio', { controls:'', src: CONTENT.voiceNote.audioSrc, preload:'metadata' });
-    audio.addEventListener('ended', () => {
-      player.querySelector('.after').classList.add('show');
-    });
-    player.appendChild(audio);
-  } else {
-    player.appendChild(el('p', { style:{ color:'var(--rose)', fontFamily:'Caveat,cursive', fontSize:'16px', margin:'20px 0' } }, ['[ add audio file path in content → voiceNote.audioSrc ]']));
-  }
-
-  player.appendChild(el('div', { class:'after' }, [CONTENT.voiceNote.afterMessage]));
-  modal.appendChild(player);
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-}
-
-// ---------- moon of little things ----------
-$('#moon').addEventListener('click', (e) => {
-  triggerLoveRises(e.clientX, e.clientY);
-  openMoon();
-});
-$('#moon').addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openMoon(); } });
-
-$('#moon').addEventListener('dblclick', () => {
-  registerSecret();
-  showToast("the moon has another side. i love you ♥");
-});
-
-function openMoon(){
-  const modal = $('#moon-modal');
-  modal.innerHTML = '';
-  const close = el('button', { class:'planet-modal-close', html:'CLOSE ✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  modal.appendChild(close);
-  modal.appendChild(el('h2', { class:'scene-title', style:{ marginTop:'40px' } }, ['THE MOON OF LITTLE THINGS']));
-
-  const drawers = el('div', { class:'moon-drawers' });
-  CONTENT.moonDrawers.forEach(d => {
-    const drawer = el('div', { class:'drawer' + (d.hidden ? ' hidden-drawer' : '') });
-    drawer.appendChild(el('div', { class:'drawer-label' }, [d.label]));
-    drawer.appendChild(el('div', { class:'drawer-content' }, [d.content]));
-    drawers.appendChild(drawer);
-  });
-  modal.appendChild(drawers);
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-}
-
-// ---------- hidden room interactions ----------
-(function buildRoomPhotos(){
-  const wrap = $('#room-photos');
-  for (let i=0; i<4; i++){
-    const ph = el('div', { class:'room-photo', role:'button', tabindex:'0', 'aria-label':'pinned photo' });
-    ph.appendChild(el('div', { class:'room-photo-inner' }, ['i love you']));
-    wrap.appendChild(ph);
-  }
-})();
-
-$('#room-notebook').addEventListener('click', (e) => {
-  triggerLoveRises(e.clientX, e.clientY);
-  openNotebook();
-});
-$('#room-notebook').addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openNotebook(); } });
-
-function openNotebook(){
-  state.currentNotebookPage = 0;
-  const modal = $('#notebook-modal');
-  modal.innerHTML = '';
-  const nb = el('div', { class:'notebook' });
-  const close = el('button', { class:'notebook-close', 'aria-label':'Close', html:'✕' });
-  close.addEventListener('click', () => closeModal(modal));
-  nb.appendChild(close);
-
-  const pagesWrap = el('div', { id:'notebook-pages' });
-  CONTENT.notebookPages.forEach((p, i) => {
-    const page = el('div', { class:'notebook-page' + (i===0?' active':''), 'data-idx': i });
-    page.appendChild(el('h3', {}, [p.title]));
-    p.paragraphs.forEach(para => page.appendChild(el('p', {}, [para])));
-    pagesWrap.appendChild(page);
-  });
-  nb.appendChild(pagesWrap);
-
-  const nav = el('div', { class:'notebook-nav' });
-  const prev = el('button', { html:'← previous', disabled:'' });
-  const next = el('button', { html:'next →' });
-  const updateNav = () => {
-    prev.disabled = state.currentNotebookPage === 0;
-    next.disabled = state.currentNotebookPage === CONTENT.notebookPages.length - 1;
-    $$('.notebook-page').forEach((p, i) => p.classList.toggle('active', i === state.currentNotebookPage));
-  };
-  prev.addEventListener('click', () => { state.currentNotebookPage--; updateNav(); });
-  next.addEventListener('click', () => { state.currentNotebookPage++; updateNav(); });
-  nav.appendChild(prev); nav.appendChild(next);
-  nb.appendChild(nav);
-
-  modal.appendChild(nb);
-  modal.classList.add('open');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
-}
-
-$('#room-envelope').addEventListener('click', (e) => {
-  triggerLoveRises(e.clientX, e.clientY);
-  openEnvelope();
-});
-$('#room-envelope').addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openEnvelope(); } });
-
-function openEnvelope(){
-  const modal = $('#envelope-modal');
-  modal.innerHTML = '';
-  const outer = el('div', { class:'envelope-outer' });
-
-  const env = el('div', { class:'envelope', role:'button', tabindex:'0', 'aria-label':'Open letter' });
-  env.appendChild(el('div', { class:'envelope-label' }, ['for my sampu, with love']));
-  outer.appendChild(env);
-
-  const letter = el('div', { class:'final-letter' });
-  letter.appendChild(el('div', { class:'greeting' }, [CONTENT.finalLetter.greeting]));
-  CONTENT.finalLetter.paragraphs.forEach(p => letter.appendChild(el('p', {}, [p])));
-  letter.appendChild(el('div', { class:'closing' }, [CONTENT.finalLetter.closing]));
-  outer.appendChild(letter);
-
-  const finalLine = el('div', { class:'final-line' }, [CONTENT.finalLetter.finalLine]);
-  outer.appendChild(finalLine);
-
-  const finalName = el('div', { class:'final-name' });
-  finalName.appendChild(el('div', {}, [CONTENT.finalLetter.finalName]));
-  finalName.appendChild(el('div', { style:{ fontSize:'0.6em', marginTop:'8px', opacity:'.7', letterSpacing:'.2em' } }, [CONTENT.finalLetter.finalSubtitle]));
-  outer.appendChild(finalName);
-
-  const finalStar = el('div', { class:'final-star' });
-  outer.appendChild(finalStar);
-
-  const restart = el('button', { class:'restart-btn', html:'[ start again, my love ]' });
-  restart.addEventListener('click', () => location.reload());
-  outer.appendChild(restart);
-
-  modal.appendChild(outer);
-  modal.classList.add('open');
-
-  env.addEventListener('click', (e) => {
-    triggerLoveRises(e.clientX, e.clientY);
-    env.style.display = 'none';
-    letter.classList.add('show');
-    setTimeout(() => finalLine.classList.add('show'), 2500);
-    setTimeout(() => finalName.classList.add('show'), 4500);
-    setTimeout(() => finalStar.classList.add('show'), 6500);
-    setTimeout(() => {
-      restart.classList.add('show');
-      $('#final-egg').classList.add('show');
-    }, 8500);
-  });
-  env.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); env.click(); } });
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) { /* don't close */ }
-  });
-}
-
-// ---------- final easter egg ----------
-$('#final-egg').addEventListener('click', (e) => {
-  triggerLoveRises(e.clientX, e.clientY);
-  const msg = $('#final-egg-msg');
-  if (msg.classList.contains('show')) { msg.classList.remove('show'); return; }
-  msg.innerHTML = '';
-  msg.appendChild(el('div', { style:{ fontFamily:'Caveat,cursive', fontSize:'17px', marginBottom:'10px', color:'var(--ink)' } }, [CONTENT.finalEasterEgg.message]));
-  const photo = el('div', { class:'img', style:{
-    width:'100%', aspectRatio:'4/3', background:'var(--midnight-2)',
-    display:'flex', alignItems:'center', justifyContent:'center',
-    fontFamily:'Caveat,cursive', fontSize:'13px', color:'var(--cream-soft)',
-    textAlign:'center', padding:'10px', marginBottom:'10px'
-  }}, [CONTENT.finalEasterEgg.photoPlaceholder]);
-  msg.appendChild(photo);
-  msg.classList.add('show');
-});
-
-// ---------- global secrets ----------
-
-let typedBuffer = '';
-document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key.length === 1) {
-    typedBuffer = (typedBuffer + e.key).slice(-5).toLowerCase();
-    if (typedBuffer === 'sampu') {
-      typedBuffer = '';
-      registerSecret();
-      showToast("you typed her name. i love you ♥");
-    }
-  }
-});
-
-let starSequence = [];
-document.addEventListener('click', (e) => {
-  const node = e.target.closest('.star-node');
-  if (!node) return;
-  const idx = [...$('#constellation-svg').querySelectorAll('.star-node')].indexOf(node);
-  if (idx < 0 || idx >= CONTENT.memories.length) return;
-  starSequence.push(idx);
-  if (starSequence.length > 4) starSequence.shift();
-  if (starSequence.join(',') === '0,1,2,3') {
-    starSequence = [];
-    registerSecret();
-    showToast("the first four stars, in order. i love you ♥");
-  }
-});
-
-$$('.scene-title').forEach(t => {
-  let pressTimer;
-  t.addEventListener('mousedown', () => {
-    pressTimer = setTimeout(() => {
-      registerSecret();
-      showToast("you held on. i love you ♥");
-    }, 1800);
-  });
-  t.addEventListener('mouseup', () => clearTimeout(pressTimer));
-  t.addEventListener('mouseleave', () => clearTimeout(pressTimer));
-});
-
-// ---------- keyboard: ESC closes modals ----------
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    ['#memory-modal','#planet-modal','#obs-expanded','#msg-expanded','#voice-modal','#moon-modal','#notebook-modal'].forEach(sel => {
-      const m = $(sel);
-      if (m.classList.contains('open')) closeModal(m);
-    });
-  }
-});
-
-// ---------- reduced motion: disable drifts ----------
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  $$('.planet, .msg-frag, .starfield').forEach(e => {
-    e.style.animation = 'none';
-  });
-}
-
-$('#hidden-room-scene').classList.remove('show');
-
-console.log('%c♥ i love you, sampu ♥', 'color:#e8a5a5;font-family:serif;font-size:14px;');
-</script>
-</body>
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--night);
+        color: var(--paper);
+        font-family: "DM Sans", sans-serif;
+        line-height: 1.6;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        border: 0;
+        background: none;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--sun);
+        outline-offset: 4px;
+      }
+      img,
+      video {
+        display: block;
+        max-width: 100%;
+      }
+      .mono {
+        font:
+          500 11px/1.4 "DM Mono",
+          monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .hand {
+        font-family: Kalam, cursive;
+      }
+      .serif {
+        font-family: Fraunces, serif;
+      }
+      .wrap {
+        width: min(1120px, calc(100% - 40px));
+        margin: auto;
+      }
+      .eyebrow {
+        color: var(--sun);
+        margin: 0 0 13px;
+      }
+      .muted {
+        color: #c8c5c0;
+      }
+      .section {
+        padding: 120px 0;
+        position: relative;
+      }
+      .section-intro {
+        max-width: 570px;
+        margin-bottom: 48px;
+      }
+      .section h2 {
+        font:
+          600 clamp(40px, 6vw, 76px)/0.98 Fraunces,
+          serif;
+        letter-spacing: -0.04em;
+        margin: 0 0 20px;
+        color: var(--paper);
+      }
+      .section-intro p {
+        font-size: 18px;
+        color: #d9d5cd;
+        max-width: 52ch;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        padding: 11px 17px;
+        border-radius: 999px;
+        color: var(--paper);
+        font-size: 13px;
+        transition: 0.25s;
+      }
+      .pill:hover {
+        border-color: var(--sun);
+        color: var(--sun);
+      }
+      #intro {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        background: var(--night);
+        transition:
+          opacity 0.9s,
+          visibility 0.9s;
+        overflow: hidden;
+      }
+      .intro-inner {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+      .intro-sky {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 50% 43%, #293d5b 0, transparent 28%),
+          linear-gradient(145deg, #0e162c, #1a2742);
+      }
+      .intro-sky:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(circle at 12% 24%, var(--sun) 0 1px, transparent 2px),
+          radial-gradient(circle at 80% 18%, var(--lav) 0 1px, transparent 2px),
+          radial-gradient(
+            circle at 68% 72%,
+            var(--blue) 0 1px,
+            transparent 2px
+          ),
+          radial-gradient(
+            circle at 26% 77%,
+            var(--coral) 0 1px,
+            transparent 2px
+          );
+        background-size:
+          280px 240px,
+          330px 300px,
+          420px 310px,
+          370px 280px;
+        opacity: 0.6;
+      }
+      .constellation-mark {
+        width: 160px;
+        height: 100px;
+        margin: 0 auto 22px;
+      }
+      .constellation-mark line {
+        stroke: var(--sun);
+        stroke-width: 1;
+        opacity: 0.65;
+      }
+      .constellation-mark circle {
+        fill: var(--paper);
+      }
+      .intro-title {
+        font:
+          500 clamp(50px, 12vw, 132px)/0.8 Fraunces,
+          serif;
+        letter-spacing: 0.2em;
+        margin: 0;
+        text-indent: 0.2em;
+      }
+      .intro-sub {
+        font:
+          22px Kalam,
+          cursive;
+        color: var(--coral);
+        margin: 26px 0 42px;
+      }
+      .enter {
+        background: var(--sun);
+        color: var(--ink);
+        padding: 13px 28px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        box-shadow: 0 8px 30px rgba(243, 198, 109, 0.18);
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .enter:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(243, 198, 109, 0.32);
+      }
+      #intro.gone {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #universe {
+        background: linear-gradient(
+          180deg,
+          var(--night) 0,
+          #192744 48%,
+          #263c52 100%
+        );
+        overflow: hidden;
+      }
+      .topbar {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 0;
+      }
+      .topbar .logo {
+        font:
+          700 17px Kalam,
+          cursive;
+        color: var(--sun);
+      }
+      .topbar nav {
+        display: flex;
+        gap: 22px;
+      }
+      .topbar a {
+        color: #d8d4cc;
+        text-decoration: none;
+        font-size: 13px;
+      }
+      .topbar a:hover {
+        color: var(--sun);
+      }
+      .hero {
+        min-height: calc(100svh - 78px);
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: center;
+        gap: 40px;
+        padding-top: 40px;
+      }
+      .hero h1 {
+        font:
+          600 clamp(58px, 9vw, 126px)/0.88 Fraunces,
+          serif;
+        letter-spacing: -0.06em;
+        margin: 0;
+        color: var(--paper);
+      }
+      .hero h1 em {
+        color: var(--sun);
+        font-style: normal;
+      }
+      .hero-copy > p:not(.eyebrow) {
+        font-size: 20px;
+        color: #d7d5cf;
+        max-width: 42ch;
+      }
+      .hero-note {
+        margin-top: 44px;
+        color: var(--coral);
+        font-size: 18px;
+        transform: rotate(-3deg);
+        display: inline-block;
+      }
+      .hero-orbit {
+        min-height: 460px;
+        position: relative;
+        display: grid;
+        place-items: center;
+      }
+      .orbit {
+        position: absolute;
+        border: 1px solid rgba(247, 240, 223, 0.22);
+        border-radius: 50%;
+        width: min(35vw, 390px);
+        aspect-ratio: 1;
+        animation: spin 28s linear infinite;
+      }
+      .orbit:nth-child(2) {
+        width: min(27vw, 300px);
+        animation-duration: 19s;
+        animation-direction: reverse;
+        border-color: rgba(243, 198, 109, 0.32);
+      }
+      .orbit:nth-child(3) {
+        width: min(20vw, 220px);
+        animation-duration: 13s;
+      }
+      .sun {
+        width: 118px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #fff4c0,
+          var(--sun) 44%,
+          #d68b5c
+        );
+        box-shadow: 0 0 80px rgba(243, 198, 109, 0.24);
+        display: grid;
+        place-items: center;
+        color: var(--ink);
+        font:
+          700 13px Kalam,
+          cursive;
+        text-align: center;
+        z-index: 1;
+      }
+      .dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--coral);
+        top: 3%;
+        left: 50%;
+        box-shadow: 0 0 18px rgba(233, 140, 118, 0.6);
+      }
+      .orbit:nth-child(2) .dot {
+        background: var(--blue);
+        top: 55%;
+        left: 0;
+      }
+      .orbit:nth-child(3) .dot {
+        background: var(--lav);
+        top: 10%;
+        left: 25%;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .memory-section {
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .memory-section h2 {
+        color: var(--ink);
+      }
+      .memory-section .section-intro p {
+        color: #4b5665;
+      }
+      .constellation-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 45px;
+        align-items: center;
+      }
+      .constellation {
+        width: 100%;
+        min-height: 410px;
+        background: linear-gradient(145deg, #e9e2d3, #f8f1e1);
+        border: 1px solid #d6cdbb;
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+      .constellation svg {
+        width: 100%;
+        height: 370px;
+      }
+      .constellation line {
+        stroke: #a7a0ae;
+        stroke-width: 1;
+        stroke-dasharray: 5 7;
+      }
+      .memory-star {
+        fill: var(--coral);
+        stroke: var(--paper2);
+        stroke-width: 5;
+        cursor: pointer;
+        transition:
+          transform 0.25s,
+          fill 0.25s;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .memory-star:hover,
+      .memory-star.active {
+        fill: var(--sun);
+        transform: scale(1.5);
+      }
+      .memory-detail {
+        min-height: 270px;
+        padding: 30px;
+        border-left: 3px solid var(--coral);
+        background: #fffaf0;
+      }
+      .memory-detail h3 {
+        font:
+          600 32px/1 Fraunces,
+          serif;
+        margin: 8px 0 12px;
+      }
+      .memory-detail p {
+        color: #505b68;
+      }
+      .memory-detail img {
+        width: 100%;
+        max-height: 190px;
+        object-fit: cover;
+        margin-top: 18px;
+      }
+      .memory-detail .hint {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .worlds {
+        background: #e7d9d0;
+        color: var(--ink);
+      }
+      .worlds h2 {
+        color: var(--ink);
+      }
+      .planet-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
+      .planet {
+        min-height: 220px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+        overflow: hidden;
+        background: var(--night);
+        color: var(--paper);
+        box-shadow: var(--shadow);
+        transition: transform 0.3s;
+      }
+      .planet:nth-child(2) {
+        background: #314d61;
+      }
+      .planet:nth-child(3) {
+        background: #6a4353;
+      }
+      .planet:nth-child(4) {
+        background: #54516f;
+      }
+      .planet:hover {
+        transform: translateY(-8px) rotate(-1deg);
+      }
+      .planet:before {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        right: -35px;
+        top: -35px;
+        background: var(--sun);
+        opacity: 0.8;
+      }
+      .planet:nth-child(2):before {
+        background: var(--coral);
+      }
+      .planet:nth-child(3):before {
+        background: var(--lav);
+      }
+      .planet:nth-child(4):before {
+        background: var(--blue);
+      }
+      .planet h3,
+      .planet p {
+        position: relative;
+        z-index: 1;
+      }
+      .planet h3 {
+        font:
+          600 28px/1 Fraunces,
+          serif;
+        margin: 0 0 8px;
+      }
+      .planet p {
+        margin: 0;
+        color: #e4ded7;
+        font-size: 14px;
+      }
+      .planet-panel {
+        display: none;
+        margin-top: 28px;
+        background: var(--paper2);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+      .planet-panel.open {
+        display: block;
+      }
+      .planet-gallery {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 10px 5px 20px;
+      }
+      .planet-gallery figure {
+        min-width: 230px;
+        max-width: 280px;
+        margin: 0;
+        transform: rotate(-2deg);
+      }
+      .planet-gallery figure:nth-child(even) {
+        transform: rotate(3deg);
+        margin-top: 20px;
+      }
+      .planet-gallery img,
+      .planet-gallery video {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        background: #d7cbbb;
+      }
+      .planet-gallery figcaption {
+        font:
+          16px Kalam,
+          cursive;
+        color: var(--ink);
+        padding-top: 8px;
+      }
+      .close-panel {
+        color: var(--muted);
+        float: right;
+      }
+      .media-note {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .notes {
+        background: #f0e6cf;
+        color: var(--ink);
+      }
+      .notes h2 {
+        color: var(--ink);
+      }
+      .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .note {
+        background: var(--paper2);
+        padding: 24px 22px;
+        min-height: 170px;
+        box-shadow: 7px 9px 0 rgba(99, 78, 68, 0.1);
+        font:
+          22px/1.3 Kalam,
+          cursive;
+        position: relative;
+        transform: rotate(-1deg);
+      }
+      .note:nth-child(2) {
+        transform: rotate(2deg);
+        margin-top: 30px;
+      }
+      .note:nth-child(3) {
+        transform: rotate(-3deg);
+      }
+      .note:nth-child(4) {
+        transform: rotate(2deg);
+        margin-top: 18px;
+      }
+      .note:after {
+        content: "✦";
+        position: absolute;
+        right: 16px;
+        bottom: 10px;
+        color: var(--coral);
+      }
+      .pedia {
+        background: #273a4a;
+      }
+      .pedia-layout {
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        gap: 55px;
+        align-items: start;
+      }
+      .pedia-lead {
+        font:
+          600 clamp(52px, 8vw, 108px)/0.78 Fraunces,
+          serif;
+        color: var(--sun);
+        letter-spacing: -0.06em;
+      }
+      .pedia-lead span {
+        display: block;
+        color: var(--paper);
+        font-size: 0.48em;
+        letter-spacing: 0.01em;
+        margin-top: 20px;
+      }
+      .facts {
+        border-top: 1px solid var(--line);
+      }
+      .fact {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 20px;
+        border-bottom: 1px solid var(--line);
+        padding: 18px 0;
+      }
+      .fact dt {
+        color: var(--sun);
+      }
+      .fact dd {
+        margin: 0;
+        color: #e9e4dc;
+      }
+      .level {
+        display: inline-block;
+        color: var(--coral);
+      }
+      .room {
+        background: #bd806f;
+        min-height: 700px;
+      }
+      .room-inner {
+        max-width: 900px;
+        margin: auto;
+        position: relative;
+        background: #d99b82;
+        padding: 55px 50px 90px;
+        box-shadow:
+          inset 0 -50px 0 rgba(75, 48, 54, 0.2),
+          var(--shadow);
+        border: 9px solid #a9665c;
+      }
+      .room-inner h2 {
+        font-size: 60px;
+      }
+      .room-desk {
+        height: 90px;
+        background: #633f43;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      .room-lamp {
+        position: absolute;
+        right: 12%;
+        top: 70px;
+        width: 90px;
+        height: 140px;
+        border-bottom: 8px solid #633f43;
+      }
+      .room-lamp:before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 0;
+        border-left: 40px solid transparent;
+        border-right: 40px solid transparent;
+        border-bottom: 60px solid var(--sun);
+        filter: drop-shadow(0 0 20px rgba(243, 198, 109, 0.5));
+      }
+      .room-photos {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        max-width: 630px;
+      }
+      .room-photos figure {
+        background: var(--paper2);
+        padding: 8px 8px 26px;
+        color: var(--ink);
+        margin: 0;
+        box-shadow: 5px 7px 0 rgba(75, 48, 54, 0.18);
+        transform: rotate(-3deg);
+      }
+      .room-photos figure:nth-child(2) {
+        transform: rotate(3deg);
+        margin-top: 25px;
+      }
+      .room-photos img,
+      .room-photos video {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+      .room-photos figcaption {
+        font:
+          16px Kalam,
+          cursive;
+        padding: 6px 2px 0;
+      }
+      .envelope {
+        position: absolute;
+        right: 9%;
+        bottom: 105px;
+        background: var(--paper);
+        color: var(--ink);
+        padding: 24px 22px;
+        transform: rotate(4deg);
+        box-shadow: var(--shadow);
+        font:
+          700 16px Kalam,
+          cursive;
+        cursor: pointer;
+      }
+      .envelope:hover {
+        transform: rotate(0) scale(1.05);
+      }
+      .letter-section {
+        background: var(--paper);
+        color: var(--ink);
+        min-height: 100svh;
+        display: none;
+      }
+      .letter-section.show {
+        display: block;
+      }
+      .letter {
+        max-width: 700px;
+        margin: auto;
+        padding: 50px 0;
+      }
+      .letter h2 {
+        color: var(--ink);
+        font-size: 64px;
+      }
+      .letter p {
+        font:
+          20px/1.8 Fraunces,
+          serif;
+      }
+      .letter .signature {
+        font:
+          28px Kalam,
+          cursive;
+        color: var(--coral);
+        margin-top: 45px;
+      }
+      .restart {
+        margin-top: 45px;
+        color: var(--muted);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .bonus {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--sun);
+        opacity: 0.35;
+        cursor: pointer;
+      }
+      .bonus:hover {
+        opacity: 1;
+      }
+      .bonus-message {
+        position: fixed;
+        right: 25px;
+        bottom: 30px;
+        background: var(--paper);
+        color: var(--ink);
+        padding: 18px 22px;
+        box-shadow: var(--shadow);
+        display: none;
+        max-width: 260px;
+      }
+      .bonus-message.show {
+        display: block;
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          width: min(100% - 28px, 560px);
+        }
+        .section {
+          padding: 78px 0;
+        }
+        .topbar nav {
+          gap: 12px;
+        }
+        .topbar nav a:nth-child(n + 3) {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+          padding: 75px 0 100px;
+        }
+        .hero h1 {
+          font-size: 70px;
+        }
+        .hero-copy > p:not(.eyebrow) {
+          font-size: 17px;
+        }
+        .hero-orbit {
+          min-height: 330px;
+        }
+        .orbit {
+          width: 300px;
+        }
+        .orbit:nth-child(2) {
+          width: 230px;
+        }
+        .orbit:nth-child(3) {
+          width: 170px;
+        }
+        .constellation-layout,
+        .pedia-layout {
+          grid-template-columns: 1fr;
+        }
+        .constellation {
+          min-height: 300px;
+          padding: 8px;
+        }
+        .constellation svg {
+          height: 280px;
+        }
+        .memory-detail {
+          border-left: 0;
+          border-top: 3px solid var(--coral);
+        }
+        .planet-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .planet {
+          min-height: 180px;
+        }
+        .planet h3 {
+          font-size: 23px;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .note {
+          font-size: 18px;
+          min-height: 150px;
+        }
+        .fact {
+          grid-template-columns: 120px 1fr;
+          gap: 8px;
+        }
+        .room-inner {
+          padding: 38px 20px 100px;
+        }
+        .room-inner h2 {
+          font-size: 48px;
+        }
+        .room-photos {
+          grid-template-columns: 1fr 1fr;
+        }
+        .room-lamp {
+          right: 5%;
+          top: 30px;
+          transform: scale(0.7);
+        }
+        .envelope {
+          right: 5%;
+          bottom: 100px;
+        }
+        .letter h2 {
+          font-size: 52px;
+        }
+        .letter p {
+          font-size: 18px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      .memory-detail img,
+      .memory-detail video {
+        width: 100%;
+        max-height: 250px;
+        object-fit: cover;
+        margin-top: 18px;
+        background: #17223c;
+      }
+      .memory-detail video {
+        aspect-ratio: 16/9;
+      }
+      .sun {
+        background:
+          linear-gradient(rgba(17, 26, 49, 0.2), rgba(17, 26, 49, 0.58)),
+          url("assets/sampada/love.jpg") center/cover;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="intro" aria-label="Opening">
+      <div class="intro-sky"></div>
+      <div class="intro-inner">
+        <svg
+          class="constellation-mark"
+          viewBox="0 0 160 100"
+          aria-hidden="true"
+        >
+          <line x1="20" y1="70" x2="55" y2="28" />
+          <line x1="55" y1="28" x2="88" y2="62" />
+          <line x1="88" y1="62" x2="132" y2="20" />
+          <circle cx="20" cy="70" r="4" />
+          <circle cx="55" cy="28" r="3" />
+          <circle cx="88" cy="62" r="5" />
+          <circle cx="132" cy="20" r="3" />
+        </svg>
+        <h1 class="intro-title">SAMPU</h1>
+        <p class="intro-sub">a little universe for my darling</p>
+        <button class="enter" id="enter">Open the sky</button>
+      </div>
+    </section>
+    <main id="universe">
+      <div class="wrap">
+        <header class="topbar">
+          <a class="logo" href="#top">Sampu's universe</a>
+          <nav>
+            <a href="#memories">memories</a><a href="#photos">photos</a
+            ><a href="#sampupedia">sampupedia</a><a href="#room">the room</a>
+          </nav>
+        </header>
+      </div>
+      <section class="hero wrap" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow mono">classified: only for Sampada</p>
+          <h1>For <em>my Sampu,</em><br />obviously.</h1>
+          <p>
+            This is not a very sensible website. It is a tiny place for our
+            silly things, soft things, and all the little moments that somehow
+            stayed.
+          </p>
+          <p class="hero-note hand">gillies forever. majja compulsory.</p>
+        </div>
+        <div class="hero-orbit" aria-label="A small orbiting universe">
+          <div class="orbit"><i class="dot"></i></div>
+          <div class="orbit"><i class="dot"></i></div>
+          <div class="orbit"><i class="dot"></i></div>
+          <div class="sun">MY<br />SAMPU</div>
+        </div>
+      </section>
+      <section class="section memory-section" id="memories">
+        <div class="wrap">
+          <div class="section-intro">
+            <p class="eyebrow mono">archive 01 / click a star</p>
+            <h2>The constellation of us</h2>
+            <p>
+              Every star keeps a little piece of us: the soft moments, the
+              ridiculous ones, and the memories that still make me smile.
+            </p>
+          </div>
+          <div class="constellation-layout">
+            <div class="constellation">
+              <svg
+                viewBox="0 0 600 370"
+                role="img"
+                aria-label="Interactive memory constellation"
+              >
+                <line x1="70" y1="280" x2="190" y2="100" />
+                <line x1="190" y1="100" x2="330" y2="220" />
+                <line x1="330" y1="220" x2="470" y2="90" />
+                <line x1="330" y1="220" x2="530" y2="300" />
+                <circle
+                  class="memory-star"
+                  data-memory="0"
+                  cx="70"
+                  cy="280"
+                  r="9"
+                />
+                <circle
+                  class="memory-star"
+                  data-memory="1"
+                  cx="190"
+                  cy="100"
+                  r="8"
+                />
+                <circle
+                  class="memory-star"
+                  data-memory="2"
+                  cx="330"
+                  cy="220"
+                  r="10"
+                />
+                <circle
+                  class="memory-star"
+                  data-memory="3"
+                  cx="470"
+                  cy="90"
+                  r="8"
+                />
+                <circle
+                  class="memory-star"
+                  data-memory="4"
+                  cx="530"
+                  cy="300"
+                  r="9"
+                />
+              </svg>
+            </div>
+            <article class="memory-detail" id="memory-detail">
+              <p class="mono">memory 00</p>
+              <h3>Choose a star, Sampu</h3>
+              <p class="hint">
+                The empty space is waiting for a story only you and I know.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section worlds" id="photos">
+        <div class="wrap">
+          <div class="section-intro">
+            <p class="eyebrow mono">archive 02 / little planets</p>
+            <h2>Things that orbit us</h2>
+            <p>
+              Tap a planet. The photos and videos are real; the captions are
+              invitations to add our actual nonsense.
+            </p>
+          </div>
+          <div class="planet-grid">
+            <button class="planet" data-planet="0">
+              <h3>photo evidence</h3>
+              <p>proof we were there</p></button
+            ><button class="planet" data-planet="1">
+              <h3>the silly files</h3>
+              <p>zero context, full joy</p></button
+            ><button class="planet" data-planet="2">
+              <h3>random days</h3>
+              <p>ordinary, but ours</p></button
+            ><button class="planet" data-planet="3">
+              <h3>my favourites</h3>
+              <p>do not ask me to choose</p>
+            </button>
+          </div>
+          <div class="planet-panel" id="planet-panel">
+            <button class="close-panel" id="close-planet">close ×</button>
+            <p class="mono" id="planet-label">planet</p>
+            <div class="planet-gallery" id="planet-gallery"></div>
+          </div>
+        </div>
+      </section>
+      <section class="section notes">
+        <div class="wrap">
+          <div class="section-intro">
+            <p class="eyebrow mono">archive 03 / observations</p>
+            <h2>Things I notice</h2>
+            <p>The tiny details I notice, even when I pretend I do not.</p>
+          </div>
+          <div class="notes-grid">
+            <article class="note">
+              the way you laugh first and explain the joke later
+            </article>
+            <article class="note">
+              that face you make when I say something completely ridiculous
+            </article>
+            <article class="note">
+              how you somehow turn a normal day into our own little adventure
+            </article>
+            <article class="note">
+              the phrase you say so often it has become part of the furniture
+            </article>
+            <article class="note">
+              the tiny kindness you probably think nobody noticed
+            </article>
+            <article class="note">
+              our extremely serious shared opinion about absolutely nothing
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section pedia" id="sampupedia">
+        <div class="wrap pedia-layout">
+          <div>
+            <p class="eyebrow mono">field guide / edition 01</p>
+            <div class="pedia-lead">
+              SAMPU<span>an affectionate scientific reference</span>
+            </div>
+          </div>
+          <dl class="facts">
+            <div class="fact">
+              <dt class="mono">name</dt>
+              <dd>Sampada</dd>
+            </div>
+            <div class="fact">
+              <dt class="mono">known as</dt>
+              <dd>Sampu / my Sampu / my darling</dd>
+            </div>
+            <div class="fact">
+              <dt class="mono">species</dt>
+              <dd>one part mischief, one part sweetheart, fully Sampu</dd>
+            </div>
+            <div class="fact">
+              <dt class="mono">habitat</dt>
+              <dd>wherever the laughing gets too loud and the nonsense begins</dd>
+            </div>
+            <div class="fact">
+              <dt class="mono">special abilities</dt>
+              <dd>
+                Making me laugh, surviving my nonsense,
+                <span class="level">chaos level: lovingly unmeasurable</span>
+              </dd>
+            </div>
+            <div class="fact">
+              <dt class="mono">most common phrase</dt>
+              <dd>“wait, listen...” followed by something completely chaotic</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+      <section class="section room" id="room">
+        <div class="wrap">
+          <div class="section-intro">
+            <p class="eyebrow mono">unlocked slowly / the little room</p>
+            <h2>Come inside, my darling.</h2>
+            <p>
+              The room is here whenever you find seven small surprises. For now,
+              the door is already open because I am bad at keeping secrets.
+            </p>
+          </div>
+          <div class="room-inner">
+            <div class="room-lamp" aria-hidden="true"></div>
+            <div class="room-photos">
+              <figure>
+                <img
+                  src="assets/sampada/image.jpg"
+                  alt="A memory with Sampada"
+                />
+                <figcaption>this one belongs here</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="assets/sampada/love.jpg"
+                  alt="A loving memory with Sampada"
+                />
+                <figcaption>zero explanation needed</figcaption>
+              </figure>
+              <figure>
+                <img
+                  src="assets/sampada/laugh.jpg"
+                  alt="A funny memory with Sampada"
+                />
+                <figcaption>the evidence</figcaption>
+              </figure>
+            </div>
+            <button class="envelope" id="envelope">
+              FOR SAMPU<br /><small>open when ready</small>
+            </button>
+            <div class="room-desk"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <section class="letter-section" id="letter">
+      <div class="wrap letter">
+        <p class="eyebrow mono">last page / no astronomy now</p>
+        <h2>Dear Sampu,</h2>
+        <p>
+          Sampu, you are one of the very few people with whom I can be fully
+          ridiculous and completely myself. That is a rare kind of comfort, and
+          I never want to take it for granted.
+        </p>
+        <p>
+          Thank you for every laugh, every random conversation, every little
+          bit of majja, and every time you made an ordinary day feel better.
+          Also, respectfully, middle finger to anyone who does not understand
+          how iconic my bestuu is.
+        </p>
+        <p>
+          Thank you for being my gilli, my partner in majja, and my darling. I
+          love you very much, my Sampu.
+        </p>
+        <p class="signature">
+          With unreasonable love,<br />your favourite nuisance
+        </p>
+        <p class="restart" id="restart">start again from the sky</p>
+      </div>
+    </section>
+    <button
+      class="bonus"
+      id="bonus"
+      aria-label="A tiny final surprise"
+    ></button>
+    <div class="bonus-message" id="bonus-message">
+      you found the tiny thing. one more secret: my Sampu is loved very,
+      very loudly. hehhehe.
+    </div>
+    <script>
+      const memories = [
+        {
+          date: "2025",
+          title: "The day we laughed too much",
+          text: "A little piece of 2025 that still feels warm whenever I see it.",
+          image: "assets/sampada/laugh.jpg",
+        },
+        {
+          date: "2025",
+          title: "A very Sampu moment",
+          text: "Love, laughter, and one more reason to call you my Sampu.",
+          image: "assets/sampada/image.jpg",
+        },
+        {
+          date: "2026",
+          title: "The ordinary day that stayed",
+          text: "A moving little snapshot of us, kept here because it makes me happy.",
+          image:
+            "assets/sampada/781251068_1693916725028991_2698940243573398226_n.jpg",
+        },
+        {
+          date: "2026",
+          title: "Our excellent nonsense",
+          text: "No context, no explanation, just the exact kind of chaos I love about us.",
+          image: "assets/sampada/love.jpg",
+        },
+        {
+          date: "2026",
+          title: "One thing I never want to forget",
+          text: "A small reminder that even ordinary life is better with you in it.",
+          image:
+            "assets/sampada/782598910_1352624013336947_7620064181030562107_n.jpg",
+        },
+      ];
+      const planets = [
+        [
+          [
+            "img",
+            "assets/sampada/image.jpg",
+            "a little 2025 proof that this smile belongs in the archive",
+          ],
+          [
+            "img",
+            "assets/sampada/image copy.png",
+            "one photo, one Sampu, and a thousand tiny reasons to grin",
+          ],
+        ],
+        [
+          [
+            "video",
+            "assets/sampada/VID-20260326-WA0863.mp4",
+            "the silly files: absolutely no explanation required",
+          ],
+          ["img", "assets/sampada/laugh.jpg", "why were we even laughing?"],
+        ],
+        [
+          [
+            "img",
+            "assets/sampada/783285684_1107338388620064_7338329464477876241_n.jpg",
+            "a normal day with unusual importance",
+          ],
+          [
+            "video",
+            "assets/sampada/VID_20260825_042225_188.mp4",
+            "a 2026 moment with maximum majja and minimum seriousness",
+          ],
+        ],
+        [
+          ["img", "assets/sampada/love.jpg", "my favourite kind of proof"],
+          [
+            "video",
+            "assets/sampada/VID_20260825_042232_768.mp4",
+            "a 2026 reminder that my bestuu is wonderfully impossible",
+          ],
+        ],
+      ];
+      const intro = document.getElementById("intro");
+      document.getElementById("enter").onclick = () => {
+        intro.classList.add("gone");
+        scrollTo(0, 0);
+      };
+      const detail = document.getElementById("memory-detail");
+      document.querySelectorAll(".memory-star").forEach((star) => {
+        star.onclick = () => {
+          const m = memories[+star.dataset.memory];
+          document.querySelectorAll(".memory-star").forEach((s) =>
+            s.classList.remove("active"),
+          );
+          star.classList.add("active");
+          detail.innerHTML =
+            '<p class="mono">' +
+            m.date +
+            "</p><h3>" +
+            m.title +
+            "</h3><p>" +
+            m.text +
+            '</p><img src="' +
+            m.image +
+            '" alt="A memory for ' +
+            m.title +
+            '">';
+        };
+      });
+      const panel = document.getElementById("planet-panel");
+      const gallery = document.getElementById("planet-gallery");
+      const label = document.getElementById("planet-label");
+      document.querySelectorAll(".planet").forEach(
+        (button, index) =>
+          (button.onclick = () => {
+            gallery.innerHTML = "";
+            label.textContent = button.querySelector("h3").textContent;
+            planets[index].forEach((item) => {
+              const figure = document.createElement("figure"),
+                media = document.createElement(
+                  item[0] === "video" ? "video" : "img",
+                );
+              media.src = item[1];
+              media.alt = item[2];
+              if (item[0] === "video") {
+                media.controls = true;
+                media.preload = "metadata";
+              } else media.loading = "lazy";
+              figure.append(media);
+              const caption = document.createElement("figcaption");
+              caption.textContent = item[2];
+              figure.append(caption);
+              gallery.append(figure);
+            });
+            panel.classList.add("open");
+            panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }),
+      );
+      document.getElementById("close-planet").onclick = () =>
+        panel.classList.remove("open");
+      document.getElementById("envelope").onclick = () => {
+        document.getElementById("universe").style.display = "none";
+        document.getElementById("letter").classList.add("show");
+        scrollTo(0, 0);
+      };
+      document.getElementById("restart").onclick = () => {
+        document.getElementById("letter").classList.remove("show");
+        document.getElementById("universe").style.display = "block";
+        scrollTo(0, 0);
+        intro.classList.remove("gone");
+      };
+      document.getElementById("bonus").onclick = () =>
+        document.getElementById("bonus-message").classList.toggle("show");
+      let typed = "";
+      document.addEventListener("keydown", (event) => {
+        if (event.key.length === 1) {
+          typed = (typed + event.key.toLowerCase()).slice(-5);
+          if (typed === "sampu")
+            document.getElementById("bonus-message").classList.add("show");
+        }
+      });
+    </script>
+    <script>
+      const constellationMedia = [
+        {
+          type: "img",
+          src: "assets/sampada/image.jpg",
+          alt: "A nice memory with Sampu",
+        },
+        {
+          type: "img",
+          src: "assets/sampada/love.jpg",
+          alt: "A loving memory with Sampu",
+        },
+        { type: "video", src: "assets/sampada/VID-20260326-WA0863.mp4" },
+        { type: "video", src: "assets/sampada/VID_20260825_042225_188.mp4" },
+        { type: "video", src: "assets/sampada/VID_20260825_042232_768.mp4" },
+      ];
+      document.querySelectorAll(".memory-star").forEach((star) =>
+        star.addEventListener("click", () => {
+          const index = Number(star.dataset.memory),
+            memory = memories[index],
+            media = constellationMedia[index];
+          const element =
+            media.type === "video"
+              ? '<video src="' +
+                media.src +
+                '" controls preload="metadata" aria-label="Video memory for ' +
+                memory.title +
+                '"></video>'
+              : '<img src="' + media.src + '" alt="' + media.alt + '">';
+          detail.innerHTML =
+            '<p class="mono">' +
+            memory.date +
+            "</p><h3>" +
+            memory.title +
+            "</h3><p>" +
+            memory.text +
+            "</p>" +
+            element;
+        }),
+      );
+    </script>
+  </body>
 </html>
