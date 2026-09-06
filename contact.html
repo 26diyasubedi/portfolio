@@ -68,16 +68,33 @@
       <section class="letter-section" aria-labelledby="letter-title">
         <div class="letter-intro"><p class="section-kicker">The letter</p><h2 id="letter-title">No perfect words needed.</h2><p>Just write the way you would speak to a friend.</p></div>
         <div class="letter-paper">
-          <div class="letter-paper-top"><span>Dear Diya,</span><time id="letterDate"></time></div>
-          <form id="letterForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+          <div class="letter-paper-top"><span>Dear Diya,</span><time id="contactDate"></time></div>
+          <form id="contactForm" data-letter-form="contact" action="https://api.web3forms.com/submit" method="POST" novalidate>
             <input type="hidden" name="access_key" value="90243dfd-099b-4eb6-a0ad-d600edceb337" />
             <input type="hidden" name="subject" value="New message from Diya Subedi portfolio" />
-            <div class="form-group"><label for="nameField">Your name</label><input class="form-field" id="nameField" name="name" type="text" autocomplete="name" placeholder="How shall I address you?" required /><p class="form-error" id="nameError">Please share your name.</p></div>
-            <div class="form-group"><label for="emailField">Your email</label><input class="form-field" id="emailField" name="email" type="email" autocomplete="email" placeholder="So I may write back" required /><p class="form-error" id="emailError">Please enter a valid email address.</p></div>
-            <div class="form-group"><label for="messageField">Your message</label><textarea class="form-field" id="messageField" name="message" rows="6" maxlength="1000" placeholder="Write as if you were writing to a friend..." required></textarea><div class="field-meta"><p class="form-error" id="messageError">Please write a message.</p><span id="charCounter">0 / 1000</span></div></div>
-            <button class="send-button" type="submit" id="sendBtn"><span>Seal and send</span><b aria-hidden="true">↗</b></button>
+            <div class="form-group"><label for="contactNameField">Your name</label><input class="form-field" id="contactNameField" name="name" type="text" autocomplete="name" placeholder="How shall I address you?" required /><p class="form-error" id="contactNameError">Please share your name.</p></div>
+            <div class="form-group"><label for="contactEmailField">Your email</label><input class="form-field" id="contactEmailField" name="email" type="email" autocomplete="email" placeholder="So I may write back" required /><p class="form-error" id="contactEmailError">Please enter a valid email address.</p></div>
+            <div class="form-group"><label for="contactMessageField">Your message</label><textarea class="form-field" id="contactMessageField" name="message" rows="6" maxlength="1000" placeholder="Write as if you were writing to a friend..." required></textarea><div class="field-meta"><p class="form-error" id="contactMessageError">Please write a message.</p><span id="contactCharCounter">0 / 1000</span></div></div>
+            <button class="send-button" type="submit" id="contactSendBtn"><span>Seal and send</span><b aria-hidden="true">↗</b></button>
           </form>
-          <div class="letter-success" id="letterSuccess" aria-live="polite"><span aria-hidden="true">✦</span><h3>Your letter is on its way.</h3><p>Thank you for writing. I will read it closely.</p><button class="text-link" id="newLetterButton" type="button">Write another letter <b aria-hidden="true">↗</b></button></div>
+          <div class="letter-success" id="contactSuccess" aria-live="polite"><span aria-hidden="true">✦</span><h3>Your letter is on its way.</h3><p>Thank you for writing. I will read it closely.</p><button class="text-link" id="newContactButton" type="button">Write another letter <b aria-hidden="true">↗</b></button></div>
+        </div>
+      </section>
+
+      <section class="letter-section poem-submit-section" aria-labelledby="poem-title">
+        <div class="letter-intro"><p class="section-kicker">Your turn</p><h2 id="poem-title">Send your poem.</h2><p>Have something honest, unfinished, or worth remembering? Leave it here. I would love to read it.</p></div>
+        <div class="letter-paper">
+          <div class="letter-paper-top"><span>Dear Diya,</span><time id="letterDate"></time></div>
+          <form id="letterForm" data-letter-form="poem" action="https://api.web3forms.com/submit" method="POST" novalidate>
+            <input type="hidden" name="access_key" value="90243dfd-099b-4eb6-a0ad-d600edceb337" />
+            <input type="hidden" name="subject" value="New poem submission from Diya Subedi portfolio" />
+            <div class="form-group"><label for="nameField">Your name</label><input class="form-field" id="nameField" name="name" type="text" autocomplete="name" placeholder="How shall I credit you?" required /><p class="form-error" id="nameError">Please share your name.</p></div>
+            <div class="form-group"><label for="emailField">Your email</label><input class="form-field" id="emailField" name="email" type="email" autocomplete="email" placeholder="So I may write back" required /><p class="form-error" id="emailError">Please enter a valid email address.</p></div>
+            <div class="form-group"><label for="titleField">Poem title</label><input class="form-field" id="titleField" name="poem_title" type="text" placeholder="Give your poem a name" /></div>
+            <div class="form-group"><label for="messageField">Your poem</label><textarea class="form-field" id="messageField" name="message" rows="9" maxlength="5000" placeholder="Write your poem here..." required></textarea><div class="field-meta"><p class="form-error" id="messageError">Please write your poem.</p><span id="charCounter">0 / 5000</span></div></div>
+            <button class="send-button" type="submit" id="sendBtn"><span>Send my poem</span><b aria-hidden="true">↗</b></button>
+          </form>
+          <div class="letter-success" id="letterSuccess" aria-live="polite"><span aria-hidden="true">✦</span><h3>Your poem is on its way.</h3><p>Thank you for trusting me with your words. I will read them closely.</p><button class="text-link" id="newLetterButton" type="button">Send another poem <b aria-hidden="true">↗</b></button></div>
         </div>
       </section>
 

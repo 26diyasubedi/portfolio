@@ -1,14 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.querySelector('.contact-page-shell');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const date = document.getElementById('letterDate');
-  const form = document.getElementById('letterForm');
-  const success = document.getElementById('letterSuccess');
-  const message = document.getElementById('messageField');
-  const counter = document.getElementById('charCounter');
-  const newLetter = document.getElementById('newLetterButton');
-
-  if (date) date.textContent = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date());
+  document.querySelectorAll('.letter-paper time').forEach((date) => { date.textContent = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date()); });
 
   if (page && !reducedMotion) {
     page.classList.add('contact-motion-ready');
@@ -23,10 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.forEach((element) => observer.observe(element));
     } else elements.forEach((element) => element.classList.add('is-visible'));
   }
-
-  message?.addEventListener('input', () => {
-    if (counter) counter.textContent = `${message.value.length} / 1000`;
-  });
 
   document.querySelectorAll('[data-copy-email]').forEach((button) => {
     button.addEventListener('click', async () => {
@@ -44,45 +33,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (!form || !success) return;
-  const fields = [
-    [document.getElementById('nameField'), document.getElementById('nameError'), (value) => value.length > 0],
-    [document.getElementById('emailField'), document.getElementById('emailError'), (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)],
-    [message, document.getElementById('messageError'), (value) => value.length > 0]
-  ];
-
-  const validate = () => fields.every(([field, error, check]) => {
-    const valid = check(field.value.trim());
-    error?.classList.toggle('is-visible', !valid);
-    field?.setAttribute('aria-invalid', String(!valid));
-    return valid;
-  });
-
-  form.addEventListener('submit', async (event) => {
+  document.querySelectorAll('[data-letter-form]').forEach((form) => {
+    const prefix = form.dataset.letterForm === 'contact' ? 'contact' : '';
+    const field = (name) => document.getElementById(prefix ? `contact${name}` : `${name.charAt(0).toLowerCase()}${name.slice(1)}`);
+    const message = field('MessageField');
+    const counter = document.getElementById(prefix ? 'contactCharCounter' : 'charCounter');
+    const success = document.getElementById(prefix ? 'contactSuccess' : 'letterSuccess');
+    const button = document.getElementById(prefix ? 'contactSendBtn' : 'sendBtn');
+    const newLetter = document.getElementById(prefix ? 'newContactButton' : 'newLetterButton');
+    const fields = [[field('NameField'), document.getElementById(prefix ? 'contactNameError' : 'nameError'), (value) => value.length > 0], [field('EmailField'), document.getElementById(prefix ? 'contactEmailError' : 'emailError'), (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)], [message, document.getElementById(prefix ? 'contactMessageError' : 'messageError'), (value) => value.length > 0]];
+    message?.addEventListener('input', () => { if (counter) counter.textContent = `${message.value.length} / ${message.maxLength}`; });
+    const validate = () => fields.every(([input, error, check]) => { const valid = check(input.value.trim()); error?.classList.toggle('is-visible', !valid); input?.setAttribute('aria-invalid', String(!valid)); return valid; });
+    form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!validate()) return;
-    const button = document.getElementById('sendBtn');
     const label = button.querySelector('span');
     button.disabled = true;
     label.textContent = 'Sending...';
     try {
       const response = await fetch(form.action, { method: form.method, body: new FormData(form), headers: { Accept: 'application/json' } });
       const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.message || 'Unable to send your letter.');
+      if (!response.ok || !result.success) throw new Error(result.message || 'Unable to send your message.');
       form.hidden = true;
       success.classList.add('is-visible');
     } catch (error) {
       label.textContent = 'Try again';
       button.disabled = false;
-      window.alert(error.message || 'Unable to send your letter.');
+      window.alert(error.message || 'Unable to send your message.');
     }
-  });
-
-  newLetter?.addEventListener('click', () => {
-    form.reset();
-    form.hidden = false;
-    success.classList.remove('is-visible');
-    if (counter) counter.textContent = '0 / 1000';
-    document.getElementById('nameField')?.focus();
+    });
+    newLetter?.addEventListener('click', () => { form.reset(); form.hidden = false; success.classList.remove('is-visible'); if (counter) counter.textContent = `0 / ${message?.maxLength || 1000}`; field('NameField')?.focus(); });
   });
 });
